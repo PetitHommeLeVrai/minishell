@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/24 00:32:09 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/24 02:08:29 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,22 @@ typedef struct s_cmd
 
 typedef struct s_cmd_list
 {
-	struct s_cmd	*cmd_list;
+	struct s_cmd	*cmd_list_head;
 	struct s_cmd	*cmd_list_tail;
 }	t_cmd_list;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
+typedef struct s_env_list
+{
+	struct s_env	*env_list_head;
+	struct s_env	*env_list_tail;
+}	t_env_list;
 
 #endif
