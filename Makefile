@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+         #
+#    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/01/23 14:12:48 by aboyer           ###   ########.fr        #
+#    Updated: 2023/01/24 01:07:25 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ RM = rm -f
 all: ${NAME}
 			
 ${NAME}: ${OBJ} 
-			${CC} ${FLAGS} ${OBJ} -o ${NAME} -g3
+			${CC} ${FLAGS} ${OBJ} -lreadline -o ${NAME} -g3
 			
 clean:
 	${RM} ${OBJ}
