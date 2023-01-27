@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/01/24 02:20:01 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/26 14:04:09 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	signal_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		if (THAT IS FORK)
+		if (-1)
 		{
 			printf("\n");
 			rl_on_new_line();
@@ -30,25 +30,46 @@ void	signal_handler(int signo)
 	}
 }
 
-void	init_list_env(t_env_list *env_list)
+int	init_env(char *origin, char **key, char **value)
 {
-	env_list->env_list_head = ft_lstnew("", "");
-	env_list->env_list_tail = ft_lstnew("", "");
-	env_list->env_list_head->next = env_list->env_list_tail;
-	env_list->env_list_tail->prev = env_list->env_list_head;
+	int		i;
+
+	i = -1;
+	while (origin[++i])
+	{
+		if (origin[i] == '=')
+			break ;
+	}
+	*key = ft_substr(origin, 0, i);
+	*value = ft_substr(origin, i + 1, ft_strlen(origin) - i);
+	if (!*key || !*value)
+		return (-1);
+	return (0);
 }
 
-void	init_env()
+void	init_env_signal(char **env, t_env_list **env_list)
 {
-	
-}
+	t_env_list	*new_env_list;
+	t_env		*new_env;
+	t_env_list	*tmp_env_list;
 
-void	init_env_signal(char **env)
-{
-	t_env_list	env_list;
-
-	init_list_env(&env_list);
-	init_env(env);
+	new_env_list = NULL;
+	while (*env)
+	{
+		new_env = ft_new_env();
+		tmp_env_list = ft_lstnew(new_env);
+		if (!new_env || !tmp_env_list)
+			ft_error("Allocation memory failed", STDERR_FILNO);
+		new_env->origin = ft_strdup(*env);
+		if (new_env->origin == NULL)
+			ft_error("Allocation memory failed", STDERR_FILNO);
+		if (init_env(new_env->origin, &(new_env->key),
+				&(new_env->value)) == ERROR)
+			ft_error("Allocation memory failed", STDERR_FILNO);
+		ft_lstadd_back(&new_env_list, tmp_env_list);
+		env++;
+	}
+	*(env_list) = new_env_list;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
