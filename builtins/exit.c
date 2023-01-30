@@ -6,17 +6,17 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 16:04:41 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/01/30 13:39:12 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_atoi_exit(const char *nptr)
+long long	ft_atoi_exit(const char *nptr)
 {
-	int	result;
-	int	neg;
-	int	i;
+	long long	result;
+	int			neg;
+	int			i;
 
 	result = 0;
 	neg = 1;
@@ -38,20 +38,66 @@ int	ft_atoi_exit(const char *nptr)
 	return (result * neg);
 }
 
-void ft_exit(char **cmd)
+int	check_long_long(char *num)
 {
-	int nb;
-	
+	if (num[0] == '+' || num[0] == '-')
+	{
+		if (ft_strlen(num) > ft_strlen("+9223372036854775807"))
+			return (0);
+		if (num[0] == '+' && ft_strncmp(num, "+9223372036854775807", 20) > 0)
+			return (0);
+		if (num[0] == '-' && ft_strncmp(num, "-9223372036854775808", 20) > 0)
+			return (0);
+	}
+	else
+	{
+		if (ft_strlen(num) > ft_strlen("9223372036854775807"))
+			return (0);
+		if (ft_strncmp(num, "9223372036854775807", 19) > 0)
+			return (0);
+	}
+	return (1);
+}
+
+int	check_nb(char *num)
+{
+	int	i;
+
+	i = 0;
+	if (num[0] == '-' || num[0] == '+')
+		i++;
+	while (num[i])
+	{
+		if (num[i] < '0' || num[i] > '9')
+			return (0);
+		i++;
+	}
+	if (check_long_long(num) == 0)
+		return (0);
+	return (1);
+}
+
+void	exit_cmd(char **cmd)
+{
+	long long	nb;
+
 	if (!cmd[1])
 		exit(0);
 	if (cmd[2])
 	{
-		printf("exit: too many arguments");
+		printf("exit: too many arguments\n");
 		return ;
+	}
+	if (check_nb(cmd[1]) == 0)
+	{
+		printf("exit: %s: numeric argument required\n", cmd[1]);
+		exit(2);
 	}
 	nb = ft_atoi_exit(cmd[1]);
 	if (nb < 0)
-		exit((unsigned int)nb);
+		exit((unsigned int)nb % 256);
 	else if (nb > 255)
 		exit(nb % 256);
+	else
+		exit(nb);
 }

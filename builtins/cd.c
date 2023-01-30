@@ -6,15 +6,15 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 15:42:11 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/01/30 13:39:30 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void check_home(t_env *env)
+void	check_home(t_env *env)
 {
-	while(env->next != NULL)
+	while (env->next != NULL)
 	{
 		if (ft_strncmp("HOME", env->var, 4) == 0)
 		{
@@ -30,7 +30,7 @@ void check_home(t_env *env)
 	return (0);
 }
 
-int cd(char **cmd)
+int	cd(char **cmd)
 {
 	if (!cmd[1])
 	{
