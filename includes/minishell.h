@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/26 14:42:22 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/30 03:46:58 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <error.h>
+# include <string.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -33,15 +34,24 @@
 # define T_NULL 0
 # define T_WORD 1
 # define T_PIPE 2
-# define T_REDIRECT 3
-# define T_SINGLE_QUOTES 4
-# define T_DOUBLE_QUOTES 5
+# define T_RED_R 3
+# define T_RED_RR 33
+# define T_RED_L 4
+# define T_RED_LL 44
+# define T_SINGLE_QUOTES 5
+# define T_DOUBLE_QUOTES 6
 
 typedef struct s_token
 {
 	int		type;
 	char	*str;
 }	t_token;
+
+typedef struct s_token_info
+{
+	t_token	*tokens;
+	int		count;
+}	t_token_info;
 
 typedef struct s_cmd
 {

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 13:07:12 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/30 03:38:21 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	prompt(t_cmd_list *cmd_list, t_env_list **env_list)
 			printf("exit\n");
 			break ;
 		}
-		if (ft_strcmp(str, ""), is_not_blank(str))
+		if (ft_strcmp(str, ""))
 			add_history(str);
 		free(str);
 		str = NULL;
@@ -40,7 +40,7 @@ void	prompt(t_cmd_list *cmd_list, t_env_list **env_list)
 
 int	main(int ac, char **av, char **env)
 {
-	t_cmd_list	cmd_list;
+	t_cmd_list	*cmd_list;
 	t_env_list	*env_list;
 
 	(void)ac;

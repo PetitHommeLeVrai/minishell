@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:44 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 12:06:41 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/01/30 00:43:40 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
+
+void	env(t_env_list *env_list)
+{
+	t_env	*tmp_env;
+
+	tmp_env = env_list->content;
+	while (env_list)
+	{
+		printf("%s=%s\n", tmp_env->key, tmp_env->value);
+		env_list = env_list->next;
+		tmp_env = env_list->content;
+	}
+}
 
 // typedef struct s_env t_env;
 // struct s_env
@@ -70,17 +83,17 @@
 // 	return (0);
 // }
 
-void	print_env(t_env *env)
-{
-	while (env != NULL)
-	{
-		printf("%s\n", env->var);
-		if (env->next == NULL)
-			break ;
-		env = env->next;
-	}
-	env = env->begin;
-}
+// void	print_env(t_env *env)
+// {
+// 	while (env != NULL)
+// 	{
+// 		printf("%s\n", env->var);
+// 		if (env->next == NULL)
+// 			break ;
+// 		env = env->next;
+// 	}
+// 	env = env->begin;
+// }
 
 // int count_lines(t_env *env, char **envp)
 // {

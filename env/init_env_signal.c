@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/01/26 14:04:09 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/30 00:44:59 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	init_env_signal(char **env, t_env_list **env_list)
 		new_env = ft_new_env();
 		tmp_env_list = ft_lstnew(new_env);
 		if (!new_env || !tmp_env_list)
-			ft_error("Allocation memory failed", STDERR_FILNO);
+			ft_error("Allocation memory failed", STDERR_FILENO);
 		new_env->origin = ft_strdup(*env);
 		if (new_env->origin == NULL)
-			ft_error("Allocation memory failed", STDERR_FILNO);
+			ft_error("Allocation memory failed", STDERR_FILENO);
 		if (init_env(new_env->origin, &(new_env->key),
 				&(new_env->value)) == ERROR)
-			ft_error("Allocation memory failed", STDERR_FILNO);
+			ft_error("Allocation memory failed", STDERR_FILENO);
 		ft_lstadd_back(&new_env_list, tmp_env_list);
 		env++;
 	}

@@ -3,14 +3,76 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 14:44:01 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/01/30 00:30:11 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "../includes/minishell.h"
+
+void	seperate_env_argv(char *argv, char **key, char **value)
+{
+	int	i;
+
+	i = -1;
+	while (argv[i] && argv[i] != '=')
+	{
+		if (argv[i] == '=')
+			break ;
+	}
+	*key = ft_substr(argv, 0, i);
+	if (ft_strlen(argv) - i)
+	{
+		*value = ft_substr(argv, i + 1, ft_strlen(argv) - i);
+		if (!*key || !*value)
+			ft_error("Allocation memory failed", STDERR_FILENO);
+	}
+	else
+		*value = NULL;
+}
+
+int	check_env_argv(char *key)
+{
+	int	i;
+
+	i = -1;
+	if (key == "$?")
+		return (1);
+	while (key[++i])
+	{
+		if (ft_isalpha(key[i]) && key[i] == '_' && ft_isdigit(key[i]))
+			return (0);
+	}
+	return (1);
+}
+
+void	export(t_cmd *cmd, t_env_list *env_list)
+{
+	int		i;
+	char	*key;
+	char	*value;
+
+	i = 0;
+	if (cmd->cmd_argv[1] == NULL)
+	{
+		show_env();
+		exit(0);
+	}
+	while (cmd->cmd_argv[++i])
+	{
+		key = NULL;
+		value = NULL;
+		seperate_env_argv(cmd->cmd_argv[i], &key, &value);
+		if (check_env_argv(key))
+			ft_error("Minishell", STDERR_FILENO);
+		else
+			set_new_env(&env_list, key, value);
+		free(key);
+		free(value);
+	}
+}
 
 // int	export(char **var, t_env *env)
 // {

@@ -6,11 +6,24 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 01:30:55 by ychun             #+#    #+#             */
-/*   Updated: 2023/01/26 14:03:12 by ychun            ###   ########.fr       */
+/*   Updated: 2023/01/30 00:39:24 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_lstsize(t_env_list *list)
+{
+	int	i;
+
+	i = 0;
+	while (list)
+	{
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
 
 t_env	*ft_new_env(void)
 {
