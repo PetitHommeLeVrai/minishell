@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:07:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/01 14:39:49 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 11:22:18 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_exec
 	pid_t				pid;
 	int					*pipe;
 	int					id;
+	char				**envp;
 }						t_exec;
 
 typedef struct s_cmd_list

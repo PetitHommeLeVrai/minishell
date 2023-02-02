@@ -6,66 +6,86 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/01 14:40:05 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 11:22:23 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tmp.h"
 
-void	infile(t_exec *exec, t_token *word)
+void	sub_dup(t_exec *exec)
 {
-	if (exec->infile)
-		close(exec->infile);
-	exec->infile = open(word->word, O_RDONLY);
-	if (exec->infile == -1)
+	if (exec->id == 0)
 	{
-		perror(word->word);
-		exit(2);
+		if (exec->infile)
+			dup2(exec->infile, 0);
+		if (exec->outfile)
+			dup2(exec->outfile, 1);
+	}
+	else
+	{
+		if (exec->infile)
+			dup2(exec->infile, 0);
+		else
+			dup2(exec->pipe[2 * exec->id - 2], 0);
+		if (exec->outfile)
+			dup2(exec->outfile, 1);
+		else
+			dup2(exec->pipe[2 * exec->id + 1], 1);
 	}
 }
 
-void	outfile(t_exec *exec, t_token *word)
+int	count_args(t_cmd_line *cmd_line)
 {
-	if (exec->outfile)
-		close(exec->outfile);
-	exec->outfile = open(word->word, O_TRUNC | O_CREAT | O_RDWR, 0000644);
-	if (exec->outfile == -1)
-	{
-		perror(word->word);
-		exit(2);
-	}
-}
+	int	i;
 
-void	outfileover(t_exec *exec, t_token *word)
-{
-	if (exec->outfile)
-		close(exec->outfile);
-	exec->outfile = open(word->word, O_WRONLY | O_CREAT | O_APPEND, 0000644);
-	if (exec->outfile == -1)
-	{
-		perror(word->word);
-		exit(2);
-	}
-}
-
-void	get_files(t_exec *exec, t_cmd_line *cmd_line)
-{
+	i = 0;
 	while (cmd_line->word != NULL)
 	{
-		if (cmd_line->word->type == INFILE)
-			infile(exec, cmd_line->word);
-		else if (cmd_line->word->type == OUTFILE)
-			outfile(exec, cmd_line->word);
-		else if (cmd_line->word == OUTFILEOVER)
-			outfileover(exec, cmd_line->word);
-		else if (cmd_line->word == LIMITOR)
+		if (cmd_line->word->type == ARG)
+			i++;
+		cmd_line->word = cmd_line->word->next;
+	}
+	return (i);
+}
+
+char	**get_args_incmd(t_cmd_line *cmd_line)
+{
+	char	**cmd_args;
+	int		i;
+
+	i = 0;
+	cmd_args = (char **)malloc(sizeof(char *) * (count_args(cmd_line) + 1));
+	if (!cmd_args)
+		return (msg_error("MALLOC ERROR\n"), NULL);
+	cmd_args[count_args(cmd_line)] = NULL;
+	while (cmd_line->word != NULL)
+	{
+		if (cmd_line->word->type == ARG)
 		{
-			if (exec->infile)
-				close(exec->infile);
-			heredoc(cmd_line->word->word, exec);
+			cmd_args[i] = cmd_line->word->word;
+			i++;
 		}
 		cmd_line->word = cmd_line->word->next;
 	}
+	return (cmd_args);
+}
+
+static char	*get_cmd(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*command;
+
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, 0) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
 }
 
 void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
@@ -74,5 +94,22 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 	if (!exec.pid)
 	{
 		get_files(&exec, cmd_line);
+		sub_dup(&exec);
+		close_pipes(&exec, cmd_line);
+		exec.cmd_args = get_args_incmd(cmd_line);
+		exec.cmd = get_cmd(exec.cmd_paths, exec.cmd_args[0]);
+		if (!exec.cmd)
+		{
+			perror(exec.cmd_args[0]);
+			free(exec.cmd_args);
+			exit(127);
+		}
+		if (execve(exec.cmd, exec.cmd_args, exec.envp) == -1)
+		{
+			perror(exec.cmd_args[0]);
+			free(exec.cmd);
+			free(exec.cmd_args);
+			exit(127);
+		}
 	}
 }

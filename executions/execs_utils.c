@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/01 14:06:53 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 11:26:44 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,10 @@ void	parent_free(t_exec *exec)
 	if (exec->cmd_paths)
 		free(exec->cmd_paths);
 	free(exec->pipe);
+}
+
+void	msg_error(char *str)
+{
+	ft_putstr_fd(str, 2);
+	exit(2);
 }
