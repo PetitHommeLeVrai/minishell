@@ -5,52 +5,50 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/01/30 04:21:07 by ychun            ###   ########.fr       */
+/*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
+/*   Updated: 2023/02/02 20:27:44 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	find_quote_end(char *cmd, int *i, int type)
+void	cmd_tokenizer_while(char *cmd, t_token *token, int *idx, int *i)
 {
-	if (!cmd[*i + 1])
-		*i = -1;
-	*i++;
-	if (cmd[*i] == '\"')
+	int	j;
+
+	if (cmd[*idx] == ' ')
+		*idx++;
+	else if (cmd[*idx] == '\'' || cmd[*i] == '\"')
 	{
-		while (cmd[*i] && cmd[*i] != '\"')
-			*i++;
+		j = *idx;
+		*idx = find_quote_end(cmd, *i, &token[i]);
+		if (*idx == -1)
+			return ;
+		token[*i].word = ft_substr(cmd, j, *idx - j);
+		*i++;
+		*idx++;
 	}
-	if (!cmd[*i])
-		*i = -1;
-}
-
-int	counting_token(char *cmd)
-{
-	int	count;
-	int	i;
-
-	count = 0;
-	i = -1;
-	while (cmd[++i])
+	else
 	{
-		if (cmd[i] == ' ')
-			i++;
-		else if (cmd[i] == '\"' || cmd[i] == '\'')
+		j = *idx;
+		while (cmd[*idx] && cmd[*idx] != ' ')
 		{
-			find_quote_end(cmd, &i, T_SINGLE_QUOTES);
-			if (i == -1)
-				return (ERROR);
+			if (cmd[*idx] == '\'' || cmd[*idx] == '\"')
+				break ;
+			*i++;
 		}
+		token[*i].word = ft_substr(cmd, j, *idx - j);
 	}
 }
 
-int	cmd_tokenizer(char *cmd, t_token_info *token_info)
+t_token	cmd_tokenizer(char *cmd, t_token *token, int count)
 {
-	int	count_token;
+	int	i;
+	int	idx;
 
-	if (!cmd)
-		return (ERROR);
-	count_token = counting_token(cmd);	
+	i = 0;
+	idx = 0;
+	while (cmd[idx] && i < count)
+		cmd_tokenizer_while(cmd, token, &idx, &i);
+	return (token);
 }

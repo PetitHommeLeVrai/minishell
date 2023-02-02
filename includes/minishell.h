@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/30 03:46:58 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/02 19:52:50 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,41 +34,33 @@
 # define T_NULL 0
 # define T_WORD 1
 # define T_PIPE 2
-# define T_RED_R 3
-# define T_RED_RR 33
-# define T_RED_L 4
-# define T_RED_LL 44
+# define T_REDIRECTION 30
+# define T_RED_R 31
+# define T_RED_RR 32
+# define T_RED_L 33
+# define T_RED_LL 34
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
 
 typedef struct s_token
 {
-	int		type;
-	char	*str;
-}	t_token;
+	char				*word;
+	int					type;
+	struct s_token		*next;
+}						t_token;
 
-typedef struct s_token_info
+typedef struct s_token_list
 {
-	t_token	*tokens;
-	int		count;
-}	t_token_info;
+	struct s_token	*token;
+	int				count;
+}	t_token_list;
 
-typedef struct s_cmd
+typedef struct s_cmd_line
 {
-	char			**cmd_paths;
-	char			**cmd_argv;
-	int				pipe[2];
-	int				infile;
-	int				outfile;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-}	t_cmd;
-
-typedef struct s_cmd_list
-{
-	struct s_cmd	*head;
-	struct s_cmd	*tail;
-}	t_cmd_list;
+	char				*cmd;
+	struct s_token		*word;
+	struct cmd_line		*next;
+}						t_cmd_line;
 
 typedef struct s_env
 {

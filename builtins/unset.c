@@ -3,14 +3,76 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:55 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/27 14:43:52 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 20:47:44 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "../includes/minishell.h"
+#define TMP_NULL 1
+#define NEXT_NULL 2
+
+void	free_env_list(t_env_list **env_list, t_env_list *tmp,
+	t_env_list *cp, int type)
+{
+	if (type == TMP_NULL)
+		*env_list = cp->next;
+	else if (type == NEXT_NULL)
+		tmp->next = NULL;
+	else
+		tmp->next = cp->next;
+	free(cp->content->origin);
+	free(cp->content->key);
+	if (cp->content->value)
+		free(cp->content->value);
+	free(cp->content);
+	cp->next = NULL;
+	free(cp);
+}
+
+void	unset_env(t_env_list **env_list, char *key)
+{
+	t_env_list	*cp_env_list;
+	t_env_list	*tmp_env_list;
+
+	cp_env_list = *env_list;
+	tmp_env_list = NULL;
+	while (cp_env_list)
+	{
+		if (ft_strcmp(((t_env *)cp_env_list->content)->key, key) == 0)
+		{
+			if (!tmp_env_list)
+				free_env_list(env_list, tmp_env_list, cp_env_list, TMP_NULL);
+			else if (!cp_env_list->next)
+				free_env_list(env_list, tmp_env_list, cp_env_list, NEXT_NULL);
+			else
+				free_env_list(env_list, tmp_env_list, &cp_env_list, 0);
+			break ;
+		}
+		tmp_env_list = cp_env_list;
+		cp_env_list = cp_env_list->next;
+	}
+}
+
+void	unset(t_cmd *cmd, t_env_list *env_list)
+{
+	int		i;
+	char	*key;
+
+	i = -1;
+	if (!cmd->cmd_argv[1])
+		return ;
+	while (cmd->cmd_argv[++i])
+	{
+		key = cmd->cmd_argv[i];
+		if (check_env_argv(key))
+			ft_error("Unset error", STDERR_FILENO);
+		else
+			unset_env(&env_list, key);
+	}
+}
 
 // typedef struct s_env t_env;
 // struct s_env
