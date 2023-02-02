@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/02 11:22:23 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:29:46 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,15 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	return (cmd_args);
 }
 
-static char	*get_cmd(char **paths, char *cmd)
+char	*get_cmd(char **paths, char *cmd)
 {
 	char	*tmp;
 	char	*command;
 
+	if (!cmd)
+		return (NULL);
+	if (access(cmd, 0) == 0)
+		return (cmd);
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");

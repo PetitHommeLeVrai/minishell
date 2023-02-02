@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:07:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/02 11:22:18 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:23:58 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,16 @@ typedef struct s_env_list
 	char				*var;
 	struct s_env_list	*next;
 }						t_env_list;
+
+void					parent_free(t_exec *exec);
+void					msg_error(char *str);
+void					close_pipes(t_exec *exec, t_cmd_line *cmd_line);
+void					creat_pipes(t_exec *exec, t_cmd_line *cmd_line);
+int						count_pipes(t_cmd_line *cmd_line);
+void					here_doc(char *argv, t_exec *exec);
+void					infile(t_exec *exec, t_token *word);
+void					outfile(t_exec *exec, t_token *word);
+void					outfileover(t_exec *exec, t_token *word);
+void					get_files(t_exec *exec, t_cmd_line *cmd_line);
 
 #endif
