@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/02 11:25:30 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/03 13:11:06 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ void	here_doc(char *argv, t_exec *exec)
 	if (exec->infile == -1)
 	{
 		unlink(".heredoc_tmp");
-		msg_error("FAILDE TO OPEN HEREDOC");
+		msg_error("FAILED TO OPEN HEREDOC");
 	}
 }

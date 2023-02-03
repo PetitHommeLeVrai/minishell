@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/01 14:06:57 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/03 13:44:09 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*get_path(t_env_list *env)
 int	exec(t_cmd_line *cmd_line, t_env_list *env)
 {
 	t_exec	exec;
+	t_cmd_line *tmp;
 
 	exec.pipe = (int *)malloc(sizeof(int) * count_pipes(cmd_line));
 	if (!exec.pipe)
@@ -62,10 +63,11 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	exec.cmd_paths = ft_split(get_path(env), ':');
 	create_pipes(&exec, cmd_line);
 	exec.id = 0;
+	tmp = cmd_line;
 	while (exec.id < count_pipes(cmd_line))
 	{
 		child(exec, cmd_line, env);
-		cmd_line = cmd_line->next;
+		tmp = tmp->next;
 		exec.id++;
 	}
 	close_pipes(&exec, cmd_line);

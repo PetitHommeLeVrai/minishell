@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/02 12:29:46 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/03 13:23:19 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	sub_dup(t_exec *exec)
 			dup2(exec->infile, 0);
 		if (exec->outfile)
 			dup2(exec->outfile, 1);
+		else
+			dup2(exec->pipe[1], 1);
 	}
 	else
 	{
@@ -79,6 +81,8 @@ char	*get_cmd(char **paths, char *cmd)
 		return (NULL);
 	if (access(cmd, 0) == 0)
 		return (cmd);
+	if (!paths)
+		return (NULL);
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
@@ -101,6 +105,7 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		sub_dup(&exec);
 		close_pipes(&exec, cmd_line);
 		exec.cmd_args = get_args_incmd(cmd_line);
+		check_if_builtin(&exec, env);
 		exec.cmd = get_cmd(exec.cmd_paths, exec.cmd_args[0]);
 		if (!exec.cmd)
 		{
