@@ -6,11 +6,28 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 01:30:55 by ychun             #+#    #+#             */
-/*   Updated: 2023/01/30 00:39:24 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/04 18:05:26 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned char	*t1;
+	unsigned char	*t2;
+
+	t1 = (unsigned char *)s1;
+	t2 = (unsigned char *)s2;
+	while (*t1)
+	{
+		if (*t1 != *t2 || !*t1 || !*t2)
+			return (*t1 - *t2);
+		++t1;
+		++t2;
+	}
+	return (*t1 - *t2);
+}
 
 int	ft_lstsize(t_env_list *list)
 {
@@ -53,7 +70,7 @@ void	ft_lstadd_back(t_env_list **new_env_list, t_env_list *tmp_env_list)
 {
 	t_env_list	*last;
 
-	last = new_env_list;
+	last = *new_env_list;
 	if (!(*new_env_list))
 		*new_env_list = tmp_env_list;
 	else

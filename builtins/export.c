@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/30 00:30:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/04 19:28:27 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_env_argv(char *key)
 	return (1);
 }
 
-void	export(t_cmd *cmd, t_env_list *env_list)
+void	export(t_cmd_line *cmd, t_env_list *env_list)
 {
 	int		i;
 	char	*key;

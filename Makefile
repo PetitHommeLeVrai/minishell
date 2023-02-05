@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/01/25 02:07:46 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/04 22:39:38 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,15 @@ HEADERS = -I includes -I libft
 
 SRC =	main.c \
 		env/init_env_signal.c \
-		env/utile_env.c
-
+		env/set_new_env.c \
+		env/utile_env.c	\
+		env/ft_error.c \
+		env/ft_free_all_env.c \
+		parsing/check_env_token.c \
+		parsing/cmd_tokenizer.c \
+		parsing/init_cmd_list.c \
+		parsing/init_token_list.c \
+		
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 CC = clang
