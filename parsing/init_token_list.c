@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/05 00:02:57 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:45:59 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	init_token_list(char *cmd, t_token_list *token_list)
 	token_list->token = (t_token *)malloc(sizeof(t_token) * (count_token + 1));
 	if (!token_list->token)
 		ft_error("Allocation Error", STDERR_FILENO);
+	(token_list->token)->type = -1;
 	token_list->token = cmd_tokenizer(cmd, token_list->token,
 			token_list->count);
 	return (0);

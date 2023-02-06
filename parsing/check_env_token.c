@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:10:37 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:34:02 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	check_env_token(t_token_list *tokens, t_env_list *env)
 	i = -1;
 	while (tokens->count > ++i)
 	{
-		if (tokens->token[i].type != T_SINGLE_QUOTES)
+		if (tokens->token[i].type != T_SINGLE_QUOTES && tokens->token[i].word != NULL)
 		{
 			head_dollar = check_token_have_env(tokens->token[i].word);
 			if (head_dollar != -1)

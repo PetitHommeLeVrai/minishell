@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:59:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/05 22:56:09 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:35:56 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_substr(char const *s, unsigned int start, int len)
 {
 	size_t	i;
-	int	j;
+	int		j;
 	char	*str;
 
 	i = start;

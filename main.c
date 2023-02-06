@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/05 03:32:44 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:46:39 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	prompt(t_cmd_line *cmd_line, t_env_list **env_list)
 	{
 		str = readline("$> ");
 		if (str)
+		{
+			//printf("***** readline return : %s *****\n", str);
 			parsing(cmd_line, *env_list, str);
+		}
 		else
 		{
 			printf("exit\n");

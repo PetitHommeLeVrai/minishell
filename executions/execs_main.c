@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/03 13:44:09 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/06 01:22:34 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ char	*get_path(t_env_list *env)
 
 int	exec(t_cmd_line *cmd_line, t_env_list *env)
 {
-	t_exec	exec;
-	t_cmd_line *tmp;
+	t_exec		exec;
+	t_cmd_line	*tmp;
 
 	exec.pipe = (int *)malloc(sizeof(int) * count_pipes(cmd_line));
 	if (!exec.pipe)

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 00:54:57 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:41:22 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_cmd_line	*init_cmd_line(char *cmd_origin, t_env_list *env)
 	cmd_line = NULL;
 	token_list.token = NULL;
 	token_list.count = 0;
+	if (!cmd_origin)
+		return (NULL);
 	if (init_token_list(cmd_origin, &token_list))
 	{
 		ft_error("Error", STDERR_FILENO);
