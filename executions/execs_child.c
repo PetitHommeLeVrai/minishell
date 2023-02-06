@@ -6,35 +6,11 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/03 13:23:19 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:47:15 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tmp.h"
-
-void	sub_dup(t_exec *exec)
-{
-	if (exec->id == 0)
-	{
-		if (exec->infile)
-			dup2(exec->infile, 0);
-		if (exec->outfile)
-			dup2(exec->outfile, 1);
-		else
-			dup2(exec->pipe[1], 1);
-	}
-	else
-	{
-		if (exec->infile)
-			dup2(exec->infile, 0);
-		else
-			dup2(exec->pipe[2 * exec->id - 2], 0);
-		if (exec->outfile)
-			dup2(exec->outfile, 1);
-		else
-			dup2(exec->pipe[2 * exec->id + 1], 1);
-	}
-}
 
 int	count_args(t_cmd_line *cmd_line)
 {
@@ -96,28 +72,52 @@ char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
+char	**create_envp_char(t_env_list *env)
+{
+	char		**envp;
+	t_env_list	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = env;
+	while (tmp != NULL)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	envp = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!envp)
+		return (msg_error("envp alloc error\n"), NULL);
+	envp[i] = NULL;
+	i = 0;
+	while (env != NULL)
+	{
+		envp[i] = env->content->origin;
+		env = env->next;
+		i++;
+	}
+	return (envp);
+}
+
 void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 {
 	exec.pid = fork();
 	if (!exec.pid)
 	{
 		get_files(&exec, cmd_line);
-		sub_dup(&exec);
+		sub_dup(&exec, cmd_line);
 		close_pipes(&exec, cmd_line);
-		exec.cmd_args = get_args_incmd(cmd_line);
+		cmd_line->cmd_args = get_args_incmd(cmd_line);
 		check_if_builtin(&exec, env);
-		exec.cmd = get_cmd(exec.cmd_paths, exec.cmd_args[0]);
+		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0]);
 		if (!exec.cmd)
 		{
-			perror(exec.cmd_args[0]);
-			free(exec.cmd_args);
+			perror(cmd_line->cmd_args[0]);
 			exit(127);
 		}
-		if (execve(exec.cmd, exec.cmd_args, exec.envp) == -1)
+		if (execve(exec.cmd, cmd_line->cmd_args, exec.envp) == -1)
 		{
-			perror(exec.cmd_args[0]);
-			free(exec.cmd);
-			free(exec.cmd_args);
+			perror(cmd_line->cmd_args[0]);
 			exit(127);
 		}
 	}

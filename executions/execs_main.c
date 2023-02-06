@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/06 01:22:34 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 12:44:04 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ char	*get_path(t_env_list *env)
 	i = 0;
 	while (env != NULL)
 	{
-		if (ft_strncmp("PATH", env->var, 4) == 0)
-			return (env->var + 5);
+		if (ft_strncmp("PATH", env->content->key, 5) == 0)
+			return (env->content->value);
 		env = env->next;
 	}
 	return (NULL);
@@ -58,11 +58,13 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	t_cmd_line	*tmp;
 
 	exec.pipe = (int *)malloc(sizeof(int) * count_pipes(cmd_line));
+	cmd_line->pipe_nb = count_pipes(cmd_line);
 	if (!exec.pipe)
 		return (error("PIPE ALLOC ERROR\n"), 0);
 	exec.cmd_paths = ft_split(get_path(env), ':');
 	create_pipes(&exec, cmd_line);
 	exec.id = 0;
+	exec.envp = create_envp_char(env);
 	tmp = cmd_line;
 	while (exec.id < count_pipes(cmd_line))
 	{
@@ -72,6 +74,6 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	}
 	close_pipes(&exec, cmd_line);
 	waitpid(-1, NULL, 0);
-	parent_free(&exec);
+	parent_free(&exec, cmd_line);
 	return (1);
 }

@@ -6,13 +6,13 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/03 13:11:06 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:05:08 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tmp.h"
 
-void	here_doc(char *argv, t_exec *exec)
+void	here_doc(char *argv, t_cmd_line *cmd_line)
 {
 	int		file;
 	char	*buf;
@@ -31,8 +31,8 @@ void	here_doc(char *argv, t_exec *exec)
 	}
 	free(buf);
 	close(file);
-	exec->infile = open(".heredoc_tmp", O_RDONLY);
-	if (exec->infile == -1)
+	cmd_line->infile = open(".heredoc_tmp", O_RDONLY);
+	if (cmd_line->infile == -1)
 	{
 		unlink(".heredoc_tmp");
 		msg_error("FAILED TO OPEN HEREDOC");

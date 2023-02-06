@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/03 15:06:33 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:44:54 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	creat_pipes(t_exec *exec, t_cmd_line *cmd_line)
 	while (i < count_pipes(cmd_line))
 	{
 		if (pipe(exec->pipe + 2 * i) < 0)
-			parent_free(exec);
+			parent_free(exec, cmd_line);
 		i++;
 	}
 }
@@ -37,7 +37,7 @@ void	close_pipes(t_exec *exec, t_cmd_line *cmd_line)
 	}
 }
 
-void	parent_free(t_exec *exec)
+void	parent_free(t_exec *exec, t_cmd_line *line)
 {
 	int	i;
 
@@ -45,6 +45,18 @@ void	parent_free(t_exec *exec)
 	if (exec->cmd_paths)
 		free(exec->cmd_paths);
 	free(exec->pipe);
+	free(exec->envp);
+	while (line != NULL)
+	{
+		if (line->cmd_args)
+			free(line->cmd_args);
+		close(line->infile);
+		close(line->outfile);
+		line->infile = -1;
+		line->outfile = -1;
+		line->pipe_nb = -1;
+		line = line->next;
+	}
 }
 
 void	msg_error(char *str)
@@ -53,20 +65,20 @@ void	msg_error(char *str)
 	exit(2);
 }
 
-void	check_if_builtin(t_exec *exec, t_env_list *env_list)
+void	check_if_builtin(t_cmd_line *line, t_env_list *envp)
 {
-	if (ft_strncmp(exec->cmd_args[0], "cd", 3))
-		cd(exec->cmd_args, env_list);
-	else if (ft_strncmp(exec->cmd_args[0], "echo", 5))
-		echo(exec->cmd_args);
-	else if (ft_strncmp(exec->cmd_args[0], "env", 4))
-		env(env_list);
-	else if (ft_strncmp(exec->cmd_args[0], "exit", 5))
-		exit_cmd(exec->cmd_args);
-	else if (ft_strncmp(exec->cmd_args[0], "export", 7))
-		export(exec->cmd_args, env_list);
-	else if (ft_strncmp(exec->cmd_args[0], "pwd", 4))
-		pwd(exec->cmd_args);
-	else if (ft_strncmp(exec->cmd_args[0], "unset", 6))
-		unset(exec->cmd_args, env_list);
+	if (ft_strncmp(line->cmd_args[0], "cd", 3))
+		cd(line->cmd_args, envp);
+	else if (ft_strncmp(line->cmd_args[0], "echo", 5))
+		echo(line->cmd_args);
+	else if (ft_strncmp(line->cmd_args[0], "env", 4))
+		env(line->cmd_args, envp);
+	else if (ft_strncmp(line->cmd_args[0], "exit", 5))
+		exit_cmd(line->cmd_args);
+	else if (ft_strncmp(line->cmd_args[0], "export", 7))
+		export(line->cmd_args, envp);
+	else if (ft_strncmp(line->cmd_args[0], "pwd", 4))
+		pwd(line->cmd_args);
+	else if (ft_strncmp(line->cmd_args[0], "unset", 6))
+		unset(line->cmd_args, envp);
 }
