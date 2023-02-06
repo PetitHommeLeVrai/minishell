@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/05 03:34:40 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 00:54:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	set_type_the_token(t_token_list *tokens)
 		else if (!ft_strcmp(tokens->token[i].word, "<")
 			|| !ft_strcmp(tokens->token[i].word, "<<"))
 			tokens->token[i].type = T_REDIRECTION;
-		else
+		else if (tokens->token[i].type != T_WORD_NULL)
 			tokens->token[i].type = T_WORD;
 	}
 }
@@ -48,11 +48,12 @@ t_cmd_line	*init_cmd_line(char *cmd_origin, t_env_list *env)
 	}
 	check_env_token(&token_list, env);
 	set_type_the_token(&token_list);
-	/*if (!syntax_check(token_list))
+	if (syntax_check(token_list))
 	{
-		ft_error("Syntax error", STDERR_FILENO);
+		printf("Syntax ERRRRRRRROR\n");
+		//ft_error("Syntax error", STDERR_FILENO);
 		return (NULL);
-	}*/
+	}
 	//cmd_line->token_list = token_list;
 	ft_free_all_tokens(&token_list);
 	return (NULL);

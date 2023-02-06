@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/05 02:33:53 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/05 22:50:53 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_token	*cmd_tokenizer(char *cmd, t_token *token, int count)
 
 	i = 0;
 	idx = 0;
+	token->origin = NULL;
 	while (cmd[idx] && i < count)
 		cmd_tokenizer_while(cmd, token, &idx, &i);
 	return (token);

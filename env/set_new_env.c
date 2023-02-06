@@ -6,20 +6,23 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/05 03:06:45 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:12:34 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*find_value_by_key(t_env_list *env_list, char *key)
+char	*find_value_by_key(t_env_list *env_list, char *key, t_token **token)
 {
 	t_env	*env;
 	char	*value;
 
 	env = find_env_by_key(env_list, key);
 	if (!env)
+	{
 		value = ft_strdup("");
+		(*token)->type = T_WORD_NULL;
+	}
 	else
 		value = ft_strdup(env->value);
 	if (!value)

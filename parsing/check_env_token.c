@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/05 03:22:41 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:10:37 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,22 @@ char	*ft_strjoin_word(char *word, char *value, char *head, char *tail)
 	return (word);
 }
 
-char	*get_new_word(char *word, t_env_list *env, int head, int tail)
+char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 {
 	char	*key;
 	char	*value;
 	char	*new_word;
 
-	key = ft_substr(word, head + 1, tail - head);
+	key = ft_substr(token->word, head + 1, tail - head);
 	//if (key == "?")
 		//value of exit code
-	value = find_value_by_key(env, key);
+	value = find_value_by_key(env, key, &token);
 	new_word = (char *)malloc(sizeof(char)
-			* (ft_strlen(word) - (tail - head) + ft_strlen(value) + 1));
+			* (ft_strlen(token->word) - (tail - head) + ft_strlen(value) + 1));
 	if (!new_word)
 		ft_error("Allocation error", STDERR_FILENO);
-	ft_strjoin_word(new_word, value, ft_substr(word, 0, head),
-		ft_substr(word, tail + 1, ft_strlen(word)));
+	ft_strjoin_word(new_word, value, ft_substr(token->word, 0, head),
+		ft_substr(token->word, tail + 1, ft_strlen(token->word)));
 	free(key);
 	free(value);
 	return (new_word);
@@ -106,8 +106,9 @@ void	check_env_token(t_token_list *tokens, t_env_list *env)
 			{
 				tail_dollar = find_tail_dollar(tokens->token[i].word,
 						head_dollar + 1);
-				new_word = get_new_word(tokens->token[i].word,
+				new_word = get_new_word(&tokens->token[i],
 						env, head_dollar, tail_dollar);
+				tokens->token[i].origin = ft_strdup(tokens->token[i].word);
 				free(tokens->token[i].word);
 				tokens->token[i].word = new_word;
 			}
