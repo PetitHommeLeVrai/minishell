@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/08 11:28:02 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:47:15 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 int	count_args(t_cmd_line *cmd_line)
 {
-	int	count;
 	int	i;
 
-	count = 0;
 	i = 0;
-	while (i < cmd_line->token_list->count)
+	while (cmd_line->word != NULL)
 	{
-		if (cmd_line->token_list->token[i].type == ARG)
-			count++;
-		i++;
+		if (cmd_line->word->type == ARG)
+			i++;
+		cmd_line->word = cmd_line->word->next;
 	}
-	return (count);
+	return (i);
 }
 
 char	**get_args_incmd(t_cmd_line *cmd_line)
@@ -38,11 +36,14 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	if (!cmd_args)
 		return (msg_error("MALLOC ERROR\n"), NULL);
 	cmd_args[count_args(cmd_line)] = NULL;
-	while (i < cmd_line->token_list->count)
+	while (cmd_line->word != NULL)
 	{
-		if (cmd_line->token_list->token[i].type == ARG)
-			cmd_args[i] = cmd_line->token_list->token[i].word;
-		i++;
+		if (cmd_line->word->type == ARG)
+		{
+			cmd_args[i] = cmd_line->word->word;
+			i++;
+		}
+		cmd_line->word = cmd_line->word->next;
 	}
 	return (cmd_args);
 }

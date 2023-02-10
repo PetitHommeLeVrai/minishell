@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/06 12:44:04 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/10 14:07:58 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*get_path(t_env_list *env)
 
 int	exec(t_cmd_line *cmd_line, t_env_list *env)
 {
+	int			status;
 	t_exec		exec;
 	t_cmd_line	*tmp;
 
@@ -73,7 +74,9 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 		exec.id++;
 	}
 	close_pipes(&exec, cmd_line);
-	waitpid(-1, NULL, 0);
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+		g_ret = WEXITSTATUS(status);
 	parent_free(&exec, cmd_line);
 	return (1);
 }
