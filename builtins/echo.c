@@ -6,13 +6,13 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/26 16:59:53 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/10 12:26:42 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	echo(char **cmd)
+void	echo(char **cmd)
 {
 	int	n;
 	int	i;
@@ -22,7 +22,7 @@ int	echo(char **cmd)
 	if (!cmd[1])
 	{
 		ft_putchar_fd('\n', 1);
-		return (0);
+		exit(0);
 	}
 	if (cmd[1][0] == '-' && cmd[1][1] == 'n' && cmd[1][2] == '\0')
 	{
@@ -38,5 +38,5 @@ int	echo(char **cmd)
 	}
 	if (n == 0)
 		ft_putchar_fd('\n', 1);
-	return (1);
+	exit(0);
 }

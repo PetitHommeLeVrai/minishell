@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/01/30 13:46:19 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/10 12:34:10 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	exit_cmd(char **cmd)
 	long long	nb;
 
 	if (!cmd[1])
-		exit(0);
+		exit(ret);
 	if (check_nb(cmd[1]) == 0)
 	{
 		printf("exit: %s: numeric argument required\n", cmd[1]);
