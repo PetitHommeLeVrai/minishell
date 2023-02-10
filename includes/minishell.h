@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/10 02:32:13 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 14:03:56 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define T_R_HEREDOC_QUOTES 32
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
+
+int		g_ret = 0;
 
 typedef struct s_token
 {
