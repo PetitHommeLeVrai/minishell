@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/06 01:15:42 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 02:32:13 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@
 # define T_WORD_NULL 11
 # define T_PIPE 2
 # define T_REDIRECTION 30
-# define T_RED_R 31
-# define T_RED_RR 32
-# define T_RED_L 33
-# define T_RED_LL 34
+# define T_R_HEREDOC 31
+# define T_R_HEREDOC_QUOTES 32
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
 
@@ -48,6 +46,7 @@ typedef struct s_token
 	char	*word;
 	int		type;
 	char	*origin;
+	int		flag_heredoc;
 }						t_token;
 
 typedef struct s_token_list

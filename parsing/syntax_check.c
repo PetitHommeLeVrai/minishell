@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:53:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 00:50:09 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/08 01:34:55 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	syntax_check(t_token_list token_list)
 		if (tk[i].type == T_REDIRECTION
 			&& (tk[i + 1].type == T_NULL || tk[i + 1].type != T_WORD))
 			return (ERROR);
-		if (tk[i].type == T_REDIRECTION
+		if ((tk[i].type == T_REDIRECTION || tk[i].type == T_R_HEREDOC)
 			&& (tk[i + 1].type != T_NULL && tk[i + 1].type == T_WORD_NULL))
 			return (ERROR);
 		prev = tk[i];

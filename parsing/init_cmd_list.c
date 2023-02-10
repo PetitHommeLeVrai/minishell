@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:41:22 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 01:43:12 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@ void	set_type_the_token(t_token_list *tokens)
 	int	i;
 
 	i = -1;
-	tokens->token[tokens->count].type = T_NULL;
 	while (tokens->count > ++i)
 	{
 		if (!ft_strcmp(tokens->token[i].word, "|"))
 			tokens->token[i].type = T_PIPE;
 		else if (!ft_strcmp(tokens->token[i].word, ">")
-			|| !ft_strcmp(tokens->token[i].word, ">>"))
+			|| !ft_strcmp(tokens->token[i].word, ">>")
+			|| !ft_strcmp(tokens->token[i].word, "<"))
 			tokens->token[i].type = T_REDIRECTION;
-		else if (!ft_strcmp(tokens->token[i].word, "<")
-			|| !ft_strcmp(tokens->token[i].word, "<<"))
-			tokens->token[i].type = T_REDIRECTION;
+		else if (!ft_strcmp(tokens->token[i].word, "<<"))
+			tokens->token[i].type = T_R_HEREDOC;
 		else if (tokens->token[i].type != T_WORD_NULL)
 			tokens->token[i].type = T_WORD;
 	}

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:45:59 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 02:33:55 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ int	init_token_list(char *cmd, t_token_list *token_list)
 
 	count_token = 0;
 	i = 0;
-	if (!cmd)
-		return (ERROR);
 	counting_token(cmd, &count_token, &i);
 	if (i == ERROR)
 		return (ERROR);
@@ -105,8 +103,16 @@ int	init_token_list(char *cmd, t_token_list *token_list)
 	token_list->token = (t_token *)malloc(sizeof(t_token) * (count_token + 1));
 	if (!token_list->token)
 		ft_error("Allocation Error", STDERR_FILENO);
-	(token_list->token)->type = -1;
 	token_list->token = cmd_tokenizer(cmd, token_list->token,
 			token_list->count);
+	i = -1;
+	while (++i < count_token)
+	{
+		if (token_list->token[i].type != T_SINGLE_QUOTES
+			&& token_list->token[i].type != T_DOUBLE_QUOTES)
+			token_list->token[i].type = -1;
+		token_list->token[i].flag_heredoc = -1;
+		token_list->token[i].origin = NULL;
+	}
 	return (0);
 }

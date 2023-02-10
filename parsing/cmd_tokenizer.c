@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:46:05 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 01:26:33 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	cmd_tokenizer_while(char *cmd, t_token *token, int *idx, int *i)
 		(*idx)++;
 	else if (cmd[*idx] == '\'' || cmd[*idx] == '\"')
 	{
-		j = *idx;
+		j = *idx + 1;
 		*idx = find_quote_end(cmd, *idx, &token[*i]);
 		if (*idx == -1)
 			return ;
@@ -48,7 +48,6 @@ t_token	*cmd_tokenizer(char *cmd, t_token *token, int count)
 
 	i = 0;
 	idx = 0;
-	token->origin = NULL;
 	while (cmd[idx] && i < count)
 		cmd_tokenizer_while(cmd, token, &idx, &i);
 	return (token);
