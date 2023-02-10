@@ -82,7 +82,7 @@ void	exit_cmd(char **cmd)
 	long long	nb;
 
 	if (!cmd[1])
-		exit(ret);
+		exit(g_ret);
 	if (check_nb(cmd[1]) == 0)
 	{
 		printf("exit: %s: numeric argument required\n", cmd[1]);
