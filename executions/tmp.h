@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:07:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/10 14:08:17 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/08 11:30:53 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,20 @@ typedef enum s_enum
 typedef struct s_token
 {
 	char				*word;
-	t_enum				type;
-	struct s_token		*next;
+	int					type;
+	char				*origin;
 }						t_token;
+
+typedef struct s_token_list
+{
+	struct s_token		*token;
+	int					count;
+}						t_token_list;
 
 typedef struct s_cmd_line
 {
 	char				*cmd;
-	struct s_token		*word;
+	struct s_token_list	*token_list;
 	struct cmd_line		*next;
 	int					infile;
 	int					outfile;
@@ -83,9 +89,9 @@ void					close_pipes(t_exec *exec, t_cmd_line *cmd_line);
 void					creat_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int						count_pipes(t_cmd_line *cmd_line);
 void					here_doc(char *argv, t_cmd_line *cmd_line);
-void					infile(t_token *word, t_cmd_line *cmd_line);
-void					outfile(t_token *word, t_cmd_line *cmd_line);
-void					outfileover(t_token *word, t_cmd_line *cmd_line);
+void					infile(char *word, t_cmd_line *cmd_line);
+void					outfile(char *word, t_cmd_line *cmd_line);
+void					outfileover(char *word, t_cmd_line *cmd_line);
 void					get_files(t_exec *exec, t_cmd_line *cmd_line);
 void					check_if_builtin(t_cmd_line *line, t_env_list *envp);
 void					sub_dup(t_exec *exec, t_cmd_line *cmd_line);
