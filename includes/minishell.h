@@ -41,7 +41,7 @@
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
 
-int		g_ret = 0;
+extern int		g_ret;
 
 typedef struct s_token
 {
