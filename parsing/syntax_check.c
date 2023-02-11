@@ -6,33 +6,35 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:53:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/08 01:34:55 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/11 20:05:53 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	syntax_check(t_token_list token_list)
+int	syntax_check(t_token_list *token_list)
 {
 	int		i;
 	t_token	*tk;
 	t_token	prev;
 
-	tk = token_list.token;
+	tk = token_list->token;
 	prev.word = NULL;
 	prev.type = 0;
 	prev.origin = NULL;
 	i = -1;
-	while (++i < token_list.count)
+	while (++i < token_list->count)
 	{
 		if (tk[i].type == T_PIPE
 			&& (prev.word == NULL || tk[i + 1].type == T_NULL
-				|| prev.type != T_WORD || tk[i + 1].type == T_PIPE))
+				|| prev.type != T_WORD || tk[i + 1].type == T_PIPE
+				|| (tk[i + 1].type >= 30 && tk[i].type <= 33)))
 			return (ERROR);
-		if (tk[i].type == T_REDIRECTION
-			&& (tk[i + 1].type == T_NULL || tk[i + 1].type != T_WORD))
+		if ((tk[i].type >= 30 && tk[i].type <= 33)
+			&& (tk[i + 1].type == T_NULL
+				|| (tk[i + 1].type <= 40 || tk[i + 1].type >= 43)))
 			return (ERROR);
-		if ((tk[i].type == T_REDIRECTION || tk[i].type == T_R_HEREDOC)
+		if ((tk[i].type >= 30 && tk[i].type <= 33)
 			&& (tk[i + 1].type != T_NULL && tk[i + 1].type == T_WORD_NULL))
 			return (ERROR);
 		prev = tk[i];

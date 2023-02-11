@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/10 01:20:44 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/11 23:20:21 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 	char	*new_word;
 
 	key = ft_substr(token->word, head + 1, tail - head);
-	//if (key == "?")
-		//value of exit code
+	if (!ft_strcmp(key, "?"))
+		key = ft_itoa(g_ret);
 	value = find_value_by_key(env, key, &token);
 	new_word = (char *)malloc(sizeof(char)
 			* (ft_strlen(token->word) - (tail - head) + ft_strlen(value) + 1));
@@ -96,7 +96,7 @@ void	check_env_token(t_token_list *tokens, t_env_list *env)
 	char	*new_word;
 
 	i = -1;
-	while (tokens->count > ++i)
+	while (tokens->token[++i].type != T_NULL)
 	{
 		if (tokens->token[i].type != T_SINGLE_QUOTES)
 		{

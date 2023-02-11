@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 03:33:28 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:21:26 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/11 20:49:18 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	ft_free_all_tokens(t_token_list *tokens)
 {
 	int		i;
-	t_token	*tmp_token;
 
 	i = -1;
-	tmp_token = tokens->token;
 	while (++i < tokens->count)
 	{
-		free(tmp_token[i].word);
-		if (tmp_token[i].origin)
-			free(tmp_token[i].origin);
+		if (tokens->token[i].word && tokens->token[i].type != T_NULL)
+			free(tokens->token[i].word);
+		if (tokens->token[i].origin)
+			free(tokens->token[i].origin);
 	}
 	free(tokens->token);
+	free(tokens);
 }

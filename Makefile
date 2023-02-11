@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/06 00:32:04 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/11 23:22:08 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,11 @@ SRC =	main.c \
 		env/ft_free_all_env.c \
 		parsing/check_env_token.c \
 		parsing/cmd_tokenizer.c \
-		parsing/init_cmd_list.c \
+		parsing/get_token_list.c \
 		parsing/init_token_list.c \
 		parsing/ft_free_all_tokens.c \
-		parsing/syntax_check.c
+		parsing/syntax_check.c \
+		parsing/init_cmd_line.c
 		
 OBJ = $(SRC:.c=.o)
 NAME = minishell
