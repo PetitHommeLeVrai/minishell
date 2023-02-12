@@ -6,13 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:44 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/04 19:26:33 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 18:00:26 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env(t_env_list *env_list)
+void	env(char **cmd, t_env_list *env_list)
 {
 	t_env	*tmp_env;
 

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execs_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:07:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:28:02 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "tmp.h"
 
 int	count_args(t_cmd_line *cmd_line)
 {
@@ -19,9 +19,9 @@ int	count_args(t_cmd_line *cmd_line)
 
 	count = 0;
 	i = 0;
-	while (i < cmd_line->token_count)
+	while (i < cmd_line->token_list->count)
 	{
-		if (cmd_line->token[i].type == ARG)
+		if (cmd_line->token_list->token[i].type == ARG)
 			count++;
 		i++;
 	}
@@ -38,10 +38,10 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	if (!cmd_args)
 		return (msg_error("MALLOC ERROR\n"), NULL);
 	cmd_args[count_args(cmd_line)] = NULL;
-	while (i < cmd_line->token_count)
+	while (i < cmd_line->token_list->count)
 	{
-		if (cmd_line->token[i].type == ARG)
-			cmd_args[i] = cmd_line->token[i].word;
+		if (cmd_line->token_list->token[i].type == ARG)
+			cmd_args[i] = cmd_line->token_list->token[i].word;
 		i++;
 	}
 	return (cmd_args);
@@ -107,7 +107,7 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		sub_dup(&exec, cmd_line);
 		close_pipes(&exec, cmd_line);
 		cmd_line->cmd_args = get_args_incmd(cmd_line);
-		check_if_builtin(cmd_line, env);
+		check_if_builtin(&exec, env);
 		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0]);
 		if (!exec.cmd)
 		{

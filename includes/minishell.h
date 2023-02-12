@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 02:56:58 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 18:01:08 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -69,7 +70,22 @@ struct s_cmd_line
 {
 	struct s_token	*token;
 	t_cmd_line		*next;
+	int				token_count;
+	int				infile;
+	int				outfile;
+	char			**cmd_args;
+	int				pipe_nb;
 };
+
+typedef struct s_exec
+{
+	char	**cmd_paths;
+	char	*cmd;
+	pid_t	pid;
+	int		*pipe;
+	int		id;
+	char	**envp;
+}	t_exec;
 
 typedef struct s_env
 {
@@ -84,7 +100,7 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }	t_env_list;
 
-void		env(t_env_list *env_list);
+void		env(char **cmd, t_env_list *env_list);
 void		init_env_signal(char **env, t_env_list **env_list);
 int			init_env(char *origin, char **key, char **value);
 void		signal_handler(int signo);
@@ -116,13 +132,29 @@ int			init_token_list(char *cmd, t_token_list *token_list);
 void		counting_token(char *cmd, int *count, int *i);
 int			find_quote_end(char *cmd, int i, t_token *token);
 int			find_quote(char *cmd, int i, int type);
-void		ft_free_all_tokens(t_token_list *tokens);
+void		ft_free_cmd_line(t_cmd_line *cmd_line);
 int			syntax_check(t_token_list *token_list);
+void		ft_free_token_list(t_token_list *tokens);
 
 
 t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 				t_token_list *tokens, int i);
 int			count_token_before_pipe(t_token *token, int i);
 t_cmd_line	*new_cmd_line(void);
+
+
+void		parent_free(t_exec *exec, t_cmd_line *line);
+void		msg_error(char *str);
+void		close_pipes(t_exec *exec, t_cmd_line *cmd_line);
+void		creat_pipes(t_exec *exec, t_cmd_line *cmd_line);
+int			count_pipes(t_cmd_line *cmd_line);
+void		here_doc(char *argv, t_cmd_line *cmd_line);
+void		infile(char *word, t_cmd_line *cmd_line);
+void		outfile(char *word, t_cmd_line *cmd_line);
+void		outfileover(char *word, t_cmd_line *cmd_line);
+void		get_files(t_exec *exec, t_cmd_line *cmd_line);
+void		check_if_builtin(t_cmd_line *line, t_env_list *envp);
+void		sub_dup(t_exec *exec, t_cmd_line *cmd_line);
+char		**create_envp_char(t_env_list *env);
 
 #endif

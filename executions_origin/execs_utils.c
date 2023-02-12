@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:00:33 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 12:44:54 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "tmp.h"
 
 void	creat_pipes(t_exec *exec, t_cmd_line *cmd_line)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execs_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:08:08 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:30:29 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "tmp.h"
 
 void	infile(char *word, t_cmd_line *cmd_line)
 {
@@ -53,20 +53,19 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line)
 	int	i;
 
 	i = 0;
-	(void)exec;
-	while (i < cmd_line->token_count)
+	while (i < cmd_line->token_list->count)
 	{
-		if (cmd_line->token[i].type == INFILE)
-			infile(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == OUTFILE)
-			outfile(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == OUTFILEOVER)
-			outfileover(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == LIMITOR)
+		if (cmd_line->token_list->token[i].type == INFILE)
+			infile(cmd_line->token_list->token[i].word, cmd_line);
+		else if (cmd_line->token_list->token[i].type == OUTFILE)
+			outfile(cmd_line->token_list->token[i].word, cmd_line);
+		else if (cmd_line->token_list->token[i].type == OUTFILEOVER)
+			outfileover(cmd_line->token_list->token[i].word, cmd_line);
+		else if (cmd_line->token_list->token[i].type == LIMITOR)
 		{
 			if (cmd_line->infile)
 				close(cmd_line->infile);
-			here_doc(cmd_line->token[i].word, cmd_line);
+			heredoc(cmd_line->token_list->token[i].word, exec);
 		}
 		i++;
 	}

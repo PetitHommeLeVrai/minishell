@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 04:18:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 18:02:52 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 	j = 0;
 	cmd_line = new_cmd_line();
 	count_token = count_token_before_pipe(tokens->token, i);
-	cmd_line->token = (t_token *)malloc(sizeof(t_token) * count_token + 1);
+	cmd_line_origin->token_count = count_token;
+	cmd_line->token = (t_token *)malloc(sizeof(t_token) * (count_token + 1));
 	while (tokens->token[i].type != T_NULL && tokens->token[i].type != T_PIPE)
 	{
-		new_token = tokens->token[i];
-		cmd_line->token[j] = new_token;
-		i++;
-		j++;
+		new_token = tokens->token[i++];
+		cmd_line->token[j++] = new_token;
 	}
+	cmd_line->token[j].type = T_NULL;
 	cmd_line_origin = cmd_line;
 	cmd_line_origin->next = NULL;
 	if (tokens->token[i].type == T_PIPE)

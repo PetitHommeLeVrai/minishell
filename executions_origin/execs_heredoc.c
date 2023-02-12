@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execs_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 17:58:47 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/06 12:05:08 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "tmp.h"
 
 void	here_doc(char *argv, t_cmd_line *cmd_line)
 {

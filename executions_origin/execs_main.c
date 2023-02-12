@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 17:58:46 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/10 14:07:58 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "tmp.h"
 
 int	count_pipes(t_cmd_line *cmd_line)
 {
@@ -61,7 +61,7 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	exec.pipe = (int *)malloc(sizeof(int) * count_pipes(cmd_line));
 	cmd_line->pipe_nb = count_pipes(cmd_line);
 	if (!exec.pipe)
-		ft_error("Allocation error", STDERR_FILENO);
+		return (error("PIPE ALLOC ERROR\n"), 0);
 	exec.cmd_paths = ft_split(get_path(env), ':');
 	create_pipes(&exec, cmd_line);
 	exec.id = 0;
