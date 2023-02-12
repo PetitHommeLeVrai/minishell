@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 05:33:51 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 08:15:48 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 20:16:31 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_free_token_list(t_token_list *tokens)
 
 	i = -1;
 	tmp = tokens->token;
-	while (++i > tokens->count)
+	while (tmp[++i].type != T_END)
 	{
 		if (tmp[i].word)
 			free(tmp[i].word);
@@ -34,11 +34,12 @@ void	ft_free_cmd_line(t_cmd_line *cmd_line)
 {
 	int			i;
 	t_cmd_line	*tmp_line;
+	t_cmd_line	*prev_line;
 
-	i = -1;
 	tmp_line = cmd_line;
 	while (tmp_line)
 	{
+		i = -1;
 		while (tmp_line->token[++i].type != T_NULL)
 		{
 			if (tmp_line->token[i].word)
@@ -47,7 +48,8 @@ void	ft_free_cmd_line(t_cmd_line *cmd_line)
 				free(tmp_line->token[i].origin);
 		}
 		free(tmp_line->token);
-		tmp_line = cmd_line->next;
+		prev_line = tmp_line;
+		tmp_line = tmp_line->next;
+		free(prev_line);
 	}
-	free(cmd_line);
 }

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 17:58:46 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 19:34:06 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,13 @@ int	count_env_vars(t_env_list *env)
 	while (env != NULL)
 	{
 		i++;
-		env->next;
+		env = env->next;
 	}
 	return (i);
 }
 
 char	*get_path(t_env_list *env)
 {
-	int	i;
-
-	i = 0;
 	while (env != NULL)
 	{
 		if (ft_strncmp("PATH", env->content->key, 5) == 0)
@@ -63,13 +60,13 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	if (!exec.pipe)
 		ft_error("Allocation error", STDERR_FILENO);
 	exec.cmd_paths = ft_split(get_path(env), ':');
-	create_pipes(&exec, cmd_line);
+	//create_pipes(&exec, cmd_line);
 	exec.id = 0;
 	exec.envp = create_envp_char(env);
 	tmp = cmd_line;
 	while (exec.id < count_pipes(cmd_line))
 	{
-		child(exec, cmd_line, env);
+		//child(exec, cmd_line, env);
 		tmp = tmp->next;
 		exec.id++;
 	}

@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/12 18:05:09 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/12 19:13:48 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,14 @@ SRC =	main.c \
 		executions/execs_heredoc.c \
 		executions/execs_main.c \
 		executions/execs_sub_dup.c \
-		executions/execs_utils.c
+		executions/execs_utils.c \
+		builtins/cd.c \
+		builtins/echo.c \
+		builtins/env.c \
+		builtins/exit.c \
+		builtins/export.c \
+		builtins/pwd.c \
+		builtins/unset.c
 		
 OBJ = $(SRC:.c=.o)
 NAME = minishell

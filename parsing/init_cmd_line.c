@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 18:02:52 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 19:40:07 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ t_cmd_line	*new_cmd_line(void)
 		ft_error("Allocation error", STDERR_FILENO);
 	new_cmds->token = NULL;
 	new_cmds->next = NULL;
+	new_cmds->infile = -1;
+	new_cmds->outfile = -1;
+	new_cmds->cmd_args = NULL;
+	new_cmds->pipe_nb = -1;
 	return (new_cmds);
 }
 
@@ -49,7 +53,7 @@ t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 	j = 0;
 	cmd_line = new_cmd_line();
 	count_token = count_token_before_pipe(tokens->token, i);
-	cmd_line_origin->token_count = count_token;
+	cmd_line->token_count = count_token;
 	cmd_line->token = (t_token *)malloc(sizeof(t_token) * (count_token + 1));
 	while (tokens->token[i].type != T_NULL && tokens->token[i].type != T_PIPE)
 	{

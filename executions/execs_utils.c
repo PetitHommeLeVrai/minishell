@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:00:33 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 19:11:03 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ void	close_pipes(t_exec *exec, t_cmd_line *cmd_line)
 
 void	parent_free(t_exec *exec, t_cmd_line *line)
 {
-	int	i;
-
-	i = 0;
 	if (exec->cmd_paths)
 		free(exec->cmd_paths);
 	free(exec->pipe);

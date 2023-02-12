@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:01:08 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 22:44:10 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define ERROR -1
 # define SUCCESS 0
 
+# define T_END 10
 # define T_NULL 0
 # define T_WORD 1
 # define ARG 1
@@ -100,6 +101,7 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }	t_env_list;
 
+/*****************Env********************/
 void		env(char **cmd, t_env_list *env_list);
 void		init_env_signal(char **env, t_env_list **env_list);
 int			init_env(char *origin, char **key, char **value);
@@ -118,6 +120,7 @@ int			ft_strcmp(const char *s1, const char *s2);
 void		get_new_env_value(t_env *env, char *key, char *value);
 void		ft_free_all_env(t_env_list *env_list);
 
+/*****************Token********************/
 int			check_token_have_env(char *word);
 int			find_tail_dollar(char *word, int i);
 char		*ft_strjoin_word(char *word, char *value, char *head, char *tail);
@@ -135,18 +138,20 @@ int			find_quote(char *cmd, int i, int type);
 void		ft_free_cmd_line(t_cmd_line *cmd_line);
 int			syntax_check(t_token_list *token_list);
 void		ft_free_token_list(t_token_list *tokens);
+void		init_tokens(t_token_list *tokens, int count);
 
-
+/*****************Cmd_line********************/
 t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 				t_token_list *tokens, int i);
 int			count_token_before_pipe(t_token *token, int i);
 t_cmd_line	*new_cmd_line(void);
 
-
+/*****************Exec********************/
+int			exec(t_cmd_line *cmd_line, t_env_list *env);
 void		parent_free(t_exec *exec, t_cmd_line *line);
 void		msg_error(char *str);
 void		close_pipes(t_exec *exec, t_cmd_line *cmd_line);
-void		creat_pipes(t_exec *exec, t_cmd_line *cmd_line);
+//void		create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int			count_pipes(t_cmd_line *cmd_line);
 void		here_doc(char *argv, t_cmd_line *cmd_line);
 void		infile(char *word, t_cmd_line *cmd_line);
@@ -155,6 +160,17 @@ void		outfileover(char *word, t_cmd_line *cmd_line);
 void		get_files(t_exec *exec, t_cmd_line *cmd_line);
 void		check_if_builtin(t_cmd_line *line, t_env_list *envp);
 void		sub_dup(t_exec *exec, t_cmd_line *cmd_line);
+void		last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char		**create_envp_char(t_env_list *env);
+
+/*****************Builtin********************/
+
+void		cd(char **cmd, t_env_list *env);
+void		echo(char **cmd);
+void		env(char **cmd, t_env_list *env_list);
+void		export(char **cmd, t_env_list *env_list);
+void		exit_cmd(char **cmd);
+void		pwd(char **cmd);
+void		unset(char **cmd, t_env_list *env_list);
 
 #endif

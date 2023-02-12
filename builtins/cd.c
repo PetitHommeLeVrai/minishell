@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/10 12:39:07 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/12 19:23:38 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char **cmd)
+void	cd(char **cmd, t_env_list *env)
 {
+	(void)env;
 	if (cmd[2])
 		exit(1);
 	if (chdir(cmd[1]) == -1)
