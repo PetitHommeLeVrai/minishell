@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/11 23:55:50 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 02:56:58 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
 
-int							g_ret;
+extern int					g_ret;
 
 typedef struct s_cmd_line	t_cmd_line;
 

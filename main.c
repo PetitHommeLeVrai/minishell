@@ -6,11 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 00:04:49 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 05:36:29 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_ret;
 
 void	parsing(t_cmd_line *cmd_line, t_env_list *env_list, char *str)
 {
@@ -25,7 +27,9 @@ void	parsing(t_cmd_line *cmd_line, t_env_list *env_list, char *str)
 		g_ret = 2;
 	}
 	cmd_line = init_cmd_line(cmd_line, token_list, 0);
-	ft_free_all_tokens(token_list);
+	free(token_list->token);
+	free(token_list);
+	ft_free_cmd_line(cmd_line);
 }
 
 void	prompt(t_cmd_line *cmd_line, t_env_list **env_list)

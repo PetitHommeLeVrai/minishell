@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/11 23:22:08 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/12 02:52:05 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC =	main.c \
 		
 OBJ = $(SRC:.c=.o)
 NAME = minishell
-CC = clang
+CC = gcc
 FLAGS = -Wall -Wextra -Werror -g3
 LD_FLAGS = -L libft
 RM = rm -f

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/06 01:12:34 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 02:52:38 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ char	*find_value_by_key(t_env_list *env_list, char *key, t_token **token)
 t_env	*find_env_by_key(t_env_list *env_list, char *key)
 {
 	t_env_list	*tmp_list;
-	int			i;
 
-	i = 0;
 	tmp_list = env_list;
 	while (tmp_list)
 	{

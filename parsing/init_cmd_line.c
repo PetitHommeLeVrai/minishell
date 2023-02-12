@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 00:04:38 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/12 04:18:03 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 		j++;
 	}
 	cmd_line_origin = cmd_line;
+	cmd_line_origin->next = NULL;
 	if (tokens->token[i].type == T_PIPE)
 	{
-		cmd_line_origin->next = new_cmd_line();
-		cmd_line_origin = init_cmd_line(cmd_line_origin->next, tokens, i + 1);
+		cmd_line_origin->next = init_cmd_line(cmd_line_origin->next,
+				tokens, i + 1);
+		free(tokens->token[i].word);
 	}
 	return (cmd_line_origin);
 }
