@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 22:44:55 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 02:41:16 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	parsing(t_env_list *env_list, char *str)
 	cmd_line = init_cmd_line(cmd_line, token_list, 0);
 	free(token_list->token);
 	free(token_list);
-	if (exec(cmd_line, env_list))
-		printf("Exec Error\n");
+	//if (exec(cmd_line, env_list))
+	//	printf("Exec Error\n");
 	ft_free_cmd_line(cmd_line);
 }
 

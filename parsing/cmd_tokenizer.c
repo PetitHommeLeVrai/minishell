@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 21:08:46 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 03:26:18 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	cmd_tokenizer_while2(char cmd, t_token *token, int **i, int **idx)
 	char	*tmp2;
 	char	*ret;
 
-	if (cmd != ' ' && (token[**i - 1]).word != NULL)
+	if (cmd != ' ' && **i != 0 && (token[**i - 1]).word != NULL)
 	{
 		tmp = (token[**i]).word;
 		tmp2 = (token[**i - 1]).word;
@@ -32,7 +32,10 @@ void	cmd_tokenizer_while2(char cmd, t_token *token, int **i, int **idx)
 		(**idx)++;
 	}
 	else
+	{
+		(**idx)++;
 		(**i)++;
+	}
 }
 
 void	cmd_tokenizer_while(char *cmd, t_token *token, int *idx, int *i)
