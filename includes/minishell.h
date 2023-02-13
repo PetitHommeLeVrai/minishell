@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 05:12:57 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:29:06 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,8 @@ int			exec(t_cmd_line *cmd_line, t_env_list *env);
 void		parent_free(t_exec *exec, t_cmd_line *line);
 void		msg_error(char *str);
 void		close_pipes(t_exec *exec, t_cmd_line *cmd_line);
-//void		create_pipes(t_exec *exec, t_cmd_line *cmd_line);
+void		child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env);
+void		create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int			count_pipes(t_cmd_line *cmd_line);
 void		here_doc(char *argv, t_cmd_line *cmd_line);
 void		infile(char *word, t_cmd_line *cmd_line);

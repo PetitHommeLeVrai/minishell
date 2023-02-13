@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 19:34:06 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:32:26 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	if (!exec.pipe)
 		ft_error("Allocation error", STDERR_FILENO);
 	exec.cmd_paths = ft_split(get_path(env), ':');
-	//create_pipes(&exec, cmd_line);
+	create_pipes(&exec, cmd_line);
 	exec.id = 0;
 	exec.envp = create_envp_char(env);
 	tmp = cmd_line;
-	while (exec.id < count_pipes(cmd_line))
+	while (exec.id++ <= count_pipes(cmd_line))
 	{
-		//child(exec, cmd_line, env);
-		tmp = tmp->next;
-		exec.id++;
+		child(exec, cmd_line, env);
+		if (tmp->next)
+			tmp = tmp->next;
 	}
 	close_pipes(&exec, cmd_line);
 	waitpid(-1, &status, 0);

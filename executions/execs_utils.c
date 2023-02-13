@@ -6,13 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 19:11:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:28:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	creat_pipes(t_exec *exec, t_cmd_line *cmd_line)
+void	create_pipes(t_exec *exec, t_cmd_line *cmd_line)
 {
 	int	i;
 
