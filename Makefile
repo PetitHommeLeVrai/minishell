@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/13 14:51:16 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/13 21:34:58 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC =	main.c \
 		env/utile_env.c	\
 		env/ft_error.c \
 		env/ft_free_all_env.c \
+		env/update_env_value.c \
 		parsing/check_env_token.c \
 		parsing/cmd_tokenizer.c \
 		parsing/get_token_list.c \

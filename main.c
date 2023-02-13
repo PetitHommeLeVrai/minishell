@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 16:05:09 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/13 22:15:51 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,25 @@ void	con_error_status(t_token_list *tokens, int status)
 // 	}
 // }
 
+int	is_there_space(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] != ' ')
+			return (0);
+	return (1);
+}
+
 void	parsing(t_env_list *env_list, char *str)
 {
 	t_token_list	*token_list;
 	t_cmd_line		*cmd_line;
 	int				status;
 
+	if (is_there_space(str))
+		return ;
 	cmd_line = NULL;
 	token_list = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!token_list)
@@ -94,7 +107,7 @@ void	prompt(t_env_list **env_list)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_env_list	*env_list;
+	t_env_list		*env_list;
 
 	(void)ac;
 	(void)av;

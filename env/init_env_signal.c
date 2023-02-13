@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/02 21:12:59 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 22:23:31 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	signal_handler(int signo)
 {
+	g_ret = 130;
 	if (signo == SIGINT)
 	{
-		if (-1)
-		{
-			printf("\n");
-			rl_on_new_line();
-			rl_replace_line("", 1);
-			rl_redisplay();
-		}
-		else
-		{
-			printf("\n");
-		}
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+	else
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 }
 
@@ -47,6 +47,17 @@ int	init_env(char *origin, char **key, char **value)
 	return (0);
 }
 
+void	set_signal(void)
+{
+	struct termios	term;
+
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
 void	init_env_signal(char **env, t_env_list **env_list)
 {
 	t_env_list	*new_env_list;
@@ -54,6 +65,7 @@ void	init_env_signal(char **env, t_env_list **env_list)
 	t_env_list	*tmp_env_list;
 
 	new_env_list = NULL;
+	set_signal();
 	while (*env)
 	{
 		new_env = ft_new_env();
@@ -70,6 +82,4 @@ void	init_env_signal(char **env, t_env_list **env_list)
 		env++;
 	}
 	*(env_list) = new_env_list;
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
 }

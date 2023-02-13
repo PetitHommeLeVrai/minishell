@@ -1,42 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   update_env_value.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/26 12:57:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 22:01:12 by ychun            ###   ########.fr       */
+/*   Created: 2023/02/13 21:26:23 by ychun             #+#    #+#             */
+/*   Updated: 2023/02/13 21:37:14 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void	echo(char **cmd)
+void	update_env_value(t_env_list *env, char *key, char *value)
 {
-	int	n;
-	int	i;
+	t_env_list	*tmp_list;
+	t_env		*tmp_env;
 
-	n = 0;
-	i = 1;
-	if (!cmd[1])
+	tmp_list = env;
+	tmp_env = tmp_list->content;
+	while (tmp_list)
 	{
-		ft_putchar_fd('\n', 1);
-		exit(0);
+		if (!ft_strcmp(tmp_env->key, key))
+		{
+			free(tmp_env->value);
+			tmp_env->value = ft_strdup(value);
+			return ;
+		}
+		tmp_list = tmp_list->next;
+		tmp_env = tmp_list->content;
 	}
-	if (cmd[1][0] == '-' && cmd[1][1] == 'n' && cmd[1][2] == '\0')
-	{
-		n = 1;
-		i = 2;
-	}
-	while (cmd[i])
-	{
-		ft_putstr_fd(cmd[i], 1);
-		if (cmd[i + 1])
-			ft_putchar_fd(' ', 1);
-		i++;
-	}
-	if (n == 0)
-		ft_putchar_fd('\n', 1);
-	exit(0);
 }

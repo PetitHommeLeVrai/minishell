@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 14:50:13 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 20:09:08 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,21 @@ void	init_tokens(t_token_list *tokens, int count)
 		tokens->token[i].origin = NULL;
 		tokens->token[i].flag_quotes = 0;
 		tokens->token[i].tail = 0;
+		tokens->token[i].flag_env = 0;
 	}
 	tokens->token[i].word = NULL;
 	tokens->token[i].type = -1;
 	tokens->token[i].origin = NULL;
 	tokens->token[i].flag_quotes = 0;
 	tokens->token[i].tail = 1;
+	tokens->token[i].flag_env = 0;
 }
 
 int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 {
 	if (init_token_list(cmd_origin, token_list))
 		return (-2);
-	if (check_env_token(token_list, env))
-		return (-2);
+	check_env_token(token_list, env);
 	set_type_the_token(token_list);
 	set_type_red_word(token_list->token);
 	if (syntax_check(token_list))

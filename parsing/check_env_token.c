@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 15:40:33 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 20:48:12 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,28 +67,28 @@ char	*ft_strjoin_word(char *word, char *value, char *head, char *tail)
 	return (word);
 }
 
-char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
+char	*get_new_word(t_token **token, t_env_list *env, int head, int tail)
 {
 	char	*key;
 	char	*value;
 	char	*new_word;
 
-	key = ft_substr(token->word, head + 1, tail - head);
+	key = ft_substr((*token)->word, head + 1, tail - head);
 	if (!ft_strcmp(key, "?"))
 		key = ft_itoa(g_ret);
-	value = find_value_by_key(env, key, &token);
+	value = find_value_by_key(env, key, token);
 	new_word = (char *)malloc(sizeof(char)
-			* (ft_strlen(token->word) - (tail - head) + ft_strlen(value) + 1));
+			* (ft_strlen((*token)->word) - (tail - head) + ft_strlen(value) + 1));
 	if (!new_word)
 		ft_error("Allocation error", STDERR_FILENO);
-	ft_strjoin_word(new_word, value, ft_substr(token->word, 0, head),
-		ft_substr(token->word, tail + 1, ft_strlen(token->word)));
+	ft_strjoin_word(new_word, value, ft_substr((*token)->word, 0, head),
+		ft_substr((*token)->word, tail + 1, ft_strlen((*token)->word)));
 	free(key);
 	free(value);
 	return (new_word);
 }
 
-int	check_env_token(t_token_list *tokens, t_env_list *env)
+void	check_env_token(t_token_list *tokens, t_env_list *env)
 {
 	int		i;
 	int		head_dollar;
@@ -100,15 +100,9 @@ int	check_env_token(t_token_list *tokens, t_env_list *env)
 		{
 			head_dollar = check_token_have_env(tokens->token[i].word);
 			if (head_dollar != -1)
-				get_new_dollar(tokens->token[i], head_dollar, env);
+				get_new_dollar(&tokens->token[i], head_dollar, env);
 			if (tokens->token[i].type != T_DOUBLE_QUOTES && head_dollar != -1)
-			{
-				tokens = re_get_token_list(tokens, env);
-				if (tokens == NULL)
-					return (-1);
-				check_env_token(tokens, env);
-			}
+				tokens = re_get_token_list(tokens, tokens->token[i].word, i);
 		}
 	}
-	return (0);
 }
