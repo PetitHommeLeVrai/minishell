@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_sub_dup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 12:21:09 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 17:58:54 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:19:30 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ void	sub_dup(t_exec *exec, t_cmd_line *cmd_line)
 {
 	if (exec->id == 0)
 	{
-		if (cmd_line->infile)
+		if (cmd_line->infile >= 0)
 			dup2(cmd_line->infile, 0);
-		if (cmd_line->outfile)
+		if (cmd_line->outfile >= 0)
 			dup2(cmd_line->outfile, 1);
-		else if (cmd_line->pipe_nb > 1)
+		else if (exec->pipe_nb > 1)
 			dup2(exec->pipe[1], 1);
 	}
-	else if (exec->id == cmd_line->pipe_nb - 1)
+	else if (exec->id == exec->pipe_nb - 1)
 		last_cmd_dup(exec, cmd_line);
 	else
 	{
-		if (cmd_line->infile)
+		if (cmd_line->infile >= 0)
 			dup2(cmd_line->infile, 0);
 		else
 			dup2(exec->pipe[2 * exec->id - 2], 0);
-		if (cmd_line->outfile)
+		if (cmd_line->outfile >= 0)
 			dup2(cmd_line->outfile, 1);
 		else
 			dup2(exec->pipe[2 * exec->id + 1], 1);
@@ -40,10 +40,10 @@ void	sub_dup(t_exec *exec, t_cmd_line *cmd_line)
 
 void	last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line)
 {
-	if (cmd_line->infile)
+	if (cmd_line->infile >= 0)
 		dup2(cmd_line->infile, 0);
 	else
 		dup2(exec->pipe[2 * exec->id - 2], 0);
-	if (cmd_line->outfile)
+	if (cmd_line->outfile >= 0)
 		dup2(cmd_line->outfile, 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_cmd_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 19:40:07 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:16:01 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_cmd_line	*new_cmd_line(void)
 	new_cmds->infile = -1;
 	new_cmds->outfile = -1;
 	new_cmds->cmd_args = NULL;
-	new_cmds->pipe_nb = -1;
 	return (new_cmds);
 }
 

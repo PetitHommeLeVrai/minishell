@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 05:32:26 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:48:18 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,18 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	t_cmd_line	*tmp;
 
 	exec.pipe = (int *)malloc(sizeof(int) * count_pipes(cmd_line));
-	cmd_line->pipe_nb = count_pipes(cmd_line);
+	exec.pipe_nb = count_pipes(cmd_line) / 2;
 	if (!exec.pipe)
 		ft_error("Allocation error", STDERR_FILENO);
 	exec.cmd_paths = ft_split(get_path(env), ':');
 	create_pipes(&exec, cmd_line);
-	exec.id = 0;
+	exec.id = -1;
 	exec.envp = create_envp_char(env);
 	tmp = cmd_line;
-	while (exec.id++ <= count_pipes(cmd_line))
+	while (exec.id++ < exec.pipe_nb - 1)
 	{
-		child(exec, cmd_line, env);
-		if (tmp->next)
-			tmp = tmp->next;
+		child(exec, tmp, env);
+		tmp = tmp->next;
 	}
 	close_pipes(&exec, cmd_line);
 	waitpid(-1, &status, 0);

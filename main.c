@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 05:30:17 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 16:05:09 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,23 @@ void	con_error_status(t_token_list *tokens, int status)
 	}
 }
 
+// void	print_cmd(t_cmd_line *cmd_line)
+// {
+// 	int i = 0;
+
+// 	while (cmd_line != NULL)
+// 	{
+// 		while (i < cmd_line->token_count)
+// 		{
+// 			printf("%s(%d) ", cmd_line->token[i].word, cmd_line->token[i].type);
+// 			i++;
+// 		}
+// 		i = 0;
+// 		cmd_line = cmd_line->next;
+// 		printf("\n");
+// 	}
+// }
+
 void	parsing(t_env_list *env_list, char *str)
 {
 	t_token_list	*token_list;
@@ -49,8 +66,8 @@ void	parsing(t_env_list *env_list, char *str)
 	cmd_line = init_cmd_line(cmd_line, token_list, 0);
 	free(token_list->token);
 	free(token_list);
-	if (exec(cmd_line, env_list))
-		printf("Exec Error\n");
+	if (exec(cmd_line, env_list) == 1)
+		return ;
 	ft_free_cmd_line(cmd_line);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 18:08:08 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:28:40 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	infile(char *word, t_cmd_line *cmd_line)
 {
-	if (cmd_line->infile)
+	if (cmd_line->infile >= 0)
 		close(cmd_line->infile);
 	cmd_line->infile = open(word, O_RDONLY);
 	if (cmd_line->infile == -1)
@@ -26,7 +26,7 @@ void	infile(char *word, t_cmd_line *cmd_line)
 
 void	outfile(char *word, t_cmd_line *cmd_line)
 {
-	if (cmd_line->outfile)
+	if (cmd_line->outfile >= 0)
 		close(cmd_line->outfile);
 	cmd_line->outfile = open(word, O_TRUNC | O_CREAT | O_RDWR, 0000644);
 	if (cmd_line->outfile == -1)
@@ -38,7 +38,7 @@ void	outfile(char *word, t_cmd_line *cmd_line)
 
 void	outfileover(char *word, t_cmd_line *line)
 {
-	if (line->outfile)
+	if (line->outfile >= 0)
 		close(line->outfile);
 	line->outfile = open(word, O_WRONLY | O_CREAT | O_APPEND, 0000644);
 	if (line->outfile == -1)
@@ -64,7 +64,7 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line)
 			outfileover(cmd_line->token[i].word, cmd_line);
 		else if (cmd_line->token[i].type == LIMITOR)
 		{
-			if (cmd_line->infile)
+			if (cmd_line->infile >= 0)
 				close(cmd_line->infile);
 			here_doc(cmd_line->token[i].word, cmd_line);
 		}

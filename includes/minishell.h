@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 05:29:06 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:06:00 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ struct s_cmd_line
 	int				infile;
 	int				outfile;
 	char			**cmd_args;
-	int				pipe_nb;
 };
 
 typedef struct s_exec
 {
 	char	**cmd_paths;
 	char	*cmd;
+	int		pipe_nb;
 	pid_t	pid;
 	int		*pipe;
 	int		id;
