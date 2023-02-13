@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 21:29:44 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:13:37 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,13 @@ void	init_tokens(t_token_list *tokens, int count)
 		tokens->token[i].type = -1;
 		tokens->token[i].origin = NULL;
 		tokens->token[i].flag_quotes = 0;
+		tokens->token[i].tail = 0;
 	}
 	tokens->token[i].word = NULL;
-	tokens->token[i].type = T_END;
+	tokens->token[i].type = -1;
 	tokens->token[i].origin = NULL;
 	tokens->token[i].flag_quotes = 0;
+	tokens->token[i].tail = 1;
 }
 
 int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)

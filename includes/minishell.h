@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 22:44:10 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:12:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_token
 	int		type;
 	char	*origin;
 	int		flag_quotes;
+	int		tail;
 }						t_token;
 
 typedef struct s_token_list

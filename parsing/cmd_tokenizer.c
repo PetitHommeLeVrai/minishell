@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 03:26:18 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 05:14:28 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,28 @@ void	cmd_tokenizer_while(char *cmd, t_token *token, int *idx, int *i)
 	}
 }
 
+void	cmd_tokenizer_redirection(char *cmd, t_token *token, int *idx, int *i)
+{
+	if ((cmd[*idx + 1] == '<' && cmd[*idx] == '<') && cmd[*idx] != '|')
+	{
+		token[*i].word = ft_substr(cmd, *idx, 2);
+		(*idx)++;
+		(*i)++;
+	}
+	else if ((cmd[*idx + 1] == '>' && cmd[*idx] == '>') && cmd[*idx] != '|')
+	{
+		token[*i].word = ft_substr(cmd, *idx, 2);
+		(*idx)++;
+		(*i)++;
+	}
+	else
+	{
+		token[*i].word = ft_substr(cmd, *idx, 1);
+		(*i)++;
+	}
+	(*idx)++;
+}
+
 t_token	*cmd_tokenizer(char *cmd, t_token *token, int count)
 {
 	int	i;
@@ -79,16 +101,7 @@ t_token	*cmd_tokenizer(char *cmd, t_token *token, int count)
 		if (cmd[idx] == ' ')
 			idx++;
 		if (cmd[idx] == '<' || cmd[idx] == '>' || cmd[idx] == '|')
-		{
-			if ((cmd[idx + 1] == '<' || cmd[idx + 1] == '>') && cmd[idx] != '|')
-			{
-				token[i++].word = ft_substr(cmd, idx, 2);
-				idx++;
-			}
-			else
-				token[i++].word = ft_substr(cmd, idx, 1);
-			idx++;
-		}
+			cmd_tokenizer_redirection(cmd, token, &idx, &i);
 		cmd_tokenizer_while(cmd, token, &idx, &i);
 	}
 	token[i].type = T_NULL;
