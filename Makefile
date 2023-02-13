@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/12 19:13:48 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/13 14:51:16 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC =	main.c \
 		parsing/ft_free_cmd_line.c \
 		parsing/syntax_check.c \
 		parsing/init_cmd_line.c \
+		parsing/re_get_token_list.c \
 		executions/execs_child.c \
 		executions/execs_files.c \
 		executions/execs_heredoc.c \

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/11 23:20:21 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:40:33 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,10 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 	return (new_word);
 }
 
-void	check_env_token(t_token_list *tokens, t_env_list *env)
+int	check_env_token(t_token_list *tokens, t_env_list *env)
 {
 	int		i;
 	int		head_dollar;
-	int		tail_dollar;
-	char	*new_word;
 
 	i = -1;
 	while (tokens->token[++i].type != T_NULL)
@@ -102,15 +100,15 @@ void	check_env_token(t_token_list *tokens, t_env_list *env)
 		{
 			head_dollar = check_token_have_env(tokens->token[i].word);
 			if (head_dollar != -1)
+				get_new_dollar(tokens->token[i], head_dollar, env);
+			if (tokens->token[i].type != T_DOUBLE_QUOTES && head_dollar != -1)
 			{
-				tail_dollar = find_tail_dollar(tokens->token[i].word,
-						head_dollar + 1);
-				new_word = get_new_word(&tokens->token[i],
-						env, head_dollar, tail_dollar);
-				tokens->token[i].origin = ft_strdup(tokens->token[i].word);
-				free(tokens->token[i].word);
-				tokens->token[i].word = new_word;
+				tokens = re_get_token_list(tokens, env);
+				if (tokens == NULL)
+					return (-1);
+				check_env_token(tokens, env);
 			}
 		}
 	}
+	return (0);
 }

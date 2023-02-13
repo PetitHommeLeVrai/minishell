@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 05:13:37 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:50:13 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 {
 	if (init_token_list(cmd_origin, token_list))
 		return (-2);
-	check_env_token(token_list, env);
+	if (check_env_token(token_list, env))
+		return (-2);
 	set_type_the_token(token_list);
 	set_type_red_word(token_list->token);
 	if (syntax_check(token_list))
