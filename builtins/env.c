@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:44 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 22:33:42 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/14 16:53:32 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	env(char **cmd, t_env_list *env_list)
 		if (env_list)
 			tmp_env = env_list->content;
 	}
+	exit(0);
 }

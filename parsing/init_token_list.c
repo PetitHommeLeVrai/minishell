@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/12 20:40:36 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/14 16:45:50 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	find_quote(char *cmd, int i, int type)
 			i++;
 		}
 	}
-	else
+	else if (type == T_DOUBLE_QUOTES)
 	{
 		while (cmd[i] && cmd[i] != '\"')
 		{
@@ -37,10 +37,12 @@ int	find_quote(char *cmd, int i, int type)
 	return (i);
 }
 
-int	find_quote_end(char *cmd, int i, t_token *token)
+int	find_quote_end(char *cmd, int i, int *j, t_token *token)
 {
 	if (!cmd[i + 1])
 		return (-1);
+	if (j != 0 && (cmd[*j - 1] == '\"' || cmd[*j - 1] == '\''))
+		(*j)--;
 	if (cmd[i] == '\'')
 	{
 		i++;
@@ -98,7 +100,7 @@ void	counting_token(char *cmd, int *count, int *i)
 	{
 		if (cmd[*i] == '\"' || cmd[*i] == '\'')
 		{
-			*i = find_quote_end(cmd, *i, NULL);
+			*i = find_quote_end(cmd, *i, 0, NULL);
 			if (*i == ERROR)
 				break ;
 			(*count)++;

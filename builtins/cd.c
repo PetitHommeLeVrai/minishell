@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 22:00:10 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/14 16:54:20 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_cd(char **cmd, char *value, t_env_list *env)
 	if (i == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", cmd[1]);
-		g_ret = 127;
+		exit(127);
 	}
 	else
 	{
@@ -30,7 +30,7 @@ void	ft_cd(char **cmd, char *value, t_env_list *env)
 		getcwd(buffer, 4096);
 		update_env_value(env, "OLDPWD", env_value->value);
 		update_env_value(env, "PWD", buffer);
-		g_ret = 0;
+		exit(0);
 	}
 }
 
@@ -39,8 +39,7 @@ int	cd1(t_env *env_value)
 	if (!env_value)
 	{
 		printf("bash: cd: OLDPWD not set\n");
-		g_ret = 1;
-		return (ERROR);
+		exit(1);
 	}
 	return (0);
 }
@@ -56,7 +55,7 @@ void	cd(char **cmd, t_env_list *env)
 		if (!env_value)
 		{
 			printf("bash: cd: HOME not set\n");
-			g_ret = 1;
+			exit(1);
 			return ;
 		}
 		value = env_value->value;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 16:15:21 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/14 16:47:41 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int				get_token_list(char *cmd_origin, t_env_list *env,
 void			set_type_the_token(t_token_list *tokens);
 int				init_token_list(char *cmd, t_token_list *token_list);
 void			counting_token(char *cmd, int *count, int *i);
-int				find_quote_end(char *cmd, int i, t_token *token);
+int				find_quote_end(char *cmd, int i, int *j, t_token *token);
 int				find_quote(char *cmd, int i, int type);
 void			ft_free_cmd_line(t_cmd_line *cmd_line);
 int				syntax_check(t_token_list *token_list);
