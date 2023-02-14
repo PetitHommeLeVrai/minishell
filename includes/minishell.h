@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 14:07:12 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/14 16:15:21 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,8 @@ void			check_if_builtin(t_cmd_line *line, t_env_list *envp);
 void			sub_dup(t_exec *exec, t_cmd_line *cmd_line);
 void			last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char			**create_envp_char(t_env_list *env);
-void			check_is_absolute_path(char *cmd);
+void			check_is_absolute_path(char *cmd, int flag);
+int				get_flag(t_cmd_line *cmd_line);
 
 /*****************Builtin********************/
 

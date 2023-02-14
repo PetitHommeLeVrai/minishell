@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 14:19:38 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/14 16:12:42 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	return (cmd_args);
 }
 
-char	*get_cmd(char **paths, char *cmd)
+char	*get_cmd(char **paths, char *cmd, int flag)
 {
 	char	*tmp;
 	char	*command;
 
 	if (!cmd || cmd[0] == '\0')
 		return (NULL);
-	check_is_absolute_path(cmd);
+	check_is_absolute_path(cmd, flag);
 	if (access(cmd, 0) == 0)
 		return (cmd);
 	if (!paths)
@@ -109,7 +109,8 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		close_pipes(&exec, cmd_line);
 		cmd_line->cmd_args = get_args_incmd(cmd_line);
 		check_if_builtin(cmd_line, env);
-		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0]);
+		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0],
+				get_flag(cmd_line));
 		if (!exec.cmd)
 		{
 			if (cmd_line->cmd_args[0][0] == '\0')
