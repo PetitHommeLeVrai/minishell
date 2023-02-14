@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 15:25:04 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/14 14:11:18 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	parent_free(t_exec *exec, t_cmd_line *line)
 	}
 	free(exec->pipe);
 	free(exec->envp);
+	unlink(".heredoc_tmp");
 	while (line != NULL)
 	{
 		if (line->cmd_args)

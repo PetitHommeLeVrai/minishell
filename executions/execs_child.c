@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 15:19:16 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/14 14:19:38 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ char	*get_cmd(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
-	if (!cmd)
+	if (!cmd || cmd[0] == '\0')
 		return (NULL);
+	check_is_absolute_path(cmd);
 	if (access(cmd, 0) == 0)
 		return (cmd);
 	if (!paths)
@@ -111,7 +112,11 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0]);
 		if (!exec.cmd)
 		{
-			perror(cmd_line->cmd_args[0]);
+			if (cmd_line->cmd_args[0][0] == '\0')
+				ft_putstr_fd("''", 2);
+			else
+				ft_putstr_fd(cmd_line->cmd_args[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
 		}
 		if (execve(exec.cmd, cmd_line->cmd_args, exec.envp) == -1)
