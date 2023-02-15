@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:05:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 16:18:03 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/15 00:59:51 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void check_2(char *cmd)
+void	check_2(char *cmd)
 {
 	if ((cmd[0] == '.' && cmd[1] == '/') || cmd[0] == '/')
 	{			
@@ -48,9 +48,9 @@ void	check_is_absolute_path(char *cmd, int flag)
 	}
 }
 
-int get_flag(t_cmd_line *cmd_line)
+int	get_flag(t_cmd_line *cmd_line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < cmd_line->token_count)

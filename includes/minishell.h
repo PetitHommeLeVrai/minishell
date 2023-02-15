@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 16:47:41 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 04:26:01 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_token
 	char	*word;
 	int		type;
 	char	*origin;
+	int		flag_quotes_heredoc;
 	int		flag_quotes;
 	int		flag_env;
 	int		tail;
@@ -134,7 +135,7 @@ char			*get_new_word(t_token **token, t_env_list *env,
 					int head, int tail);
 void			check_env_token(t_token_list *tokens, t_env_list *env);
 t_token			*cmd_tokenizer(char *cmd, t_token *token, int count);
-void			cmd_tokenizer_while(char *cmd, t_token *token,
+int				cmd_tokenizer_while(char *cmd, t_token *token,
 					int *idx, int *i);
 int				get_token_list(char *cmd_origin, t_env_list *env,
 					t_token_list *token_list);
@@ -142,7 +143,7 @@ void			set_type_the_token(t_token_list *tokens);
 int				init_token_list(char *cmd, t_token_list *token_list);
 void			counting_token(char *cmd, int *count, int *i);
 int				find_quote_end(char *cmd, int i, int *j, t_token *token);
-int				find_quote(char *cmd, int i, int type);
+int				find_quote(char *cmd, int i, int type, t_token *token);
 void			ft_free_cmd_line(t_cmd_line *cmd_line);
 int				syntax_check(t_token_list *token_list);
 void			ft_free_token_list(t_token_list *tokens);
@@ -152,6 +153,9 @@ void			token_copy(t_token *token, t_token *new_token,
 					int idx, char **word);
 void			get_new_dollar(t_token *token,
 					int head_dollar, t_env_list *env);
+int				check_space_beside_cmd(char *cmd, int j, int idx, int *i);
+void			attach_after_word_quotes(t_token *token,
+					int *i, int *idx, int status);
 
 /*****************Cmd_line********************/
 t_cmd_line		*init_cmd_line(t_cmd_line *cmd_line_origin,

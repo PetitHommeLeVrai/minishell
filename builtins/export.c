@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/12 22:39:15 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 00:56:43 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void	export(char **cmd, t_env_list *env_list)
 		set_new_env(&env_list, key, value);
 		free(key);
 		free(value);
+		exit(0);
 	}
 }

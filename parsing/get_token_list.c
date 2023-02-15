@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 20:09:08 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 01:04:52 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	init_tokens(t_token_list *tokens, int count)
 		tokens->token[i].type = -1;
 		tokens->token[i].origin = NULL;
 		tokens->token[i].flag_quotes = 0;
+		tokens->token[i].flag_quotes_heredoc = 0;
 		tokens->token[i].tail = 0;
 		tokens->token[i].flag_env = 0;
 	}
@@ -89,6 +90,7 @@ void	init_tokens(t_token_list *tokens, int count)
 	tokens->token[i].type = -1;
 	tokens->token[i].origin = NULL;
 	tokens->token[i].flag_quotes = 0;
+	tokens->token[i].flag_quotes_heredoc = 0;
 	tokens->token[i].tail = 1;
 	tokens->token[i].flag_env = 0;
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+         #
+#    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/14 14:07:51 by aboyer           ###   ########.fr        #
+#    Updated: 2023/02/15 02:25:05 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC =	main.c \
 		parsing/syntax_check.c \
 		parsing/init_cmd_line.c \
 		parsing/re_get_token_list.c \
+		parsing/check_space_beside_cmd.c \
 		executions/execs_child.c \
 		executions/execs_files.c \
 		executions/execs_heredoc.c \

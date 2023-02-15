@@ -6,13 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/14 16:45:50 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 05:02:58 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	find_quote(char *cmd, int i, int type)
+int	find_quote(char *cmd, int i, int type, t_token *token)
 {
 	if (type == T_SINGLE_QUOTES)
 	{
@@ -31,6 +31,8 @@ int	find_quote(char *cmd, int i, int type)
 				i++;
 			i++;
 		}
+		if (token)
+			token->flag_quotes = 1;
 	}
 	if (!cmd[i])
 		return (-1);
@@ -45,17 +47,18 @@ int	find_quote_end(char *cmd, int i, int *j, t_token *token)
 		(*j)--;
 	if (cmd[i] == '\'')
 	{
-		i++;
-		i = find_quote(cmd, i, T_SINGLE_QUOTES);
+		i = find_quote(cmd, i + 1, T_SINGLE_QUOTES, token);
 		if (i == -1)
 			return (-1);
 		if (token)
+		{
 			token->type = T_SINGLE_QUOTES;
+			token->flag_quotes = 1;
+		}
 	}
 	else if (cmd[i] == '\"')
 	{
-		i++;
-		i = find_quote(cmd, i, T_DOUBLE_QUOTES);
+		i = find_quote(cmd, i + 1, T_DOUBLE_QUOTES, token);
 		if (i == -1)
 			return (-1);
 		if (token)
@@ -69,11 +72,6 @@ void	counting_token_2(char *cmd, int **count, int **i)
 	if (cmd[**i] == '|')
 	{
 		(**count)++;
-		if (**i != 0)
-		{
-			if (cmd[**i - 1] != ' ' && cmd[**i - 1])
-				(**count)++;
-		}
 		if (cmd[**i + 1] == ' ')
 			(**i)++;
 	}
@@ -82,11 +80,6 @@ void	counting_token_2(char *cmd, int **count, int **i)
 		if (cmd[**i + 1])
 			(**i)++;
 		(**count)++;
-		if (**i != 0)
-		{
-			if (cmd[**i - 1] != ' ' && cmd[**i - 1])
-				(**count)++;
-		}
 		if ((cmd[**i] == '<' || cmd[**i] == '>') && cmd[**i + 1] == ' ')
 			(**i)++;
 	}
