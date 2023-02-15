@@ -6,13 +6,13 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 14:11:18 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/15 17:33:16 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	create_pipes(t_exec *exec, t_cmd_line *cmd_line)
+int	create_pipes(t_exec *exec, t_cmd_line *cmd_line)
 {
 	int	i;
 
@@ -20,9 +20,13 @@ void	create_pipes(t_exec *exec, t_cmd_line *cmd_line)
 	while (i < exec->pipe_nb)
 	{
 		if (pipe(exec->pipe + 2 * i) < 0)
+		{
 			parent_free(exec, cmd_line);
+			return (0);
+		}
 		i++;
 	}
+	return (1);
 }
 
 void	close_pipes(t_exec *exec, t_cmd_line *cmd_line)
@@ -72,20 +76,30 @@ void	msg_error(char *str)
 	exit(2);
 }
 
-void	check_if_builtin(t_cmd_line *line, t_env_list *envp)
+void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp)
 {
+	int	ret;
+
+	ret = -1;
 	if (ft_strncmp(line->cmd_args[0], "cd", 3) == 0)
-		cd(line->cmd_args, envp);
+		ret = cd(line->cmd_args, envp);
 	else if (ft_strncmp(line->cmd_args[0], "echo", 5) == 0)
-		echo(line->cmd_args);
+		ret = echo(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "env", 4) == 0)
 		env(line->cmd_args, envp);
 	else if (ft_strncmp(line->cmd_args[0], "exit", 5) == 0)
-		exit_cmd(line->cmd_args);
+		ret = exit_cmd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "export", 7) == 0)
 		export(line->cmd_args, envp);
 	else if (ft_strncmp(line->cmd_args[0], "pwd", 4) == 0)
-		pwd(line->cmd_args);
+		ret = pwd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "unset", 6) == 0)
 		unset(line->cmd_args, envp);
+	if (ret > -1)
+	{
+		parent_free(exec, line);
+		ft_free_cmd_line(line);
+		ft_free_all_env(envp);
+		exit(ret);
+	}
 }

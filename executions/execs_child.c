@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 16:12:42 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/15 16:55:59 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,29 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	return (cmd_args);
 }
 
-char	*get_cmd(char **paths, char *cmd, int flag)
+char	*get_cmd(t_exec *exec, t_cmd_line *line, t_env_list *env)
 {
 	char	*tmp;
 	char	*command;
+	int		i;
 
-	if (!cmd || cmd[0] == '\0')
+	i = 0;
+	if (!line->cmd_args[0] || line->cmd_args[0][0] == '\0')
 		return (NULL);
-	check_is_absolute_path(cmd, flag);
-	if (access(cmd, 0) == 0)
-		return (cmd);
-	if (!paths)
+	check_is_absolute_path(exec, line, env);
+	if (access(line->cmd_args[0], 0) == 0)
+		return (line->cmd_args[0]);
+	if (!exec->cmd_paths)
 		return (NULL);
-	while (*paths)
+	while (exec->cmd_paths[i])
 	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
+		tmp = ft_strjoin(exec->cmd_paths[i], "/");
+		command = ft_strjoin(tmp, line->cmd_args[0]);
 		free(tmp);
 		if (access(command, 0) == 0)
 			return (command);
 		free(command);
-		paths++;
+		i++;
 	}
 	return (NULL);
 }
@@ -104,22 +106,15 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 	exec.pid = fork();
 	if (!exec.pid)
 	{
+		exec.flag = get_flag(cmd_line);
 		get_files(&exec, cmd_line);
 		sub_dup(&exec, cmd_line);
 		close_pipes(&exec, cmd_line);
 		cmd_line->cmd_args = get_args_incmd(cmd_line);
-		check_if_builtin(cmd_line, env);
-		exec.cmd = get_cmd(exec.cmd_paths, cmd_line->cmd_args[0],
-				get_flag(cmd_line));
+		check_if_builtin(&exec, cmd_line, env);
+		exec.cmd = get_cmd(&exec, cmd_line, env);
 		if (!exec.cmd)
-		{
-			if (cmd_line->cmd_args[0][0] == '\0')
-				ft_putstr_fd("''", 2);
-			else
-				ft_putstr_fd(cmd_line->cmd_args[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			exit(127);
-		}
+			put_right_message(&exec, cmd_line, env);
 		if (execve(exec.cmd, cmd_line->cmd_args, exec.envp) == -1)
 		{
 			perror(cmd_line->cmd_args[0]);

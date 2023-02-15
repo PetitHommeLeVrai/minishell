@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/14 16:54:20 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:38:30 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_cd(char **cmd, char *value, t_env_list *env)
+int	ft_cd(char **cmd, char *value, t_env_list *env)
 {
 	char	buffer[4096];
 	int		i;
@@ -22,16 +22,13 @@ void	ft_cd(char **cmd, char *value, t_env_list *env)
 	if (i == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", cmd[1]);
-		exit(127);
+		return (127);
 	}
-	else
-	{
-		env_value = find_env_by_key(env, "PWD");
-		getcwd(buffer, 4096);
-		update_env_value(env, "OLDPWD", env_value->value);
-		update_env_value(env, "PWD", buffer);
-		exit(0);
-	}
+	env_value = find_env_by_key(env, "PWD");
+	getcwd(buffer, 4096);
+	update_env_value(env, "OLDPWD", env_value->value);
+	update_env_value(env, "PWD", buffer);
+	return (0);
 }
 
 int	cd1(t_env *env_value)
@@ -39,12 +36,12 @@ int	cd1(t_env *env_value)
 	if (!env_value)
 	{
 		printf("bash: cd: OLDPWD not set\n");
-		exit(1);
+		return (1);
 	}
 	return (0);
 }
 
-void	cd(char **cmd, t_env_list *env)
+int	cd(char **cmd, t_env_list *env)
 {
 	t_env	*env_value;
 	char	*value;
@@ -55,8 +52,7 @@ void	cd(char **cmd, t_env_list *env)
 		if (!env_value)
 		{
 			printf("bash: cd: HOME not set\n");
-			exit(1);
-			return ;
+			return (1);
 		}
 		value = env_value->value;
 	}
@@ -64,10 +60,11 @@ void	cd(char **cmd, t_env_list *env)
 	{
 		env_value = find_env_by_key(env, "OLDPWD");
 		if (!cd1(env_value))
-			return ;
+			return (0);
 		value = env_value->value;
 	}
 	else
 		value = cmd[1];
 	ft_cd(cmd, value, env);
+	return (0);
 }

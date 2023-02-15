@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 04:26:01 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:37:24 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_token_list
 
 struct s_cmd_line
 {
+	t_cmd_line		*begin;
 	struct s_token	*token;
 	t_cmd_line		*next;
 	int				token_count;
@@ -89,6 +90,7 @@ typedef struct s_exec
 	pid_t	pid;
 	int		*pipe;
 	int		id;
+	int		flag;
 	char	**envp;
 }	t_exec;
 
@@ -169,28 +171,31 @@ void			parent_free(t_exec *exec, t_cmd_line *line);
 void			msg_error(char *str);
 void			close_pipes(t_exec *exec, t_cmd_line *cmd_line);
 void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env);
-void			create_pipes(t_exec *exec, t_cmd_line *cmd_line);
+int				create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int				count_pipes(t_cmd_line *cmd_line);
 void			here_doc(char *argv, t_cmd_line *cmd_line);
 void			infile(char *word, t_cmd_line *cmd_line);
 void			outfile(char *word, t_cmd_line *cmd_line);
 void			outfileover(char *word, t_cmd_line *cmd_line);
 void			get_files(t_exec *exec, t_cmd_line *cmd_line);
-void			check_if_builtin(t_cmd_line *line, t_env_list *envp);
+void			check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp);
 void			sub_dup(t_exec *exec, t_cmd_line *cmd_line);
 void			last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char			**create_envp_char(t_env_list *env);
-void			check_is_absolute_path(char *cmd, int flag);
+void			check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list *env);
 int				get_flag(t_cmd_line *cmd_line);
+void			put_right_message(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env);
+void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line, t_env_list *env);
+void	set_ret(int status);
 
 /*****************Builtin********************/
 
-void			cd(char **cmd, t_env_list *env);
-void			echo(char **cmd);
+int			cd(char **cmd, t_env_list *env);
+int			echo(char **cmd);
 void			env(char **cmd, t_env_list *env_list);
 void			export(char **cmd, t_env_list *env_list);
-void			exit_cmd(char **cmd);
-void			pwd(char **cmd);
+int			exit_cmd(char **cmd);
+int			pwd(char **cmd);
 void			unset(char **cmd, t_env_list *env_list);
 
 #endif

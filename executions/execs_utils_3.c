@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   execs_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/26 12:57:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 15:46:07 by aboyer           ###   ########.fr       */
+/*   Created: 2023/02/15 16:31:59 by aboyer            #+#    #+#             */
+/*   Updated: 2023/02/15 17:36:32 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-int	echo(char **cmd)
+void	exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
+		t_env_list *env)
 {
-	int	n;
-	int	i;
+	parent_free(exec, line);
+	ft_free_cmd_line(line);
+	ft_free_all_env(env);
+	exit(ret);
+}
 
-	n = 0;
-	i = 1;
-	if (!cmd[1])
-	{
-		ft_putchar_fd('\n', 1);
-		return (0);
-	}
-	if (cmd[1][0] == '-' && cmd[1][1] == 'n' && cmd[1][2] == '\0')
-	{
-		n = 1;
-		i = 2;
-	}
-	while (cmd[i])
-	{
-		ft_putstr_fd(cmd[i], 1);
-		if (cmd[i + 1])
-			ft_putchar_fd(' ', 1);
-		i++;
-	}
-	if (n == 0)
-		ft_putchar_fd('\n', 1);
-	return (0);
+void	set_ret(int status)
+{
+	if (WIFEXITED(status))
+		g_ret = WEXITSTATUS(status);
 }

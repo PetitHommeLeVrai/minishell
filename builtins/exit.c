@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/10 12:34:10 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/15 17:39:14 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,27 @@ int	check_nb(char *num)
 	return (1);
 }
 
-void	exit_cmd(char **cmd)
+int	exit_cmd(char **cmd)
 {
 	long long	nb;
 
 	if (!cmd[1])
-		exit(g_ret);
+		return (g_ret);
 	if (check_nb(cmd[1]) == 0)
 	{
 		printf("exit: %s: numeric argument required\n", cmd[1]);
-		exit(2);
+		return (2);
 	}
 	if (cmd[2])
 	{
 		printf("exit: too many arguments\n");
-		return ;
+		return (127);
 	}
 	nb = ft_atoi_exit(cmd[1]);
 	if (nb < 0)
-		exit((unsigned int)nb % 256);
+		return ((unsigned int)nb % 256);
 	else if (nb > 255)
-		exit(nb % 256);
+		return (nb % 256);
 	else
-		exit(nb);
+		return (nb);
 }
