@@ -3,49 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 14:49:41 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:43:04 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
+#define ERR_SYNTAX -200
+#define ERR_SYNTAX_PIPE -201
+#define ERR_SYNTAX_NEWLINE -202
+#define ERR_AMBIGUOUS -203
 
 int	g_ret;
 
 void	con_error_status(t_token_list *tokens, int status)
 {
-	if (status == -2)
+	int	i;
+
+	i = 0;
+	if (status == ERR_SYNTAX_PIPE)
+		printf ("bash: syntax error near unexpected token `%s'\n", "|");
+	else if (status == ERR_SYNTAX_NEWLINE)
+		printf ("bash: syntax error near unexpected token `%s'\n", "newline");
+	else if (status == ERR_AMBIGUOUS)
 	{
-		printf("Input Error\n");
-		g_ret = 2;
-		free(tokens);
-	}
-	else if (status == -1)
-	{
-		printf("Syntax Error\n");
-		g_ret = 2;
+		while (tokens->token[i].type != ERR_AMBIGUOUS)
+			i++;
+		printf("bash: %s: ambiguous redirect\n", tokens->token[i].origin);
+		g_ret = 1;
 		ft_free_token_list(tokens);
+		return ;
 	}
+	else if (status == -1 || status == -2 || status == ERR_SYNTAX)
+		con_error_status2(tokens, status);
+	g_ret = 2;
+	if (status != -1 && status != -2)
+		ft_free_token_list(tokens);
+	else
+		free(tokens);
 }
-
-// void	print_cmd(t_cmd_line *cmd_line)
-// {
-// 	int i = 0;
-
-// 	while (cmd_line != NULL)
-// 	{
-// 		while (i < cmd_line->token_count)
-// 		{
-// 			printf("%s(%d) ", cmd_line->token[i].word, cmd_line->token[i].type);
-// 			i++;
-// 		}
-// 		i = 0;
-// 		cmd_line = cmd_line->next;
-// 		printf("\n");
-// 	}
-// }
 
 int	is_there_space(char *str)
 {

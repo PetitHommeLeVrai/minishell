@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 22:15:52 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/16 15:01:11 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_cmd_line	*new_cmd_line(void)
 	new_cmds = (t_cmd_line *)malloc(sizeof(t_cmd_line));
 	if (!new_cmds)
 		ft_error("Allocation error", STDERR_FILENO);
+	new_cmds->begin = NULL;
 	new_cmds->token = NULL;
 	new_cmds->next = NULL;
 	new_cmds->infile = -1;

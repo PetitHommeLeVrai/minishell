@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 17:37:24 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:31:28 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ int				find_quote(char *cmd, int i, int type, t_token *token);
 void			ft_free_cmd_line(t_cmd_line *cmd_line);
 int				syntax_check(t_token_list *token_list);
 void			ft_free_token_list(t_token_list *tokens);
+void			con_error_status(t_token_list *toknes, int status);
+void			con_error_status2(t_token_list *toknes, int status);
 void			init_tokens(t_token_list *tokens, int count);
 t_token_list	*re_get_token_list(t_token_list *tokens, char *word, int idx);
 void			token_copy(t_token *token, t_token *new_token,
@@ -158,6 +160,7 @@ void			get_new_dollar(t_token *token,
 int				check_space_beside_cmd(char *cmd, int j, int idx, int *i);
 void			attach_after_word_quotes(t_token *token,
 					int *i, int *idx, int status);
+int				is_which_quote(char cmd);
 
 /*****************Cmd_line********************/
 t_cmd_line		*init_cmd_line(t_cmd_line *cmd_line_origin,
@@ -178,24 +181,28 @@ void			infile(char *word, t_cmd_line *cmd_line);
 void			outfile(char *word, t_cmd_line *cmd_line);
 void			outfileover(char *word, t_cmd_line *cmd_line);
 void			get_files(t_exec *exec, t_cmd_line *cmd_line);
-void			check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp);
+void			check_if_builtin(t_exec *exec, t_cmd_line *line,
+					t_env_list *envp);
 void			sub_dup(t_exec *exec, t_cmd_line *cmd_line);
 void			last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char			**create_envp_char(t_env_list *env);
-void			check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list *env);
+void			check_is_absolute_path(t_exec *exec, t_cmd_line *line,
+					t_env_list *env);
 int				get_flag(t_cmd_line *cmd_line);
-void			put_right_message(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env);
-void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line, t_env_list *env);
-void	set_ret(int status);
+void			put_right_message(t_exec *exec, t_cmd_line *cmd_line,
+					t_env_list *env);
+void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
+					t_env_list *env);
+void			set_ret(int status);
 
 /*****************Builtin********************/
 
-int			cd(char **cmd, t_env_list *env);
-int			echo(char **cmd);
+int				cd(char **cmd, t_env_list *env);
+int				echo(char **cmd);
 void			env(char **cmd, t_env_list *env_list);
 void			export(char **cmd, t_env_list *env_list);
-int			exit_cmd(char **cmd);
-int			pwd(char **cmd);
+int				exit_cmd(char **cmd);
+int				pwd(char **cmd);
 void			unset(char **cmd, t_env_list *env_list);
 
 #endif
