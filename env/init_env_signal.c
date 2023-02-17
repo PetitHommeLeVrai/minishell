@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 03:15:27 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:50:20 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	signal_handler(int signo)
 			rl_on_new_line();
 			rl_replace_line("", 1);
 			rl_redisplay();
-			g_global.ret = 1;
+			g_global.ret = 130;
 		}
 		else
 		{
@@ -67,6 +67,8 @@ void	init_env_signal(char **env, t_env_list **env_list)
 
 	new_env_list = NULL;
 	set_signal();
+	if (!env || !*env)
+		return ;
 	while (*env)
 	{
 		new_env = ft_new_env();

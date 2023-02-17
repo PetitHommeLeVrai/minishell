@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 17:10:26 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 22:2 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ typedef struct s_global
 
 typedef struct s_token
 {
-	char	*word;
 	int		type;
 	char	*origin;
 	int		flag_quotes_heredoc;
 	int		flag_quotes;
 	int		flag_env;
 	int		tail;
+	char	*word;
 }						t_token;
 
 typedef struct s_token_list
@@ -78,7 +78,7 @@ typedef struct s_token_list
 
 struct s_cmd_line
 {	
-	pid_t		tmp;
+	pid_t			tmp;
 	t_cmd_line		*begin;
 	struct s_token	*token;
 	t_cmd_line		*next;
@@ -179,6 +179,7 @@ t_cmd_line		*new_cmd_line(void);
 /*****************Exec********************/
 int				exec(t_cmd_line *cmd_line, t_env_list *env);
 void			parent_free(t_exec *exec, t_cmd_line *line);
+void			parent_free2(t_cmd_line *tmp);
 void			msg_error(char *str);
 void			close_pipes(t_exec *exec, t_cmd_line *cmd_line);
 void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env);
@@ -194,7 +195,7 @@ void			check_if_builtin(t_exec *exec, t_cmd_line *line,
 void			sub_dup(t_exec *exec, t_cmd_line *cmd_line);
 void			last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char			**create_envp_char(t_env_list *env);
-int			check_is_absolute_path(t_exec *exec, t_cmd_line *line,
+int				check_is_absolute_path(t_exec *exec, t_cmd_line *line,
 					t_env_list *env);
 int				get_flag(t_cmd_line *cmd_line);
 void			put_right_message(t_exec *exec, t_cmd_line *cmd_line,
@@ -204,8 +205,9 @@ void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
 void			set_ret(int status);
 char			**get_args_incmd(t_cmd_line *cmd_line);
 char			*get_path(t_env_list *env);
-int	exec_helper(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env_list);
-void	isdir(t_exec *exec, t_cmd_line *line, t_env_list *env);
+int				exec_helper(t_exec *exec, t_cmd_line *cmd_line,
+					t_env_list *env_list);
+void			isdir(t_exec *exec, t_cmd_line *line, t_env_list *env);
 
 /*****************Builtin********************/
 

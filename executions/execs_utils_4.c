@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:13:08 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 14:13:36 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 21:27:07 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,16 @@ void	isdir(t_exec *exec, t_cmd_line *line, t_env_list *env)
 		ft_putstr_fd(": Is a directory\n", 2);
 		exec_exit_free_all(126, exec, line->begin, env);
 	}
+}
+
+void	parent_free2(t_cmd_line *tmp)
+{
+	if (tmp->cmd_args)
+		free(tmp->cmd_args);
+	if (tmp->infile >= 0)
+		close(tmp->infile);
+	if (tmp->outfile >= 0)
+		close(tmp->outfile);
+	tmp->infile = -1;
+	tmp->outfile = -1;
 }

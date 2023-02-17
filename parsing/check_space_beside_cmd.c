@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 01:54:27 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 04:22:39 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:47:31 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ int	check_space_beside_cmd(char *cmd, int j, int idx, int *i)
 	}
 	if (idx == -1 && cmd[j - 1] == '\"')
 		return (BEFORE_WORD);
-	if (j > 0 && cmd[j - 1] != ' ')
-	{
+	if (j > 0 && cmd[j - 1] != ' ' && cmd[j - 1] != '|'
+		&& cmd[j - 1] != '<' && cmd[j - 1] != '>')
 		return (BEFORE_WORD);
-	}
 	else
 		return (-1);
 }

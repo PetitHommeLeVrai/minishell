@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 16:46:03 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 21:25:48 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	close_pipes(t_exec *exec, t_cmd_line *cmd_line)
 
 void	parent_free(t_exec *exec, t_cmd_line *line)
 {
-	int	i;
+	int			i;
+	t_cmd_line	*tmp;
 
 	i = -1;
 	if (exec->cmd_paths)
@@ -56,17 +57,11 @@ void	parent_free(t_exec *exec, t_cmd_line *line)
 	free(exec->pipe);
 	free(exec->envp);
 	unlink(".heredoc_tmp");
-	while (line != NULL)
+	tmp = line;
+	while (tmp != NULL)
 	{
-		if (line->cmd_args)
-			free(line->cmd_args);
-		if (line->infile >= 0)
-			close(line->infile);
-		if (line->outfile >= 0)
-			close(line->outfile);
-		line->infile = -1;
-		line->outfile = -1;
-		line = line->next;
+		parent_free2(tmp);
+		tmp = tmp->next;
 	}
 }
 

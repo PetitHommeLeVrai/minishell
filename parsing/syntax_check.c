@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:53:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 03:01:14 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:54:24 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	syntax_check(t_token_list *token_list)
 			return (handle_syntax_error(&tk[i], &tk[i + 1], prev, 0));
 		if ((tk[i].type >= 30 && tk[i].type <= 33)
 			&& (tk[i + 1].type == T_NULL
-				&& (tk[i + 1].type <= 40 || tk[i + 1].type >= 43)))
+				|| (tk[i + 1].type >= 40 || tk[i + 1].type <= 43)))
 			return (handle_syntax_error(&tk[i], &tk[i + 1], prev, 0));
 		if ((tk[i].type >= 30 && tk[i].type <= 33)
 			&& (tk[i + 1].type != T_NULL && tk[i + 1].type == T_WORD_NULL))

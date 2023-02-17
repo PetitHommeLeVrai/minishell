@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 18:03:19 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 21:47:34 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	g_global.ret = 0;
+	//(void)envp;
 	init_env_signal(envp, &env_list);
 	prompt(&env_list);
 	ft_free_all_env(env_list);
