@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/16 17:43:04 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 05:27:07 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #define ERR_SYNTAX_PIPE -201
 #define ERR_SYNTAX_NEWLINE -202
 #define ERR_AMBIGUOUS -203
-
-int	g_ret;
 
 void	con_error_status(t_token_list *tokens, int status)
 {
@@ -32,13 +30,13 @@ void	con_error_status(t_token_list *tokens, int status)
 		while (tokens->token[i].type != ERR_AMBIGUOUS)
 			i++;
 		printf("bash: %s: ambiguous redirect\n", tokens->token[i].origin);
-		g_ret = 1;
+		g_global.ret = 1;
 		ft_free_token_list(tokens);
 		return ;
 	}
 	else if (status == -1 || status == -2 || status == ERR_SYNTAX)
 		con_error_status2(tokens, status);
-	g_ret = 2;
+	g_global.ret = 2;
 	if (status != -1 && status != -2)
 		ft_free_token_list(tokens);
 	else
@@ -77,8 +75,9 @@ void	parsing(t_env_list *env_list, char *str)
 	cmd_line = init_cmd_line(cmd_line, token_list, 0);
 	free(token_list->token);
 	free(token_list);
-	if (exec(cmd_line, env_list) == 1)
-		return ;
+	if (exec_helper(cmd_line, env_list))
+		exec(cmd_line, env_list);
+	return ;
 }
 
 void	prompt(t_env_list **env_list)
@@ -108,7 +107,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	g_ret = 0;
+	g_global.ret = 0;
 	init_env_signal(envp, &env_list);
 	prompt(&env_list);
 	ft_free_all_env(env_list);

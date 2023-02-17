@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 20:46:02 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/16 21:27:05 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ void	token_copy(t_token *token, t_token *new_token, int idx, char **word)
 	k = -1;
 	l = -1;
 	while (++j < idx)
-	{
-		new_token[j]
-		
-		 = token[j];
-	}
+		new_token[j] = token[j];
 	while (word[++k])
 	{
 		new_token[++j].word = ft_strdup(word[k]);

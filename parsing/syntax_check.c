@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 20:53:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 17:44:34 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 03:01:14 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #define ERR_SYNTAX_PIPE -201
 #define ERR_SYNTAX_NEWLINE -202
 #define ERR_AMBIGUOUS -203
+
+int	find_quote_return(int type)
+{
+	if (type == T_SINGLE_QUOTES)
+		return (-1);
+	return (-2);
+}
 
 int	is_which_quote(char cmd)
 {

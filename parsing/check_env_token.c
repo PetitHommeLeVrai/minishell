@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 16:27:23 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 01:50:31 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*get_new_word(t_token **token, t_env_list *env, int head, int tail)
 	if (!ft_strcmp((*token)->word, "$?"))
 	{
 		free(new_word);
-		new_word = ft_itoa(g_ret);
+		new_word = ft_itoa(g_global.ret);
 	}
 	return (new_word);
 }

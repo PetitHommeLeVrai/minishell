@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 17:29:48 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 03:01:27 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,7 @@ int	find_quote(char *cmd, int i, int type, t_token *token)
 			token->flag_quotes = 1;
 	}
 	if (!cmd[i])
-	{
-		if (type == T_SINGLE_QUOTES)
-			return (-1);
-		return (-2);
-	}
+		return (find_quote_return(type));
 	return (i);
 }
 

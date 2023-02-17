@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 15:31:26 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 03:02:37 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_env	*find_env_by_key(t_env_list *env_list, char *key)
 	return (NULL);
 }
 
-void	get_new_env(t_env_list **env, char *key, char *value)
+void	get_new_env(t_env_list *env, char *key, char *value)
 {
 	t_env_list	*new_list;
 	t_env		*new_env;
@@ -88,11 +88,11 @@ void	get_new_env_value(t_env *env, char *key, char *value)
 		env->value = ft_strdup(value);
 }
 
-void	set_new_env(t_env_list **env_list, char *key, char *value)
+void	set_new_env(t_env_list *env_list, char *key, char *value)
 {
 	t_env	*new_env;
 
-	new_env = find_env_by_key(*env_list, key);
+	new_env = find_env_by_key(env_list, key);
 	if (!new_env)
 		get_new_env(env_list, key, value);
 	else

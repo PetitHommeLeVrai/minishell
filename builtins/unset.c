@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:55 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 00:58:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/16 23:52:37 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ void	unset_env(t_env_list **env_list, char *key)
 	}
 }
 
-void	unset(char **cmd, t_env_list *env_list)
+int	unset(char **cmd, t_env_list *env_list)
 {
 	int		i;
 	char	*key;
 	t_env	*env;
 
-	i = -1;
+	i = 0;
 	if (!cmd[1])
-		return ;
+		return (0);
 	while (cmd[++i])
 	{
 		key = cmd[i];
@@ -72,12 +72,13 @@ void	unset(char **cmd, t_env_list *env_list)
 		if (!env)
 		{
 			printf("bash: unset: `%s': not a valid identifier\n", cmd[i]);
-			exit(2);
+			return (2);
 		}
 		else
 		{
 			unset_env(&env_list, key);
-			exit(0);
+			return (0);
 		}
 	}
+	return (0);
 }

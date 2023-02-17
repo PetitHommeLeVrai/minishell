@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:39:06 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 14:42:34 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 04:17:47 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int	cmd_tokenizer_while(char *cmd, t_token *token, int *idx, int *i)
 			token[*i].word = ft_substr(cmd, j, *idx - j);
 		flag = check_space_beside_cmd(cmd, j - 1, *idx, NULL);
 		j = *idx;
-		cmd_tokenizer_while2(token, &i, &idx, flag);
-		return (j);
+		return (cmd_tokenizer_while2(token, &i, &idx, flag), j);
 	}
 	else if (cmd[*idx] != ' ' && cmd[*idx])
 	{

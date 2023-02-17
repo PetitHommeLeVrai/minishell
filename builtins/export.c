@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 00:56:43 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 03:02:00 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	seperate_env_argv(char *argv, char **key, char **value)
 	if (ft_strlen(argv) - i)
 	{
 		*value = ft_substr(argv, i + 1, ft_strlen(argv) - i);
-		if (!*key || !*value)
+		if (!(*key) || !(*value))
 			ft_error("Allocation failed", STDERR_FILENO);
 	}
 	else
@@ -48,28 +48,26 @@ int	check_env_argv(char *key)
 	return (1);
 }
 
-void	export(char **cmd, t_env_list *env_list)
+int	export(char **cmd, t_env_list *env_list)
 {
 	int		i;
-	char	*key;
-	char	*value;
+	char	**row_env;
 
 	i = 0;
 	if (cmd[1] == NULL)
 	{
-		env(cmd, env_list);
+		env(cmd, env_list, 1);
 		exit(0);
 	}
-	while (cmd[++i])
+	row_env = ft_split(cmd[1], '=');
+	if (!check_env_argv(row_env[0]))
 	{
-		key = NULL;
-		value = NULL;
-		seperate_env_argv(cmd[i], &key, &value);
-		if (check_env_argv(key))
-			printf("bash: export: `%s': not a valid identifier\n", cmd[i]);
-		set_new_env(&env_list, key, value);
-		free(key);
-		free(value);
-		exit(0);
+		printf("bash: export: `%s': not a valid identifier\n", row_env[0]);
+		return (1);
 	}
+	set_new_env(env_list, row_env[0], row_env[1]);
+	while (row_env[++i])
+		free(row_env[i]);
+	free(row_env);
+	return (0);
 }

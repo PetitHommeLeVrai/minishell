@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 17:39:14 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 01:52:16 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	exit_cmd(char **cmd)
 	long long	nb;
 
 	if (!cmd[1])
-		return (g_ret);
+		return (g_global.ret);
 	if (check_nb(cmd[1]) == 0)
 	{
 		printf("exit: %s: numeric argument required\n", cmd[1]);

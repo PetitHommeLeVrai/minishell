@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 01:54:27 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/15 05:13:44 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 04:22:39 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	attach_after_word_quotes(t_token *token, int *i, int *idx, int flag)
 		(token[(*i)]).word = ret;
 		(token[(*i)]).flag_quotes_heredoc = 1;
 		(*i)++;
-		(*idx)++;
 	}
 	else
 	{
@@ -58,6 +57,10 @@ int	check_space_beside_cmd(char *cmd, int j, int idx, int *i)
 {
 	if (j == -1)
 	{
+		if (cmd[idx - 1] == '\'' || cmd[idx - 1] == '\"')
+			return (BEFORE_WORD);
+		if (cmd[idx] == '\'' || cmd[idx] == '\"')
+			idx--;
 		while (cmd[idx] != '\"' && cmd[idx] != '\'')
 			idx--;
 		if (cmd[idx + 1] != ' ')
@@ -69,7 +72,9 @@ int	check_space_beside_cmd(char *cmd, int j, int idx, int *i)
 	if (idx == -1 && cmd[j - 1] == '\"')
 		return (BEFORE_WORD);
 	if (j > 0 && cmd[j - 1] != ' ')
+	{
 		return (BEFORE_WORD);
+	}
 	else
 		return (-1);
 }

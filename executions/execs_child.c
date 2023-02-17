@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 16:55:59 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 01:52:07 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ char	**create_envp_char(t_env_list *env)
 
 void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 {
+	g_global.child = 1;
 	exec.pid = fork();
 	if (!exec.pid)
 	{

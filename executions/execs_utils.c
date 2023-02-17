@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 17:33:16 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 04:46:39 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,15 @@ void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp)
 	else if (ft_strncmp(line->cmd_args[0], "echo", 5) == 0)
 		ret = echo(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "env", 4) == 0)
-		env(line->cmd_args, envp);
+		ret = env(line->cmd_args, envp, 0);
 	else if (ft_strncmp(line->cmd_args[0], "exit", 5) == 0)
 		ret = exit_cmd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "export", 7) == 0)
-		export(line->cmd_args, envp);
+		ret = export(line->cmd_args, envp);
 	else if (ft_strncmp(line->cmd_args[0], "pwd", 4) == 0)
 		ret = pwd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "unset", 6) == 0)
-		unset(line->cmd_args, envp);
+		ret = unset(line->cmd_args, envp);
 	if (ret > -1)
 	{
 		parent_free(exec, line);

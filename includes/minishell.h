@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:36:25 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/16 17:31:28 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 05:25:34 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,13 @@
 # define T_SINGLE_QUOTES 5
 # define T_DOUBLE_QUOTES 6
 
-extern int					g_ret;
-
 typedef struct s_cmd_line	t_cmd_line;
+
+typedef struct s_global
+{
+	int	ret;
+	int	child;
+}					t_global;
 
 typedef struct s_token
 {
@@ -107,16 +111,17 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }	t_env_list;
 
+t_global					g_global;
+
 /*****************Env********************/
-void			env(char **cmd, t_env_list *env_list);
 void			init_env_signal(char **env, t_env_list **env_list);
 int				init_env(char *origin, char **key, char **value);
 void			signal_handler(int signo);
 char			*find_value_by_key(t_env_list *env_list,
 					char *key, t_token **token);
 t_env			*find_env_by_key(t_env_list *env_list, char *key);
-void			get_new_env(t_env_list **env, char *key, char *value);
-void			set_new_env(t_env_list **env_list, char *key, char *value);
+void			get_new_env(t_env_list *env, char *key, char *value);
+void			set_new_env(t_env_list *env_list, char *key, char *value);
 void			ft_lstadd_back(t_env_list **new_env_list,
 					t_env_list *tmp_env_list);
 t_env_list		*ft_lstnew(t_env *new_env);
@@ -161,6 +166,7 @@ int				check_space_beside_cmd(char *cmd, int j, int idx, int *i);
 void			attach_after_word_quotes(t_token *token,
 					int *i, int *idx, int status);
 int				is_which_quote(char cmd);
+int				find_quote_return(int type);
 
 /*****************Cmd_line********************/
 t_cmd_line		*init_cmd_line(t_cmd_line *cmd_line_origin,
@@ -194,15 +200,18 @@ void			put_right_message(t_exec *exec, t_cmd_line *cmd_line,
 void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
 					t_env_list *env);
 void			set_ret(int status);
+char			**get_args_incmd(t_cmd_line *cmd_line);
+char			*get_path(t_env_list *env);
+int				exec_helper(t_cmd_line *cmd_line, t_env_list *env_list);
 
 /*****************Builtin********************/
 
 int				cd(char **cmd, t_env_list *env);
 int				echo(char **cmd);
-void			env(char **cmd, t_env_list *env_list);
-void			export(char **cmd, t_env_list *env_list);
+int				env(char **cmd, t_env_list *env_list, int flag);
+int				export(char **cmd, t_env_list *env_list);
 int				exit_cmd(char **cmd);
 int				pwd(char **cmd);
-void			unset(char **cmd, t_env_list *env_list);
+int				unset(char **cmd, t_env_list *env_list);
 
 #endif

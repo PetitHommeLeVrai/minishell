@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/13 22:23:31 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 03:15:27 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 void	signal_handler(int signo)
 {
-	g_ret = 130;
 	if (signo == SIGINT)
 	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
-	}
-	else
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
+		if (g_global.child == 0)
+		{
+			printf("\n");
+			rl_on_new_line();
+			rl_replace_line("", 1);
+			rl_redisplay();
+			g_global.ret = 1;
+		}
+		else
+		{
+			g_global.ret = 130;
+			printf("\n");
+		}
 	}
 }
 
@@ -54,15 +56,14 @@ void	set_signal(void)
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
 void	init_env_signal(char **env, t_env_list **env_list)
 {
-	t_env_list	*new_env_list;
 	t_env		*new_env;
 	t_env_list	*tmp_env_list;
+	t_env_list	*new_env_list;
 
 	new_env_list = NULL;
 	set_signal();
