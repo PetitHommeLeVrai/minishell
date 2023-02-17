@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_new_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 03:02:37 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 15:08:01 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	get_new_env(t_env_list *env, char *key, char *value)
 		ft_error("Allocation error", STDERR_FILENO);
 	if (value)
 		new_env->value = ft_strdup(value);
-	ft_lstadd_back(env, new_list);
+	ft_lstadd_back(&env, new_list);
 }
 
 void	get_new_env_value(t_env *env, char *key, char *value)

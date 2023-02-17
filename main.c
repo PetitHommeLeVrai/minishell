@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 05:27:07 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 18:03:19 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #define ERR_SYNTAX_PIPE -201
 #define ERR_SYNTAX_NEWLINE -202
 #define ERR_AMBIGUOUS -203
+struct s_global g_global;
 
 void	con_error_status(t_token_list *tokens, int status)
 {
@@ -75,8 +76,7 @@ void	parsing(t_env_list *env_list, char *str)
 	cmd_line = init_cmd_line(cmd_line, token_list, 0);
 	free(token_list->token);
 	free(token_list);
-	if (exec_helper(cmd_line, env_list))
-		exec(cmd_line, env_list);
+	exec(cmd_line, env_list);
 	return ;
 }
 

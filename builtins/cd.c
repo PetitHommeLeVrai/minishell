@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/16 21:40:17 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 17:49:10 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_cd(char **cmd, char *value, t_env_list *env)
 	i = chdir(value);
 	if (i == -1)
 	{
-		printf("bash: cd: %s: No such file or directory\n", cmd[1]);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (127);
 	}
 	env_value = find_env_by_key(env, "PWD");
@@ -65,6 +67,5 @@ int	cd(char **cmd, t_env_list *env)
 	}
 	else
 		value = cmd[1];
-	ft_cd(cmd, value, env);
-	return (0);
+	return (ft_cd(cmd, value, env));
 }

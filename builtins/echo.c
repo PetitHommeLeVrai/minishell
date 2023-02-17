@@ -6,11 +6,11 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 15:46:07 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 12:35:09 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	echo(char **cmd)
 {

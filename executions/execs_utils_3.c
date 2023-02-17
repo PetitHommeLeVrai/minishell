@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 16:31:59 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 01:51:54 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:11:36 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,10 @@ void	set_ret(int status)
 	g_global.child = 0;
 	if (WIFEXITED(status))
 		g_global.ret = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+	{
+		g_global.ret = WTERMSIG(status);
+		if (g_global.ret != 131)
+			g_global.ret = g_global.ret + 128;
+	}
 }

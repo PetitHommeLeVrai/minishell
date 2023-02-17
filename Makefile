@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
+#    By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/17 04:29:43 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/17 14:13:59 by aboyer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC =	main.c \
 		executions/execs_utils.c \
 		executions/execs_utils_2.c \
 		executions/execs_utils_3.c \
+		executions/execs_utils_4.c \
 		executions/exec_helper.c \
 		builtins/cd.c \
 		builtins/echo.c \

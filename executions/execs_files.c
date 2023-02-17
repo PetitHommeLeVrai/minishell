@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/13 12:28:40 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 14:32:01 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line)
 		{
 			if (cmd_line->infile >= 0)
 				close(cmd_line->infile);
-			here_doc(cmd_line->token[i].word, cmd_line);
+			if (cmd_line->token[i].flag_env == 1)
+				here_doc(cmd_line->token[i].origin, cmd_line);
+			else
+				here_doc(cmd_line->token[i].word, cmd_line);
 		}
 		i++;
 	}

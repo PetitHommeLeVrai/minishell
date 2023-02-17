@@ -6,13 +6,13 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:05:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/15 17:11:29 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/17 15:23:24 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	check_2(t_exec *exec, t_cmd_line *line, t_env_list *env)
+int	check_2(t_exec *exec, t_cmd_line *line, t_env_list *env)
 {
 	if ((line->cmd_args[0][0] == '.' && line->cmd_args[0][1] == '/')
 		|| line->cmd_args[0][0] == '/')
@@ -22,7 +22,11 @@ void	check_2(t_exec *exec, t_cmd_line *line, t_env_list *env)
 			perror(line->cmd_args[0]);
 			exec_exit_free_all(127, exec, line->begin, env);
 		}
+		else
+			isdir(exec, line, env);
+		return (1);
 	}
+	return (0);
 }
 
 void	check_exceptions(t_exec *exec, t_cmd_line *line, t_env_list *env)
@@ -32,34 +36,27 @@ void	check_exceptions(t_exec *exec, t_cmd_line *line, t_env_list *env)
 		ft_putstr_fd(".: filename argument required\n", 2);
 		exec_exit_free_all(2, exec, line->begin, env);
 	}
-	if ((ft_strlen(line->cmd_args[0]) == 2 && ft_strncmp("./",
-				line->cmd_args[0], 3) == 0)
-		|| (ft_strlen(line->cmd_args[0]) == 1 && ft_strncmp("/",
-				line->cmd_args[0], 2) == 0))
-	{
-		ft_putstr_fd(line->cmd_args[0], 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		exec_exit_free_all(126, exec, line->begin, env);
-	}
 }
 
-void	check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list *env)
+int	check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list *env)
 {
 	check_exceptions(exec, line, env);
-	if (exec->flag == 0)
-	{
-		if (line->cmd_args[0][0] == '.' || (line->cmd_args[0][0] == '.'
-				&& line->cmd_args[0][1] == '/') || line->cmd_args[0][0] == '/')
-		{
-			if (access(line->cmd_args[0], 0) != 0)
-			{
-				perror(line->cmd_args[0]);
-				exec_exit_free_all(127, exec, line->begin, env);
-			}
-		}
-	}
 	if (exec->flag == 1)
-		check_2(exec, line, env);
+		if (check_2(exec, line, env) == 1)
+			return (1);
+	if (exec->flag == 0 && (line->cmd_args[0][0] == '.'
+		|| line->cmd_args[0][0] == '/'))
+	{
+		if (access(line->cmd_args[0], 0) != 0)
+		{
+			perror(line->cmd_args[0]);
+			exec_exit_free_all(127, exec, line->begin, env);
+		}
+		else
+			isdir(exec, line, env);
+		return (1);
+	}
+	return (0);
 }
 
 int	get_flag(t_cmd_line *cmd_line)

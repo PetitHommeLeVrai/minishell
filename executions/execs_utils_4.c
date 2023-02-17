@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   execs_utils_4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/26 12:57:53 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 12:35:32 by aboyer           ###   ########.fr       */
+/*   Created: 2023/02/17 14:13:08 by aboyer            #+#    #+#             */
+/*   Updated: 2023/02/17 14:13:36 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	pwd(char **cmd)
+void	isdir(t_exec *exec, t_cmd_line *line, t_env_list *env)
 {
-	char	buffer[4096];
+	struct stat	path;
 
-	(void)cmd;
-	getcwd(buffer, sizeof(buffer));
-	if (buffer == NULL)
+	stat(line->cmd_args[0], &path);
+	if (S_ISREG(path.st_mode) == 0)
 	{
-		perror("pwd");
-		return (2);
+		ft_putstr_fd(line->cmd_args[0], 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		exec_exit_free_all(126, exec, line->begin, env);
 	}
-	printf("%s\n", buffer);
-	return (0);
 }

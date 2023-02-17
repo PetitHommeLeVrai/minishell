@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 04:46:39 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:46:03 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp)
 	if (ret > -1)
 	{
 		parent_free(exec, line);
-		ft_free_cmd_line(line);
+		ft_free_cmd_line(line->begin);
 		ft_free_all_env(envp);
 		exit(ret);
 	}

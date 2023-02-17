@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 01:52:07 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 17:41:49 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 {
 	char	**cmd_args;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	cmd_args = (char **)malloc(sizeof(char *) * (count_args(cmd_line) + 1));
 	if (!cmd_args)
 		return (msg_error("MALLOC ERROR\n"), NULL);
@@ -41,7 +43,10 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	while (i < cmd_line->token_count)
 	{
 		if (cmd_line->token[i].type == ARG)
-			cmd_args[i] = cmd_line->token[i].word;
+		{
+			cmd_args[j] = cmd_line->token[i].word;
+			j++;
+		}
 		i++;
 	}
 	return (cmd_args);
@@ -56,8 +61,7 @@ char	*get_cmd(t_exec *exec, t_cmd_line *line, t_env_list *env)
 	i = 0;
 	if (!line->cmd_args[0] || line->cmd_args[0][0] == '\0')
 		return (NULL);
-	check_is_absolute_path(exec, line, env);
-	if (access(line->cmd_args[0], 0) == 0)
+	if (check_is_absolute_path(exec, line, env) == 1)
 		return (line->cmd_args[0]);
 	if (!exec->cmd_paths)
 		return (NULL);
@@ -103,8 +107,12 @@ char	**create_envp_char(t_env_list *env)
 
 void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 {
+	if (exec_helper(&exec, cmd_line, env) == 1)
+		return ;
 	g_global.child = 1;
 	exec.pid = fork();
+	if (exec.pid)
+		cmd_line->tmp = exec.pid;
 	if (!exec.pid)
 	{
 		exec.flag = get_flag(cmd_line);
@@ -119,7 +127,7 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		if (execve(exec.cmd, cmd_line->cmd_args, exec.envp) == -1)
 		{
 			perror(cmd_line->cmd_args[0]);
-			exit(127);
+			exec_exit_free_all(126, &exec, cmd_line->begin, env);
 		}
 	}
 }
