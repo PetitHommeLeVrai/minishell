@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 01:50:31 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 13:11:03 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_token_have_env(char *word)
 	{
 		if (word[i] == '$')
 		{
-			if (word[i + 1] == '\0' || word[i + 1] == '$')
+			if (word[i + 1] == '$')
 				return (i);
 			if (ft_isalpha(word[i + 1]) || word[i + 1] == '_'
 				|| word[i + 1] == '?')
@@ -67,24 +67,24 @@ char	*ft_strjoin_word(char *word, char *value, char *head, char *tail)
 	return (word);
 }
 
-char	*get_new_word(t_token **token, t_env_list *env, int head, int tail)
+char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 {
 	char	*key;
 	char	*value;
 	char	*new_word;
 
-	key = ft_substr((*token)->word, head + 1, tail - head);
+	key = ft_substr(token->word, head + 1, tail - head);
 	value = find_value_by_key(env, key, token);
 	new_word = (char *)malloc(sizeof(char)
-			* (ft_strlen((*token)->word)
+			* (ft_strlen(token->word)
 				- (tail - head) + ft_strlen(value) + 1));
 	if (!new_word)
 		ft_error("Allocation error", STDERR_FILENO);
-	ft_strjoin_word(new_word, value, ft_substr((*token)->word, 0, head),
-		ft_substr((*token)->word, tail + 1, ft_strlen((*token)->word)));
+	ft_strjoin_word(new_word, value, ft_substr(token->word, 0, head),
+		ft_substr(token->word, tail + 1, ft_strlen(token->word)));
 	free(key);
 	free(value);
-	if (!ft_strcmp((*token)->word, "$?"))
+	if (!ft_strcmp(token->word, "$?"))
 	{
 		free(new_word);
 		new_word = ft_itoa(g_global.ret);
@@ -92,21 +92,31 @@ char	*get_new_word(t_token **token, t_env_list *env, int head, int tail)
 	return (new_word);
 }
 
-void	check_env_token(t_token_list *tokens, t_env_list *env)
+void	check_env_token(t_token_list *token_list, t_env_list *env)
 {
-	int		i;
 	int		head_dollar;
+	t_token	*tmp;
+	int		count_dollar;
 
-	i = -1;
-	while (tokens->token[++i].type != T_NULL)
+	tmp = token_list->head;
+	head_dollar = -1;
+	while (tmp)
 	{
-		if (tokens->token[i].type != T_SINGLE_QUOTES)
+		if (tmp->type != T_SINGLE_QUOTES && tmp->type != T_SPACE)
 		{
-			head_dollar = check_token_have_env(tokens->token[i].word);
-			if (head_dollar != -1)
-				get_new_dollar(&tokens->token[i], head_dollar, env);
-			if (tokens->token[i].type != T_DOUBLE_QUOTES && head_dollar != -1)
-				tokens = re_get_token_list(tokens, tokens->token[i].word, i);
+			count_dollar = check_count_dollar(tmp->word);
+			while (count_dollar-- > 0)
+			{
+				head_dollar = check_token_have_env(tmp->word);
+				if (head_dollar >= 0)
+					get_new_dollar(tmp, head_dollar, env);
+			}
+			if (tmp->type != T_DOUBLE_QUOTES
+				&& head_dollar >= 0 && ft_is_space(tmp->word))
+				tmp = re_get_token_list(tmp, tmp->word);
+			tmp = tmp->next;
 		}
+		else
+			tmp = tmp->next;
 	}
 }

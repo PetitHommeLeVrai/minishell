@@ -6,43 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 21:47:34 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 18:58:00 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-#define ERR_SYNTAX -200
-#define ERR_SYNTAX_PIPE -201
-#define ERR_SYNTAX_NEWLINE -202
-#define ERR_AMBIGUOUS -203
-struct s_global g_global;
 
-void	con_error_status(t_token_list *tokens, int status)
-{
-	int	i;
-
-	i = 0;
-	if (status == ERR_SYNTAX_PIPE)
-		printf ("bash: syntax error near unexpected token `%s'\n", "|");
-	else if (status == ERR_SYNTAX_NEWLINE)
-		printf ("bash: syntax error near unexpected token `%s'\n", "newline");
-	else if (status == ERR_AMBIGUOUS)
-	{
-		while (tokens->token[i].type != ERR_AMBIGUOUS)
-			i++;
-		printf("bash: %s: ambiguous redirect\n", tokens->token[i].origin);
-		g_global.ret = 1;
-		ft_free_token_list(tokens);
-		return ;
-	}
-	else if (status == -1 || status == -2 || status == ERR_SYNTAX)
-		con_error_status2(tokens, status);
-	g_global.ret = 2;
-	if (status != -1 && status != -2)
-		ft_free_token_list(tokens);
-	else
-		free(tokens);
-}
+t_global	g_global;
 
 int	is_there_space(char *str)
 {
@@ -63,6 +33,12 @@ void	parsing(t_env_list *env_list, char *str)
 
 	if (is_there_space(str))
 		return ;
+	status = check_quotes_incmd(str);
+	if (status < 0)
+	{
+		con_error_status2(status);
+		return ;
+	}
 	cmd_line = NULL;
 	token_list = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!token_list)
@@ -73,11 +49,9 @@ void	parsing(t_env_list *env_list, char *str)
 		con_error_status(token_list, status);
 		return ;
 	}
-	cmd_line = init_cmd_line(cmd_line, token_list, 0);
-	free(token_list->token);
-	free(token_list);
+	cmd_line = init_cmd_line(cmd_line, token_list);
+	ft_free_token_list2(token_list);
 	exec(cmd_line, env_list);
-	return ;
 }
 
 void	prompt(t_env_list **env_list)

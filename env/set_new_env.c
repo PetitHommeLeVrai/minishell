@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   set_new_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 15:08:01 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/18 09:21:26 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*find_value_by_key(t_env_list *env_list, char *key, t_token **token)
+char	*find_value_by_key(t_env_list *env_list, char *key, t_token *token)
 {
 	t_env	*env;
 	char	*value;
@@ -22,7 +22,7 @@ char	*find_value_by_key(t_env_list *env_list, char *key, t_token **token)
 	{
 		value = ft_strdup("");
 		if (ft_strcmp(key, "?"))
-			(*token)->type = T_WORD_NULL;
+			token->type = T_WORD_NULL;
 	}
 	else
 		value = ft_strdup(env->value);

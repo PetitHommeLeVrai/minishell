@@ -6,27 +6,37 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 05:33:51 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/17 21:45:18 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 18:57:16 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_free_token_list(t_token_list *tokens)
-{
-	int		i;
-	t_token	*tmp;
 
-	i = -1;
-	tmp = tokens->token;
-	while (tmp[++i].tail != 1)
+void	ft_free_token_list2(t_token_list *tokens)
+{
+	t_token	*token_next;
+	t_token	*token_head;
+
+	if (!tokens)
+		return ;
+	token_head = tokens->head;
+	token_next = token_head->next;
+	while (token_next)
 	{
-		if (tmp[i].word)
-			free(tmp[i].word);
-		if (tmp[i].origin)
-			free(tmp[i].origin);
+		if (token_head->word)
+			free(token_head->word);
+		if (token_head->origin)
+			free(token_head->origin);
+		free(token_head);
+		token_head = token_next;
+		token_next = token_next->next;
 	}
-	free(tokens->token);
+	if (token_head->word)
+		free(token_head->word);
+	if (token_head->origin)
+		free(token_head->origin);
+	free(token_head);
 	free(tokens);
 }
 

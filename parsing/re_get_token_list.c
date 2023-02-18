@@ -6,11 +6,24 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 21:27:05 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 12:51:16 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_is_space(char *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (cmd[++i])
+	{
+		if (cmd[i] == ' ')
+			return (1);
+	}
+	return (0);
+}
 
 void	get_new_dollar(t_token *token, int head_dollar, t_env_list *env)
 {
@@ -19,63 +32,52 @@ void	get_new_dollar(t_token *token, int head_dollar, t_env_list *env)
 
 	tail_dollar = find_tail_dollar(token->word,
 			head_dollar + 1);
-	new_word = get_new_word(&token,
+	new_word = get_new_word(token,
 			env, head_dollar, tail_dollar);
-	token->origin = ft_strdup(token->word);
+	if (!token->origin)
+		token->origin = ft_strdup(token->word);
+	token->flag_env = 1;
 	free(token->word);
 	token->word = new_word;
 }
 
-void	token_copy(t_token *token, t_token *new_token, int idx, char **word)
+int	check_count_dollar(char *word)
 {
-	int	j;
-	int	k;
-	int	l;
-
-	j = -1;
-	k = -1;
-	l = -1;
-	while (++j < idx)
-		new_token[j] = token[j];
-	while (word[++k])
-	{
-		new_token[++j].word = ft_strdup(word[k]);
-		if (!new_token[j].word)
-			ft_error("Allocation Error", STDERR_FILENO);
-		new_token[j].type = T_WORD;
-		new_token[j].flag_env = 1;
-	}
-	while (token[++idx].type != T_NULL)
-		new_token[++j] = token[idx];
-	while (word[++l])
-		free(word[l]);
-	free(word);
-}
-
-t_token_list	*re_get_token_list(t_token_list *tokens, char *word, int idx)
-{
-	t_token_list	*new_token_list;
-	char			**split;
-	int				i;
+	int	i;
+	int	count;
 
 	i = -1;
-	if (ft_strcmp(word, " "))
-		return (tokens);
-	new_token_list = (t_token_list *)malloc(sizeof(t_token_list));
-	if (!new_token_list)
+	count = 0;
+	while (word[++i])
+	{
+		if (word[i] == '$')
+		{
+			i++;
+			if (word[i] == '$' || ft_isalpha(word[i])
+				|| word[i] == '_' || word[i] == '?')
+				count++;
+		}
+	}
+	return (count);
+}
+
+t_token	*re_get_token_list(t_token *token, char *word)
+{
+	char	**word_split;
+	t_token	*tmp_token;
+	int		i;
+
+	i = -1;
+	word_split = ft_split(word, ' ');
+	if (!word_split)
 		ft_error("Allocation Error", STDERR_FILENO);
-	split = ft_split(word, ' ');
-	if (!split)
-		ft_error("Allocation Error", STDERR_FILENO);
-	while (split[++i])
-		i++;
-	new_token_list->token = (t_token *)malloc(sizeof(t_token)
-			* (tokens->count + i + 1));
-	if (!new_token_list->token)
-		ft_error("Allocation Error", STDERR_FILENO);
-	init_tokens(new_token_list, tokens->count + i);
-	new_token_list->count = tokens->count + i;
-	token_copy(tokens->token, new_token_list->token, idx, split);
-	ft_free_token_list(tokens);
-	return (new_token_list);
+	tmp_token = token;
+	while (word_split[++i])
+	{
+		ft_token_add_middle(tmp_token);
+		tmp_token = tmp_token->next;
+		tmp_token->word = ft_strdup(word_split[i]);
+		tmp_token->type = T_WORD;
+	}
+	return (tmp_token);
 }

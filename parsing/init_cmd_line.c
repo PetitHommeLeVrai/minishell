@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/16 15:01:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 18:44:01 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,46 +28,40 @@ t_cmd_line	*new_cmd_line(void)
 	return (new_cmds);
 }
 
-int	count_token_before_pipe(t_token *token, int i)
+int	count_token_before_pipe(t_token *token)
 {
-	int	j;
+	int	i;
 
-	j = i;
-	while (token[i].type != T_NULL)
+	i = 0;
+	while (token)
 	{
-		if (token[i].type == T_PIPE)
+		if (token->type == T_PIPE)
 			break ;
 		i++;
+		token = token->next;
 	}
-	return (i - j);
+	return (i);
 }
 
 t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
-	t_token_list *tokens, int i)
+	t_token_list *tokens)
 {
 	int			count_token;
 	t_cmd_line	*cmd_line;
-	t_token		new_token;
-	int			j;
+	t_token		*new_token;
 
-	j = 0;
-	cmd_line = new_cmd_line();
-	count_token = count_token_before_pipe(tokens->token, i);
-	cmd_line->token_count = count_token;
-	cmd_line->token = (t_token *)malloc(sizeof(t_token) * (count_token + 1));
-	while (tokens->token[i].type != T_NULL && tokens->token[i].type != T_PIPE)
+	new_token = tokens->head;
+	while (new_token)
 	{
-		new_token = tokens->token[i++];
-		cmd_line->token[j++] = new_token;
-	}
-	cmd_line->token[j].type = T_NULL;
-	cmd_line_origin = cmd_line;
-	cmd_line_origin->next = NULL;
-	if (tokens->token[i].type == T_PIPE)
-	{
-		cmd_line_origin->next = init_cmd_line(cmd_line_origin->next,
-				tokens, i + 1);
-		free(tokens->token[i].word);
+		if (new_token->type == T_PIPE)
+			new_token = new_token->next;
+		cmd_line = new_cmd_line();
+		count_token = count_token_before_pipe(new_token);
+		cmd_line->token_count = count_token;
+		cmd_line->token = (t_token *)malloc(sizeof(t_token)
+				* (count_token + 2));
+		copy_cmd_line(cmd_line, &new_token);
+		ft_cmd_add_back(&cmd_line_origin, cmd_line);
 	}
 	return (cmd_line_origin);
 }

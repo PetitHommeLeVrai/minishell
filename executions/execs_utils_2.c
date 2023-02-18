@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:05:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 15:23:24 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/18 01:29:21 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,17 @@ int	get_flag(t_cmd_line *cmd_line)
 
 void	put_right_message(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
 {
+	char	*str;
+
 	if (!cmd_line->cmd_args[0])
 		exec_exit_free_all(0, exec, cmd_line->begin, env);
 	if (cmd_line->cmd_args[0] && cmd_line->cmd_args[0][0] == '\0')
-		ft_putstr_fd("''", 2);
+		ft_putstr_fd("'': command not found\n", 2);
 	else
-		ft_putstr_fd(cmd_line->cmd_args[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	{
+		str = ft_strjoin(cmd_line->cmd_args[0], ": command not found\n");
+		ft_putstr_fd(str, 2);
+		free(str);
+	}
 	exec_exit_free_all(127, exec, cmd_line->begin, env);
 }

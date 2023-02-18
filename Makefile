@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+         #
+#    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/17 14:13:59 by aboyer           ###   ########.fr        #
+#    Updated: 2023/02/18 16:49:05 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,18 @@ SRC =	main.c \
 		env/ft_free_all_env.c \
 		env/update_env_value.c \
 		parsing/check_env_token.c \
+		parsing/check_quotes_incmd.c \
+		parsing/handle_syntax_error.c \
 		parsing/cmd_tokenizer.c \
+		parsing/cmd_tokenizer2.c \
 		parsing/get_token_list.c \
-		parsing/init_token_list.c \
 		parsing/ft_free_cmd_line.c \
 		parsing/syntax_check.c \
 		parsing/init_cmd_line.c \
 		parsing/re_get_token_list.c \
-		parsing/check_space_beside_cmd.c \
+		parsing/utils_list.c \
+		parsing/remove_space_token.c \
+		parsing/utils_list2.c \
 		executions/execs_child.c \
 		executions/execs_files.c \
 		executions/execs_heredoc.c \
