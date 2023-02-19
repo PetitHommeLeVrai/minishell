@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:49:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 11:01:40 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 15:49:10 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ int	check_quotes_incmd(char *cmd)
 			i++;
 		if (cmd[i] == '\"' || cmd[i] == '\'')
 		{
-			find_quote_end(cmd, i);
+			i = find_quote_end(cmd, i);
 			if (i < 0)
-				break ;
+				return (i);
 			i++;
 		}
 		while (cmd[i] && cmd[i] != ' ')

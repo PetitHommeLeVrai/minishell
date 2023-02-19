@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 09:21:26 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 15:58:16 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,15 @@ void	get_new_env(t_env_list *env, char *key, char *value)
 	t_env_list	*new_list;
 	t_env		*new_env;
 	char		*origin;
+	char		*tmp;
 
 	new_env = ft_new_env();
 	new_list = ft_lstnew(new_env);
 	if (value)
 	{
-		origin = ft_strjoin(key, "=");
-		origin = ft_strjoin(origin, value);
+		tmp = ft_strjoin(key, "=");
+		origin = ft_strjoin(tmp, value);
+		free(tmp);
 	}
 	else
 		origin = ft_strdup(key);
@@ -72,11 +74,13 @@ void	get_new_env(t_env_list *env, char *key, char *value)
 void	get_new_env_value(t_env *env, char *key, char *value)
 {
 	char	*origin;
+	char	*tmp;
 
 	if (value)
 	{
-		origin = ft_strjoin(key, "=");
-		origin = ft_strjoin(origin, value);
+		tmp = ft_strjoin(key, "=");
+		origin = ft_strjoin(tmp, value);
+		free(tmp);
 	}
 	else
 		origin = ft_strdup(key);

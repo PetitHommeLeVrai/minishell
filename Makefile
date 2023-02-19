@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/18 16:49:05 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/19 16:59:49 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SRC =	main.c \
 		env/update_env_value.c \
 		parsing/check_env_token.c \
 		parsing/check_quotes_incmd.c \
-		parsing/handle_syntax_error.c \
 		parsing/cmd_tokenizer.c \
 		parsing/cmd_tokenizer2.c \
 		parsing/get_token_list.c \
@@ -29,6 +28,7 @@ SRC =	main.c \
 		parsing/syntax_check.c \
 		parsing/init_cmd_line.c \
 		parsing/re_get_token_list.c \
+		parsing/parsing_utils.c \
 		parsing/utils_list.c \
 		parsing/remove_space_token.c \
 		parsing/utils_list2.c \

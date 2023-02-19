@@ -5,75 +5,76 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/02 20:53:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 17:55:47 by ychun            ###   ########.fr       */
+/*   Created: 2023/02/18 10:34:30 by ychun             #+#    #+#             */
+/*   Updated: 2023/02/19 17:03:44 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	find_quote_return(int type)
+int	handle_syntax_error(t_token *err, t_token *next, t_token *prev, int status)
 {
-	if (type == T_SINGLE_QUOTES)
-		return (-1);
-	return (-2);
-}
-
-int	is_which_quote(char cmd)
-{
-	if (cmd == '\'')
-		return (-1);
-	else if (cmd == '\"')
-		return (-2);
-	else
+	if ((err->type == T_PIPE && status != 1)
+		&& ((!next || next->type != T_PIPE) || prev->word == NULL))
+		return (ERR_SYNTAX_PIPE);
+	if (!next && status != 1)
 		return (ERR_SYNTAX_NEWLINE);
-}
-
-/*int	first_case(t_token *curr)
-{
-	if (curr->next)
-		if ((curr->type >= 30 && curr->type <= 33)
-			&& !(curr->next->type >= 40 && curr->next->type <= 43))
-			return (-1);
-	else
-		if (curr->type == T_PIPE || (curr->type >= 30 && curr->type <= 33))
-			return (-1);
-}
-
-int middle_case(t_token *curr)
-{
-	t_token	*prev;
-
-	prev = curr;
-	curr = curr->next;
-	while (curr->next)
+	if (status == 1)
 	{
-		if (curr->type == T_PIPE && curr->next->type != T_PIPE)
-		curr = curr->next;
+		next->type = ERR_AMBIGUOUS;
+		return (ERR_AMBIGUOUS);
 	}
+	next->type = ERR_SYNTAX;
+	return (ERR_SYNTAX);
 }
 
-int	last_case(t_token *curr)
+void	con_error_status(t_token_list *token_list, int status)
 {
-	if ((curr->type == T_PIPE && !curr->next)
-		|| (curr->type >= 30 && curr->type <= 33 && !curr->next))
-		return (-1);
-}
+	t_token	*token;
 
-int	syntax_copy(t_token *head)
-{
-	t_token *curr;
-	t_token *prev;
-
-	curr = head;
-	while (curr)
+	token = token_list->head;
+	if (status == ERR_SYNTAX_PIPE)
+		printf ("syntax error near unexpected token `%s'\n", "|");
+	else if (status == ERR_SYNTAX_NEWLINE)
+		printf ("syntax error near unexpected token `%s'\n", "newline");
+	else if (status == ERR_AMBIGUOUS)
 	{
-		first_case(curr);
-		if (curr->next)
-			middle_case(curr);
-		curr = curr->next;
-		last_case(curr);
+		while (token->type != ERR_AMBIGUOUS)
+			token = token->next;
+		printf("%s: ambiguous redirect\n", token->origin);
+		g_global.ret = 1;
+		ft_free_token_list2(token_list);
+		return ;
 	}
+	else if (status == ERR_SYNTAX)
+		con_error_status3(token_list, status);
+	ft_free_token_list2(token_list);
+}
+
+void	con_error_status2(int status)
+{
+	if (status == -1)
+	{
+		printf ("unexpected EOF while looking for matching `%s'\n", "\'");
+		printf ("syntax error: unexpected end of file\n");
+	}
+	if (status == -2)
+	{
+		printf ("unexpected EOF while looking for matching `%s'\n", "\"");
+		printf ("syntax error: unexpected end of file\n");
+	}
+	g_global.ret = 2;
+}
+
+void	con_error_status3(t_token_list *tokens, int status)
+{
+	t_token	*tmp;
+
+	tmp = tokens->head;
+	while (tmp->type == status)
+		tmp = tmp->next;
+	printf ("syntax error near unexpected token `%s'\n", tmp->word);
+	g_global.ret = 2;
 }
 
 int	syntax_check(t_token *head)
@@ -83,24 +84,21 @@ int	syntax_check(t_token *head)
 
 	curr = head;
 	prev = NULL;
-	ft_token_add_back(&curr, ft_new_token());
 	while (curr)
 	{
-		if (curr->type == T_PIPE && (prev == NULL
-				|| curr->next->type == -1 || curr->next->type == T_PIPE
-				|| (curr->next->type >= 30 && curr->next->type <= 33
-					&& prev->type != T_WORD)))
+		if (curr->type == T_PIPE
+			&& (prev == NULL || curr->next == NULL
+				|| prev->type != T_WORD || curr->next->type == T_PIPE))
 			return (handle_syntax_error(curr, curr->next, prev, 0));
-		if ((curr->type >= 30 && curr->type <= 33) && (curr->next->type == -1
-				|| (curr->next->type != T_WORD_NULL
-				|| !(curr->next->type >= 40 && curr->next->type <= 43))))
+		if (curr->type >= 30 && curr->type <= 33
+			&& (curr->next == NULL
+				|| !(curr->next->type >= 40 && curr->next->type <= 43)))
 			return (handle_syntax_error(curr, curr->next, prev, 0));
-		if ((curr->type >= 30 && curr->type <= 33)
-			&& (curr->next->word && curr->next->type == T_WORD_NULL))
+		if (curr->type >= 30 && curr->type <= 33
+			&& (curr->next != NULL && curr->next->type == T_WORD_NULL))
 			return (handle_syntax_error(curr, curr->next, prev, 1));
 		prev = curr;
 		curr = curr->next;
 	}
 	return (SUCCESS);
 }
-*/

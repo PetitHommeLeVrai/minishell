@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 12:51:16 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/18 20:16:41 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,9 @@ t_token	*re_get_token_list(t_token *token, char *word)
 		tmp_token->word = ft_strdup(word_split[i]);
 		tmp_token->type = T_WORD;
 	}
+	i = -1;
+	while (word_split[++i])
+		free(word_split[i]);
+	free(word_split);
 	return (tmp_token);
 }

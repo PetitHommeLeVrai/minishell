@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 18:44:01 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 15:40:02 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ t_cmd_line	*init_cmd_line(t_cmd_line *cmd_line_origin,
 	{
 		if (new_token->type == T_PIPE)
 			new_token = new_token->next;
+		if (!new_token)
+			break ;
 		cmd_line = new_cmd_line();
 		count_token = count_token_before_pipe(new_token);
 		cmd_line->token_count = count_token;

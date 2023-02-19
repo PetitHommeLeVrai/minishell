@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 18:31:33 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 15:43:29 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 			tmp->type = T_WORD;
 		tmp = tmp->next;
 	}
-	//syntax_error = syntax_check(token_list->head);
-	syntax_error = 1;
+	syntax_error = syntax_check(token_list->head);
 	if (syntax_error < 0)
 		return (syntax_error);
 	return (SUCCESS);
