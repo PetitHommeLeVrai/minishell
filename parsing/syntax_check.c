@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:34:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 17:03:44 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 18:57:50 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,10 @@ int	handle_syntax_error(t_token *err, t_token *next, t_token *prev, int status)
 
 void	con_error_status(t_token_list *token_list, int status)
 {
-	t_token	*token;
-
-	token = token_list->head;
 	if (status == ERR_SYNTAX_PIPE)
-		printf ("syntax error near unexpected token `%s'\n", "|");
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 	else if (status == ERR_SYNTAX_NEWLINE)
-		printf ("syntax error near unexpected token `%s'\n", "newline");
-	else if (status == ERR_AMBIGUOUS)
-	{
-		while (token->type != ERR_AMBIGUOUS)
-			token = token->next;
-		printf("%s: ambiguous redirect\n", token->origin);
-		g_global.ret = 1;
-		ft_free_token_list2(token_list);
-		return ;
-	}
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	else if (status == ERR_SYNTAX)
 		con_error_status3(token_list, status);
 	ft_free_token_list2(token_list);
@@ -55,13 +43,13 @@ void	con_error_status2(int status)
 {
 	if (status == -1)
 	{
-		printf ("unexpected EOF while looking for matching `%s'\n", "\'");
-		printf ("syntax error: unexpected end of file\n");
+		ft_putstr_fd("unexpected EOF while looking for matching `\''\n", 2);
+		ft_putstr_fd("syntax error: unexpected end of file\n", 2);
 	}
 	if (status == -2)
 	{
-		printf ("unexpected EOF while looking for matching `%s'\n", "\"");
-		printf ("syntax error: unexpected end of file\n");
+		ft_putstr_fd("unexpected EOF while looking for matching `\"'\n", 2);
+		ft_putstr_fd("syntax error: unexpected end of file\n", 2);
 	}
 	g_global.ret = 2;
 }
@@ -73,7 +61,9 @@ void	con_error_status3(t_token_list *tokens, int status)
 	tmp = tokens->head;
 	while (tmp->type == status)
 		tmp = tmp->next;
-	printf ("syntax error near unexpected token `%s'\n", tmp->word);
+	ft_putstr_fd("syntax error near unexpected token ", 2);
+	ft_putstr_fd(tmp->word, 2);
+	ft_putchar_fd('\n', 2);
 	g_global.ret = 2;
 }
 
@@ -88,7 +78,9 @@ int	syntax_check(t_token *head)
 	{
 		if (curr->type == T_PIPE
 			&& (prev == NULL || curr->next == NULL
-				|| prev->type != T_WORD || curr->next->type == T_PIPE))
+				|| (prev->type != T_WORD && prev->type != 40 && prev->type != 41
+					&& prev->type != 42 && prev->type != 43)
+				|| curr->next->type == T_PIPE))
 			return (handle_syntax_error(curr, curr->next, prev, 0));
 		if (curr->type >= 30 && curr->type <= 33
 			&& (curr->next == NULL

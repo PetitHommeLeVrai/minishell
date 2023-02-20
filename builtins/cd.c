@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/19 22:31:46 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 18:54:39 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	cd(char **cmd, t_env_list **env)
 	t_env	*env_value;
 	char	*value;
 
+	if (cmd[2])
+		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	if (cmd[1] == NULL || !ft_strcmp(cmd[1], "~"))
 	{
 		env_value = find_env_by_key(*env, "HOME");

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:42:18 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 16:17:50 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 16:50:38 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	skip_heredoc_token(t_token **tmp)
 {
 	if ((*tmp)->type == 32 && (*tmp))
 	{
-		if ((*tmp)->next->type == T_SPACE)
+		if ((*tmp)->next && (*tmp)->next->type == T_SPACE)
 			(*tmp) = (*tmp)->next->next;
 		while ((*tmp) && ((*tmp)->type != T_SPACE && (*tmp)->type != T_PIPE
 				&& !((*tmp)->type >= 30 && (*tmp)->type <= 33)))

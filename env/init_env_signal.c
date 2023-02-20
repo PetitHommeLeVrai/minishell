@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 14:14:18 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 18:18:30 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	init_env_signal(char **env, t_env_list **env_list)
 	new_env_list = NULL;
 	set_signal();
 	if (!env || !*env)
-		return ;
+		ft_error("Environement NULL\n", STDERR_FILENO);
 	while (*env)
 	{
 		new_env = ft_new_env();

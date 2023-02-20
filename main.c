@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 18:06:38 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 18:20:02 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	prompt(t_env_list **env_list)
 			parsing(env_list, str);
 		else
 		{
-			printf("exit\n");
+			ft_putstr_fd("exit\n", 2);
 			break ;
 		}
 		if (ft_strcmp(str, ""))
