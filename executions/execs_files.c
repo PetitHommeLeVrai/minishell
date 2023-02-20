@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execs_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 15:15:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 18:06:46 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	infile(char *word, t_cmd_line *cmd_line)
+void	infile(char *word, t_cmd_line *cmd_line, t_exec *exec, t_env_list *env)
 {
 	if (cmd_line->infile >= 0)
 		close(cmd_line->infile);
@@ -20,11 +20,11 @@ void	infile(char *word, t_cmd_line *cmd_line)
 	if (cmd_line->infile == -1)
 	{
 		perror(word);
-		exit(2);
+		exec_exit_free_all(2, exec, cmd_line->begin, &env);
 	}
 }
 
-void	outfile(char *word, t_cmd_line *cmd_line)
+void	outfile(char *word, t_cmd_line *cmd_line, t_exec *exec, t_env_list *env)
 {
 	if (cmd_line->outfile >= 0)
 		close(cmd_line->outfile);
@@ -32,11 +32,11 @@ void	outfile(char *word, t_cmd_line *cmd_line)
 	if (cmd_line->outfile == -1)
 	{
 		perror(word);
-		exit(2);
+		exec_exit_free_all(2, exec, cmd_line->begin, &env);
 	}
 }
 
-void	outfileover(char *word, t_cmd_line *line)
+void	outfileover(char *word, t_cmd_line *line, t_exec *exec, t_env_list *env)
 {
 	if (line->outfile >= 0)
 		close(line->outfile);
@@ -44,8 +44,20 @@ void	outfileover(char *word, t_cmd_line *line)
 	if (line->outfile == -1)
 	{
 		perror(word);
-		exit(2);
+		exec_exit_free_all(2, exec, line->begin, &env);
 	}
+}
+
+void	heredoc_redirect(t_cmd_line *cmd_line, t_exec *exec, t_env_list *env,
+	int i)
+{
+	exec->flag_quotes = cmd_line->token[i].flag_quotes;
+	if (cmd_line->infile >= 0)
+		close(cmd_line->infile);
+	if (cmd_line->token[i].flag_env == 1)
+		here_doc(cmd_line->token[i].origin, exec, cmd_line, env);
+	else
+		here_doc(cmd_line->token[i].word, exec, cmd_line, env);
 }
 
 void	get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
@@ -53,26 +65,22 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
 	int	i;
 
 	i = 0;
-	(void)exec;
 	while (i < cmd_line->token_count)
 	{
-		if (cmd_line->token[i].type == INFILE)
-			infile(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == OUTFILE)
-			outfile(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == OUTFILEOVER)
-			outfileover(cmd_line->token[i].word, cmd_line);
-		else if (cmd_line->token[i].type == LIMITOR)
+		if (cmd_line->token[i].type == T_WORD_NULL)
 		{
-			if (cmd_line->infile >= 0)
-				close(cmd_line->infile);
-			if (cmd_line->token[i].flag_env == 1)
-				here_doc(cmd_line->token[i].origin, cmd_line, env,
-					cmd_line->token[i].flag_quotes);
-			else
-				here_doc(cmd_line->token[i].word, cmd_line, env,
-					cmd_line->token[i].flag_quotes);
+			ft_putstr_fd(cmd_line->token[i].origin, 2);
+			ft_putstr_fd(": ambigous redirect\n", 2);
+			exec_exit_free_all(1, exec, cmd_line->begin, &env);
 		}
+		if (cmd_line->token[i].type == INFILE)
+			infile(cmd_line->token[i].word, cmd_line, exec, env);
+		else if (cmd_line->token[i].type == OUTFILE)
+			outfile(cmd_line->token[i].word, cmd_line, exec, env);
+		else if (cmd_line->token[i].type == OUTFILEOVER)
+			outfileover(cmd_line->token[i].word, cmd_line, exec, env);
+		else if (cmd_line->token[i].type == LIMITOR)
+			heredoc_redirect(cmd_line, exec, env, i);
 		i++;
 	}
 }

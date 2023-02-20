@@ -104,6 +104,7 @@ typedef struct s_exec
 	int		*pipe;
 	int		id;
 	int		flag;
+	int		flag_quotes;
 	char	**envp;
 }	t_exec;
 
@@ -121,7 +122,6 @@ typedef struct s_env_list
 }	t_env_list;
 
 extern struct s_global		g_global;
-
 /*****************Env********************/
 void			init_env_signal(char **env, t_env_list **env_list);
 int				init_env(char *origin, char **key, char **value);
@@ -210,11 +210,14 @@ void			close_pipes(t_exec *exec, t_cmd_line *cmd_line);
 void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list **env);
 int				create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int				count_pipes(t_cmd_line *cmd_line);
-void			here_doc(char *argv, t_cmd_line *cmd_line,
-					t_env_list *env, int flag_quotes);
-void			infile(char *word, t_cmd_line *cmd_line);
-void			outfile(char *word, t_cmd_line *cmd_line);
-void			outfileover(char *word, t_cmd_line *cmd_line);
+void			here_doc(char *argv, t_exec *exec, t_cmd_line *cmd_line,
+					t_env_list *env);
+void			infile(char *word, t_cmd_line *cmd_line, t_exec *exec,
+					t_env_list *env);
+void			outfile(char *word, t_cmd_line *cmd_line, t_exec *exec,
+					t_env_list *env);
+void			outfileover(char *word, t_cmd_line *cmd_line, t_exec *exec,
+					t_env_list *env);
 void			get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env);
 void			check_if_builtin(t_exec *exec, t_cmd_line *line,
 					t_env_list **envp);
