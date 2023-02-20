@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 02:13:18 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/17 17:37:26 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_path(t_env_list *env)
 	return (NULL);
 }
 
-int	exec(t_cmd_line *cmd_line, t_env_list **env)
+int	exec(t_cmd_line *cmd_line, t_env_list *env)
 {
 	int			status;
 	t_exec		exec;
@@ -59,11 +59,11 @@ int	exec(t_cmd_line *cmd_line, t_env_list **env)
 	exec.pipe_nb = count_pipes(cmd_line) / 2;
 	if (!exec.pipe)
 		ft_error("Allocation error", STDERR_FILENO);
-	exec.cmd_paths = ft_split(get_path(*env), ':');
+	exec.cmd_paths = ft_split(get_path(env), ':');
 	if (create_pipes(&exec, cmd_line) == 0)
 		return (0);
 	exec.id = -1;
-	exec.envp = create_envp_char(*env);
+	exec.envp = create_envp_char(env);
 	tmp = cmd_line;
 	while (exec.id++ < exec.pipe_nb - 1)
 	{
