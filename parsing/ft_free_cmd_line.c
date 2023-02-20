@@ -6,12 +6,11 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 05:33:51 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 18:57:16 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 19:12:38 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	ft_free_token_list2(t_token_list *tokens)
 {

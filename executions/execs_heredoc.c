@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 18:38:37 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 19:13:24 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_new_dollar_str(char *buf, t_env_list *env, int head, int tail)
 	if (!new_word)
 		ft_error("Allocation error", STDERR_FILENO);
 	ft_strjoin_word(new_word, value, ft_substr(buf, 0, head), ft_substr(buf,
-				tail + 1, ft_strlen(buf)));
+			tail + 1, ft_strlen(buf)));
 	free(key);
 	free(value);
 	free(buf);
@@ -78,9 +78,9 @@ void	loop(char *argv, t_cmd_line *cmd_line, t_env_list *env, t_exec *exec)
 void	here_doc(char *argv, t_exec *exec, t_cmd_line *cmd_line,
 		t_env_list *env)
 {
-
 	signal(SIGINT, SIG_DFL);
-	cmd_line->infile = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	cmd_line->infile = open(".heredoc_tmp",
+			O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (cmd_line->infile == -1)
 	{
 		perror("heredoc");
