@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:46:23 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 15:40:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 20:21:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_merge_word_origin(t_token *curr)
 {
 	char	*tmp1;
 	char	*tmp2;
+	int		status;
 
 	if (curr->origin && !curr->next->origin)
 	{
@@ -37,6 +38,7 @@ void	ft_merge_word_origin(t_token *curr)
 	{
 		tmp1 = curr->word;
 		tmp2 = curr->next->origin;
+		status = 1;
 	}
 	else if (curr->origin && curr->next->origin)
 	{
@@ -46,9 +48,8 @@ void	ft_merge_word_origin(t_token *curr)
 	else
 		return ;
 	curr->origin = ft_strjoin(tmp1, tmp2);
-	if (!curr->origin)
-		ft_error("Allocation Error", STDERR_FILENO);
-	free(tmp1);
+	if (status != 1)
+		free(tmp1);
 }
 
 void	copy_cmd_line(t_cmd_line *t_cmd, t_token **head)

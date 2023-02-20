@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 13:11:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 23:39:13 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 
 	key = ft_substr(token->word, head + 1, tail - head);
 	value = find_value_by_key(env, key, token);
+	if (!ft_strcmp(key, "?"))
+	{
+		free(value);
+		value = ft_itoa(g_global.ret);
+	}
 	new_word = (char *)malloc(sizeof(char)
 			* (ft_strlen(token->word)
 				- (tail - head) + ft_strlen(value) + 1));
@@ -84,11 +89,6 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 		ft_substr(token->word, tail + 1, ft_strlen(token->word)));
 	free(key);
 	free(value);
-	if (!ft_strcmp(token->word, "$?"))
-	{
-		free(new_word);
-		new_word = ft_itoa(g_global.ret);
-	}
 	return (new_word);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:27:36 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 21:25:48 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 02:13:27 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	parent_free(t_exec *exec, t_cmd_line *line)
 	int			i;
 	t_cmd_line	*tmp;
 
+	if (g_global.ret == 131)
+		write (1, "Quit\n", 5);
 	i = -1;
 	if (exec->cmd_paths)
 	{
@@ -71,7 +73,7 @@ void	msg_error(char *str)
 	exit(2);
 }
 
-void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp)
+void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list **envp)
 {
 	int	ret;
 
@@ -81,11 +83,11 @@ void	check_if_builtin(t_exec *exec, t_cmd_line *line, t_env_list *envp)
 	else if (ft_strncmp(line->cmd_args[0], "echo", 5) == 0)
 		ret = echo(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "env", 4) == 0)
-		ret = env(line->cmd_args, envp, 0);
+		ret = env(line->cmd_args, *envp, 0);
 	else if (ft_strncmp(line->cmd_args[0], "exit", 5) == 0)
 		ret = exit_cmd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "export", 7) == 0)
-		ret = export(line->cmd_args, envp);
+		ret = export(line->cmd_args, *envp);
 	else if (ft_strncmp(line->cmd_args[0], "pwd", 4) == 0)
 		ret = pwd(line->cmd_args);
 	else if (ft_strncmp(line->cmd_args[0], "unset", 6) == 0)

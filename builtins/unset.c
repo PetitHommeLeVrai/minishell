@@ -6,57 +6,65 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:55 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/16 23:52:37 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 21:48:10 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#define TMP_NULL 1
-#define NEXT_NULL 2
+#define PREV 1000
+#define NEXT 2000
 
-void	free_env_list(t_env_list **env_list, t_env_list *tmp,
-	t_env_list *cp, int type)
+void	free_env_list(t_env_list **target)
 {
-	if (type == TMP_NULL)
-		*env_list = cp->next;
-	else if (type == NEXT_NULL)
-		tmp->next = NULL;
-	else
-		tmp->next = cp->next;
-	free(cp->content->origin);
-	free(cp->content->key);
-	if (cp->content->value)
-		free(cp->content->value);
-	free(cp->content);
-	cp->next = NULL;
-	free(cp);
+	free(((t_env *)((*target)->content))->origin);
+	free(((t_env *)((*target)->content))->key);
+	if (((t_env *)((*target)->content))->value != NULL)
+		free(((t_env *)((*target)->content))->value);
+	free(((*target)->content));
+	(*target)->next = NULL;
+	free(*target);
 }
 
-void	unset_env(t_env_list **env_list, char *key)
+void	delete_list_by_key(t_env_list **list,
+		t_env_list **prev, t_env_list **curr)
 {
-	t_env_list	*cp_env_list;
-	t_env_list	*tmp_env_list;
-
-	cp_env_list = *env_list;
-	tmp_env_list = NULL;
-	while (cp_env_list)
+	if ((*prev) == NULL)
 	{
-		if (ft_strcmp(((t_env *)cp_env_list->content)->key, key) == 0)
-		{
-			if (!tmp_env_list)
-				free_env_list(env_list, tmp_env_list, cp_env_list, TMP_NULL);
-			else if (!cp_env_list->next)
-				free_env_list(env_list, tmp_env_list, cp_env_list, NEXT_NULL);
-			else
-				free_env_list(env_list, tmp_env_list, cp_env_list, 0);
-			break ;
-		}
-		tmp_env_list = cp_env_list;
-		cp_env_list = cp_env_list->next;
+		*list = (*curr)->next;
+		free_env_list(curr);
+	}
+	else if ((*curr)->next == NULL)
+	{
+		(*prev)->next = NULL;
+		free_env_list(curr);
+	}
+	else
+	{
+		(*prev)->next = (*curr)->next;
+		free_env_list(curr);
 	}
 }
 
-int	unset(char **cmd, t_env_list *env_list)
+void	unset_env(t_env_list **env_list, char *target_key)
+{
+	t_env_list	*curr;
+	t_env_list	*prev;
+
+	curr = *env_list;
+	prev = NULL;
+	while (curr)
+	{
+		if (ft_strcmp(((t_env *)((curr)->content))->key, target_key) == 0)
+		{
+			delete_list_by_key(env_list, &prev, &curr);
+			break ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
+
+int	unset(char **cmd, t_env_list **env_list)
 {
 	int		i;
 	char	*key;
@@ -68,17 +76,14 @@ int	unset(char **cmd, t_env_list *env_list)
 	while (cmd[++i])
 	{
 		key = cmd[i];
-		env = find_env_by_key(env_list, key);
+		env = find_env_by_key(*env_list, key);
 		if (!env)
 		{
-			printf("bash: unset: `%s': not a valid identifier\n", cmd[i]);
+			printf("unset: `%s': not a valid identifier\n", cmd[i]);
 			return (2);
 		}
 		else
-		{
-			unset_env(&env_list, key);
-			return (0);
-		}
+			unset_env(env_list, key);
 	}
 	return (0);
 }

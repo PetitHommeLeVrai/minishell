@@ -6,13 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:05:41 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/18 01:29:21 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 22:04:46 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_2(t_exec *exec, t_cmd_line *line, t_env_list *env)
+int	check_2(t_exec *exec, t_cmd_line *line, t_env_list **env)
 {
 	if ((line->cmd_args[0][0] == '.' && line->cmd_args[0][1] == '/')
 		|| line->cmd_args[0][0] == '/')
@@ -29,7 +29,7 @@ int	check_2(t_exec *exec, t_cmd_line *line, t_env_list *env)
 	return (0);
 }
 
-void	check_exceptions(t_exec *exec, t_cmd_line *line, t_env_list *env)
+void	check_exceptions(t_exec *exec, t_cmd_line *line, t_env_list **env)
 {
 	if (ft_strlen(line->cmd_args[0]) == 1 && line->cmd_args[0][0] == '.')
 	{
@@ -38,7 +38,7 @@ void	check_exceptions(t_exec *exec, t_cmd_line *line, t_env_list *env)
 	}
 }
 
-int	check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list *env)
+int	check_is_absolute_path(t_exec *exec, t_cmd_line *line, t_env_list **env)
 {
 	check_exceptions(exec, line, env);
 	if (exec->flag == 1)
@@ -73,7 +73,7 @@ int	get_flag(t_cmd_line *cmd_line)
 	return (0);
 }
 
-void	put_right_message(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
+void	put_right_message(t_exec *exec, t_cmd_line *cmd_line, t_env_list **env)
 {
 	char	*str;
 

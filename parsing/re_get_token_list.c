@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 20:16:41 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 19:29:03 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,14 @@ t_token	*re_get_token_list(t_token *token, char *word)
 	t_token	*tmp_token;
 	int		i;
 
-	i = -1;
+	i = 0;
 	word_split = ft_split(word, ' ');
 	if (!word_split)
 		ft_error("Allocation Error", STDERR_FILENO);
 	tmp_token = token;
+	free(tmp_token->word);
+	tmp_token->word = ft_strdup(word_split[0]);
+	tmp_token->type = T_WORD;
 	while (word_split[++i])
 	{
 		ft_token_add_middle(tmp_token);

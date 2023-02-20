@@ -143,8 +143,8 @@ void			get_new_dollar(t_token *token,
 					int head_dollar, t_env_list *env);
 int				check_count_dollar(char *word);
 t_token			*re_get_token_list(t_token *token, char *word);
-void			ft_free_all_env(t_env_list *env_list);
-void			update_env_value(t_env_list *env, char *key, char *value);
+void			ft_free_all_env(t_env_list **env_list);
+void			update_env_value(t_env_list **env, char *key, char *value);
 
 /*****************Token********************/
 int				check_quotes_incmd(char *cmd);
@@ -200,46 +200,47 @@ void			ft_cmd_add_back(t_cmd_line **head, t_cmd_line *cmd);
 void			copy_cmd_line(t_cmd_line *t_cmd, t_token **head);
 
 /*****************Exec********************/
-int				exec(t_cmd_line *cmd_line, t_env_list *env);
+int				exec(t_cmd_line *cmd_line, t_env_list **env);
 void			parent_free(t_exec *exec, t_cmd_line *line);
 void			parent_free2(t_cmd_line *tmp);
 void			msg_error(char *str);
 void			close_pipes(t_exec *exec, t_cmd_line *cmd_line);
-void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env);
+void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list **env);
 int				create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int				count_pipes(t_cmd_line *cmd_line);
-void			here_doc(char *argv, t_cmd_line *cmd_line);
+void			here_doc(char *argv, t_cmd_line *cmd_line,
+					t_env_list *env, int flag_quotes);
 void			infile(char *word, t_cmd_line *cmd_line);
 void			outfile(char *word, t_cmd_line *cmd_line);
 void			outfileover(char *word, t_cmd_line *cmd_line);
-void			get_files(t_exec *exec, t_cmd_line *cmd_line);
+void			get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env);
 void			check_if_builtin(t_exec *exec, t_cmd_line *line,
-					t_env_list *envp);
+					t_env_list **envp);
 void			sub_dup(t_exec *exec, t_cmd_line *cmd_line);
 void			last_cmd_dup(t_exec *exec, t_cmd_line *cmd_line);
 char			**create_envp_char(t_env_list *env);
 int				check_is_absolute_path(t_exec *exec, t_cmd_line *line,
-					t_env_list *env);
+					t_env_list **env);
 int				get_flag(t_cmd_line *cmd_line);
 void			put_right_message(t_exec *exec, t_cmd_line *cmd_line,
-					t_env_list *env);
+					t_env_list **env);
 void			exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
-					t_env_list *env);
+					t_env_list **env);
 void			set_ret(int status);
 char			**get_args_incmd(t_cmd_line *cmd_line);
 char			*get_path(t_env_list *env);
 int				exec_helper(t_exec *exec, t_cmd_line *cmd_line,
-					t_env_list *env_list);
-void			isdir(t_exec *exec, t_cmd_line *line, t_env_list *env);
+					t_env_list **env_list);
+void			isdir(t_exec *exec, t_cmd_line *line, t_env_list **env);
 
 /*****************Builtin********************/
 
-int				cd(char **cmd, t_env_list *env);
+int				cd(char **cmd, t_env_list **env);
 int				echo(char **cmd);
 int				env(char **cmd, t_env_list *env_list, int flag);
 int				export(char **cmd, t_env_list *env_list);
 int				exit_cmd(char **cmd);
 int				pwd(char **cmd);
-int				unset(char **cmd, t_env_list *env_list);
+int				unset(char **cmd, t_env_list **env_list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/19 15:34:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 02:13:13 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_there_space(char *str)
 	return (1);
 }
 
-void	parsing(t_env_list *env_list, char *str)
+void	parsing(t_env_list **env_list, char *str)
 {
 	t_token_list	*token_list;
 	t_cmd_line		*cmd_line;
@@ -43,7 +43,7 @@ void	parsing(t_env_list *env_list, char *str)
 	token_list = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!token_list)
 		ft_error("Allocation failed", STDERR_FILENO);
-	status = get_token_list(str, env_list, token_list);
+	status = get_token_list(str, *env_list, token_list);
 	if (status < 0)
 	{
 		con_error_status(token_list, status);
@@ -62,7 +62,7 @@ void	prompt(t_env_list **env_list)
 	{
 		str = readline("$> ");
 		if (str)
-			parsing(*env_list, str);
+			parsing(env_list, str);
 		else
 		{
 			printf("exit\n");
@@ -85,5 +85,5 @@ int	main(int ac, char **av, char **envp)
 	//(void)envp;
 	init_env_signal(envp, &env_list);
 	prompt(&env_list);
-	ft_free_all_env(env_list);
+	ft_free_all_env(&env_list);
 }

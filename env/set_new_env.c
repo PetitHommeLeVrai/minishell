@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:09:40 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 15:58:16 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 23:32:08 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*find_value_by_key(t_env_list *env_list, char *key, t_token *token)
 	if (!env)
 	{
 		value = ft_strdup("");
-		if (ft_strcmp(key, "?"))
+		if (ft_strcmp(key, "?") && token)
 			token->type = T_WORD_NULL;
 	}
 	else

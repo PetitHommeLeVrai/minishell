@@ -6,13 +6,13 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:13:08 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/18 03:10:55 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/19 22:01:49 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	isdir(t_exec *exec, t_cmd_line *line, t_env_list *env)
+void	isdir(t_exec *exec, t_cmd_line *line, t_env_list **env)
 {
 	struct stat	path;
 
