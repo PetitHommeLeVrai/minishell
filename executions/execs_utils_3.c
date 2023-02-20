@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 16:31:59 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 13:06:14 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 14:13:30 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,
 
 void	set_ret(int status)
 {
-	g_global.child = 0;
 	if (WIFEXITED(status))
 		g_global.ret = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
@@ -54,4 +53,5 @@ void	waiter(t_exec *exec, t_cmd_line *tmp)
 		if (tmp->tmp != -1 && waitpid(-1, &status, 0) == tmp->tmp)
 			set_ret(status);
 	}
+	g_global.child = 0;
 }

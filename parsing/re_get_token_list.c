@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 19:29:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 15:33:03 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	ft_is_space(char *cmd)
 	return (0);
 }
 
-void	get_new_dollar(t_token *token, int head_dollar, t_env_list *env)
+void	get_new_dollar(t_token *token, int head_dollar,
+		t_env_list *env)
 {
 	int		tail_dollar;
 	char	*new_word;
@@ -81,6 +82,7 @@ t_token	*re_get_token_list(t_token *token, char *word)
 		tmp_token = tmp_token->next;
 		tmp_token->word = ft_strdup(word_split[i]);
 		tmp_token->type = T_WORD;
+		tmp_token->flag_env = 1;
 	}
 	i = -1;
 	while (word_split[++i])

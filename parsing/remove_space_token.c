@@ -6,11 +6,23 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:42:18 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 19:38:25 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 16:17:50 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	skip_heredoc_token(t_token **tmp)
+{
+	if ((*tmp)->type == 32 && (*tmp))
+	{
+		if ((*tmp)->next->type == T_SPACE)
+			(*tmp) = (*tmp)->next->next;
+		while ((*tmp) && ((*tmp)->type != T_SPACE && (*tmp)->type != T_PIPE
+				&& !((*tmp)->type >= 30 && (*tmp)->type <= 33)))
+			(*tmp) = (*tmp)->next;
+	}
+}
 
 void	ft_token_merge(t_token *curr)
 {
@@ -27,6 +39,7 @@ void	ft_token_merge(t_token *curr)
 		free(tmp1);
 		ft_merge_word_origin(curr);
 		ft_token_remove_next(curr);
+		curr->type = T_WORD;
 		curr->flag_quotes = 1;
 	}
 }
@@ -50,7 +63,7 @@ void	remove_space_token(t_token *head)
 		else if ((curr->type == T_WORD || curr->type == T_SINGLE_QUOTES
 				|| curr->type == T_DOUBLE_QUOTES)
 			&& (curr->next->type == T_SINGLE_QUOTES
-				|| (curr->next->type == T_WORD && curr->flag_env == -1)
+				|| (curr->next->type == T_WORD && (curr->flag_env == -1))
 				|| curr->next->type == T_DOUBLE_QUOTES))
 			ft_token_merge(curr);
 		else

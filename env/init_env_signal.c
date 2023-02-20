@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 01:46:44 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 02:07:03 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 14:14:18 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	signal_handler(int signo)
 		}
 		else
 		{
-			write(1, "\n", 1);
+			printf("\n");
 			rl_on_new_line();
 			rl_replace_line("", 1);
 		}

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 21:15:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 23:39:13 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/20 16:21:33 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 	char	*value;
 	char	*new_word;
 
+	if (token->word)
 	key = ft_substr(token->word, head + 1, tail - head);
 	value = find_value_by_key(env, key, token);
 	if (!ft_strcmp(key, "?"))
@@ -92,17 +93,18 @@ char	*get_new_word(t_token *token, t_env_list *env, int head, int tail)
 	return (new_word);
 }
 
-void	check_env_token(t_token_list *token_list, t_env_list *env)
+void	check_env_token(t_token_list *token_list,
+		t_env_list *env, int count_dollar)
 {
 	int		head_dollar;
 	t_token	*tmp;
-	int		count_dollar;
 
 	tmp = token_list->head;
 	head_dollar = -1;
 	while (tmp)
 	{
-		if (tmp->type != T_SINGLE_QUOTES && tmp->type != T_SPACE)
+		skip_heredoc_token(&tmp);
+		if (tmp && tmp->type != T_SINGLE_QUOTES && tmp->type != T_SPACE)
 		{
 			count_dollar = check_count_dollar(tmp->word);
 			while (count_dollar-- > 0)
@@ -116,7 +118,7 @@ void	check_env_token(t_token_list *token_list, t_env_list *env)
 				tmp = re_get_token_list(tmp, tmp->word);
 			tmp = tmp->next;
 		}
-		else
+		else if (tmp)
 			tmp = tmp->next;
 	}
 }

@@ -145,6 +145,7 @@ int				check_count_dollar(char *word);
 t_token			*re_get_token_list(t_token *token, char *word);
 void			ft_free_all_env(t_env_list **env_list);
 void			update_env_value(t_env_list **env, char *key, char *value);
+void			skip_heredoc_token(t_token **tmp);
 
 /*****************Token********************/
 int				check_quotes_incmd(char *cmd);
@@ -169,7 +170,8 @@ void			cmd_tokenizer_single_quotes(char *cmd, t_token *token,
 					int *idx);
 void			cmd_tokenizer_space(char *cmd, t_token *token, int *idx);
 void			cmd_tokenizer_word(char *cmd, t_token *token, int *idx);
-void			check_env_token(t_token_list *token_list, t_env_list *env);
+void			check_env_token(t_token_list *token_list,
+					t_env_list *env, int count_dollar);
 char			*get_new_word(t_token *token, t_env_list *env, int head,
 					int tail);
 char			*ft_strjoin_word(char *word, char *value, char *head,

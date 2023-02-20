@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 13:06:06 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 14:06:42 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	exec(t_cmd_line *cmd_line, t_env_list **env)
 		if (tmp->next)
 			tmp = tmp->next;
 	}
+	g_global.child = exec.id;
 	close_pipes(&exec, cmd_line);
 	waiter(&exec, tmp);
 	return (parent_free(&exec, cmd_line), ft_free_cmd_line(cmd_line), 1);
