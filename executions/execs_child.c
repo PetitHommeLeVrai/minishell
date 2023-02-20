@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 17:41:49 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 12:58:46 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	return (cmd_args);
 }
 
-char	*get_cmd(t_exec *exec, t_cmd_line *line, t_env_list *env)
+char	*get_cmd(t_exec *exec, t_cmd_line *line, t_env_list **env)
 {
 	char	*tmp;
 	char	*command;
@@ -64,7 +64,7 @@ char	*get_cmd(t_exec *exec, t_cmd_line *line, t_env_list *env)
 	if (check_is_absolute_path(exec, line, env) == 1)
 		return (line->cmd_args[0]);
 	if (!exec->cmd_paths)
-		return (NULL);
+		return (check_when_no_paths(exec, line, env));
 	while (exec->cmd_paths[i])
 	{
 		tmp = ft_strjoin(exec->cmd_paths[i], "/");
@@ -105,8 +105,9 @@ char	**create_envp_char(t_env_list *env)
 	return (envp);
 }
 
-void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
+void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list **env)
 {
+	cmd_line->tmp = -1;
 	if (exec_helper(&exec, cmd_line, env) == 1)
 		return ;
 	g_global.child = 1;
@@ -115,8 +116,9 @@ void	child(t_exec exec, t_cmd_line *cmd_line, t_env_list *env)
 		cmd_line->tmp = exec.pid;
 	if (!exec.pid)
 	{
+		signal(SIGQUIT, signal_handler);
 		exec.flag = get_flag(cmd_line);
-		get_files(&exec, cmd_line);
+		get_files(&exec, cmd_line, *env);
 		sub_dup(&exec, cmd_line);
 		close_pipes(&exec, cmd_line);
 		cmd_line->cmd_args = get_args_incmd(cmd_line);

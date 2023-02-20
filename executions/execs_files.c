@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 14:32:01 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/19 23:08:10 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	outfileover(char *word, t_cmd_line *line)
 	}
 }
 
-void	get_files(t_exec *exec, t_cmd_line *cmd_line)
+void	get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
 {
 	int	i;
 
@@ -67,9 +67,11 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line)
 			if (cmd_line->infile >= 0)
 				close(cmd_line->infile);
 			if (cmd_line->token[i].flag_env == 1)
-				here_doc(cmd_line->token[i].origin, cmd_line);
+				here_doc(cmd_line->token[i].origin, cmd_line, env,
+					cmd_line->token[i].flag_quotes);
 			else
-				here_doc(cmd_line->token[i].word, cmd_line);
+				here_doc(cmd_line->token[i].word, cmd_line, env,
+					cmd_line->token[i].flag_quotes);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 17:37:26 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/20 13:06:06 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,8 @@ char	*get_path(t_env_list *env)
 	return (NULL);
 }
 
-int	exec(t_cmd_line *cmd_line, t_env_list *env)
+int	exec(t_cmd_line *cmd_line, t_env_list **env)
 {
-	int			status;
 	t_exec		exec;
 	t_cmd_line	*tmp;
 
@@ -59,11 +58,11 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 	exec.pipe_nb = count_pipes(cmd_line) / 2;
 	if (!exec.pipe)
 		ft_error("Allocation error", STDERR_FILENO);
-	exec.cmd_paths = ft_split(get_path(env), ':');
+	exec.cmd_paths = ft_split(get_path(*env), ':');
 	if (create_pipes(&exec, cmd_line) == 0)
 		return (0);
 	exec.id = -1;
-	exec.envp = create_envp_char(env);
+	exec.envp = create_envp_char(*env);
 	tmp = cmd_line;
 	while (exec.id++ < exec.pipe_nb - 1)
 	{
@@ -73,10 +72,6 @@ int	exec(t_cmd_line *cmd_line, t_env_list *env)
 			tmp = tmp->next;
 	}
 	close_pipes(&exec, cmd_line);
-	while (exec.id-- >= 0)
-	{
-		if (waitpid(-1, &status, 0) == tmp->tmp)
-			set_ret(status);
-	}
+	waiter(&exec, tmp);
 	return (parent_free(&exec, cmd_line), ft_free_cmd_line(cmd_line), 1);
 }
