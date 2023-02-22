@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:13:08 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/19 22:01:49 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 18:10:40 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,12 @@ void	parent_free2(t_cmd_line *tmp)
 		close(tmp->outfile);
 	tmp->infile = -1;
 	tmp->outfile = -1;
+}
+
+void	heredoc_check_ret(void)
+{
+	if (g_global.ret == -1)
+		g_global.ret = 2;
+	else
+		g_global.ret = 0;
 }

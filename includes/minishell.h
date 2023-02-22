@@ -252,8 +252,9 @@ void			exec_heredoc2(t_cmd_line *cmd_line, int *i,
 void			get_random_heredoc(t_token *token, int j);
 void			heredoc_handler(int signo);
 void			unlink_heredoc_file(t_cmd_line *cmd);
-void			heredoc_exit_free_all(int loop_exit, t_token *token,
+void			heredoc_exit_free_all(char *argv,
 					t_cmd_line *cmd_line, t_env_list **env);
+void			heredoc_check_ret(void);
 
 /*****************Builtin********************/
 

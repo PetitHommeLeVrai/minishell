@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/17 15:20:19 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/22 15:41:26 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	exit_cmd(char **cmd)
 {
 	long long	nb;
 
+	printf("exit\n");
 	if (!cmd[1])
 		return (g_global.ret);
 	if (check_nb(cmd[1]) == 0)
@@ -91,7 +92,7 @@ int	exit_cmd(char **cmd)
 	if (cmd[2])
 	{
 		printf("exit: too many arguments\n");
-		return (127);
+		return (-2);
 	}
 	nb = ft_atoi_exit(cmd[1]);
 	if (nb < 0)

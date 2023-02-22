@@ -3,33 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execs_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 16:31:59 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/22 05:45:32 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 18:09:17 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	heredoc_exit_free_all(int loop_exit, t_token *token,
-		t_cmd_line *cmd_line, t_env_list **env)
+void	heredoc_exit_free_all(char *argv,
+							t_cmd_line *cmd_line,
+							t_env_list **env)
 {
-	t_cmd_line	*tmp;
-
-	(void)token;
-	if (cmd_line)
+	ft_free_all_env(env);
+	ft_free_cmd_line(cmd_line->begin);
+	if (write(0, "\n", 0) != -1)
 	{
-		tmp = cmd_line;
-		while (tmp)
-		{
-			parent_free2(tmp);
-			tmp = tmp->next;
-		}
-		ft_free_cmd_line(cmd_line);
-		ft_free_all_env(env);
+		ft_putstr_fd("here-document delimited by end-of-file (wanted '", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd("')\n", 2);
+		free(argv);
+		exit(1);
 	}
-	exit(loop_exit);
+	free(argv);
+	exit(2);
 }
 
 void	exec_exit_free_all(int ret, t_exec *exec, t_cmd_line *line,

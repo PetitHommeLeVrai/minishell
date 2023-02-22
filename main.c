@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/22 05:53:51 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 16:07:36 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void	parsing(t_env_list **env_list, char *str)
 		return ;
 	}
 	cmd_line = init_cmd_line(cmd_line, token_list);
+	ft_free_token_list2(token_list);
 	if (status_heredoc == 1)
 		status_heredoc = exec_heredoc(cmd_line, env_list);
 	if (status_heredoc == HEREDOC_ERROR)
 		return (unlink_heredoc_file(cmd_line), ft_free_cmd_line(cmd_line));
-	ft_free_token_list2(token_list);
 	exec(cmd_line, env_list);
 }
 

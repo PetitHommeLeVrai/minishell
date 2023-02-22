@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 14:02:23 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 17:52:19 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	cmd_args[count_args(cmd_line)] = NULL;
 	while (i < cmd_line->token_count)
 	{
-		if (cmd_line->token[i].type == ARG)
+		if (cmd_line->token[i].type == ARG
+			|| cmd_line->token[i].type == T_WORD_NULL)
 		{
 			cmd_args[j] = cmd_line->token[i].word;
 			j++;

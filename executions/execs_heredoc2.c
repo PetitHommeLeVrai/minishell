@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_heredoc2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 02:29:55 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/22 05:46:48 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 17:53:13 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	unlink_heredoc_file(t_cmd_line *cmd)
 {
 	int	i;
 
-	i = -1;
 	while (cmd)
 	{
+		i = -1;
 		while (++i < cmd->token_count)
 		{
 			if (cmd->token[i].type == LIMITOR)
@@ -35,7 +35,7 @@ void	heredoc_handler(int signo)
 		write(2, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
-		kill(g_global.pid, SIGTERM);
+		close(0);
 	}
 }
 
@@ -54,6 +54,7 @@ void	get_random_heredoc(t_token *token, int j)
 void	exec_heredoc2(t_cmd_line *cmd_line, int *i, t_env_list **env, int *j)
 {
 	char	*argv;
+	int		fd;
 
 	if (cmd_line->token[*i].type == LIMITOR)
 	{
@@ -61,7 +62,9 @@ void	exec_heredoc2(t_cmd_line *cmd_line, int *i, t_env_list **env, int *j)
 		{
 			get_random_heredoc(&cmd_line->token[*i], (*j)++);
 			here_doc(cmd_line->token[*i].origin,
-				&cmd_line->token[*i], cmd_line, env);
+				&cmd_line->token[*i],
+				cmd_line,
+				env);
 		}
 		else
 		{
@@ -70,6 +73,7 @@ void	exec_heredoc2(t_cmd_line *cmd_line, int *i, t_env_list **env, int *j)
 			here_doc(argv, &cmd_line->token[*i], cmd_line, env);
 			free(argv);
 		}
+		fd = open("/dev/stdin", O_TRUNC | O_CREAT | O_RDWR, 0000644);
+		dup2(fd, 0);
 	}
-
 }

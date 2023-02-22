@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 04:28:10 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 12:40:00 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/22 15:37:55 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,14 @@ int	check_if_builtin2(t_exec *exec, t_cmd_line *line, t_env_list **envp)
 	else if (ft_strncmp(line->cmd_args[0], "exit", 5) == 0)
 	{
 		ret = exit_cmd(line->cmd_args);
-		exec_exit_free_all(ret, exec, line->begin, envp);
+		if (ret != -2)
+			exec_exit_free_all(ret, exec, line->begin, envp);
 	}
 	else if (ft_strncmp(line->cmd_args[0], "export", 7) == 0)
 		ret = export(line->cmd_args, *envp);
 	else if (ft_strncmp(line->cmd_args[0], "unset", 6) == 0)
 		ret = unset(line->cmd_args, envp);
-	return (ret);
+	return (g_global.ret);
 }
 
 int	exec_helper(t_exec *exec, t_cmd_line *cmd_line, t_env_list **env_list)
