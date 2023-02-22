@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/19 16:59:49 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/22 05:51:36 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,11 @@ SRC =	main.c \
 		parsing/utils_list.c \
 		parsing/remove_space_token.c \
 		parsing/utils_list2.c \
+		parsing/syntax_error_heredoc.c \
 		executions/execs_child.c \
 		executions/execs_files.c \
 		executions/execs_heredoc.c \
+		executions/execs_heredoc2.c \
 		executions/execs_main.c \
 		executions/execs_sub_dup.c \
 		executions/execs_utils.c \

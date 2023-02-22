@@ -6,13 +6,27 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:37:15 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 18:20:02 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 05:53:51 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 t_global	g_global;
+
+int	check_heredoc(t_token *token)
+{
+	while (token->next)
+	{
+		if (token->type == HEREDOC_CHAR)
+		{
+			if (token->next->type == LIMITOR)
+				return (1);
+		}
+	token = token->next;
+	}
+	return (0);
+}
 
 int	is_there_space(char *str)
 {
@@ -30,26 +44,26 @@ void	parsing(t_env_list **env_list, char *str)
 	t_token_list	*token_list;
 	t_cmd_line		*cmd_line;
 	int				status;
+	int				status_heredoc;
 
 	if (is_there_space(str))
 		return ;
-	status = check_quotes_incmd(str);
-	if (status < 0)
-	{
-		con_error_status2(status);
-		return ;
-	}
 	cmd_line = NULL;
 	token_list = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!token_list)
 		ft_error("Allocation failed", STDERR_FILENO);
 	status = get_token_list(str, *env_list, token_list);
+	status_heredoc = check_heredoc(token_list->head);
 	if (status < 0)
 	{
-		con_error_status(token_list, status);
+		con_error_status(token_list, status, status_heredoc);
 		return ;
 	}
 	cmd_line = init_cmd_line(cmd_line, token_list);
+	if (status_heredoc == 1)
+		status_heredoc = exec_heredoc(cmd_line, env_list);
+	if (status_heredoc == HEREDOC_ERROR)
+		return (unlink_heredoc_file(cmd_line), ft_free_cmd_line(cmd_line));
 	ft_free_token_list2(token_list);
 	exec(cmd_line, env_list);
 }
@@ -57,12 +71,19 @@ void	parsing(t_env_list **env_list, char *str)
 void	prompt(t_env_list **env_list)
 {
 	char	*str;
+	int		status;
 
 	while (1)
 	{
 		str = readline("$> ");
 		if (str)
-			parsing(env_list, str);
+		{
+			status = check_quotes_incmd(str);
+			if (status < 0)
+				con_error_status2(status);
+			else
+				parsing(env_list, str);
+		}
 		else
 		{
 			ft_putstr_fd("exit\n", 2);

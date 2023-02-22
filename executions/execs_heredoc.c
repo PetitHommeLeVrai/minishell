@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 19:13:24 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 05:51:38 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,44 +56,76 @@ void	write_in_heredoc(int file, char *buf, t_env_list *env, int flag_quotes)
 	write(file, "\n", 1);
 }
 
-void	loop(char *argv, t_cmd_line *cmd_line, t_env_list *env, t_exec *exec)
+void	loop(char *argv, int fd, t_env_list *env, int flag_quotes)
 {
 	char	*buf;
 
 	while (1)
 	{
 		buf = readline("> ");
-		if (!buf)
+		if (buf)
 		{
-			printf("\n");
-			break ;
+			if (!ft_strncmp(argv, buf, ft_strlen(argv) + 1))
+			{
+				free(buf);
+				break ;
+			}
+			write_in_heredoc(fd, buf, env, flag_quotes);
 		}
-		if (!ft_strncmp(argv, buf, ft_strlen(argv) + 1))
-			break ;
-		write_in_heredoc(cmd_line->infile, buf, env, exec->flag_quotes);
+		else
+		{
+			ft_putstr_fd("here-document delimited by end-of-file\n'", 2);
+			exit(1);
+		}
+		free(buf);
 	}
-	free(buf);
+	exit(0);
 }
 
-void	here_doc(char *argv, t_exec *exec, t_cmd_line *cmd_line,
-		t_env_list *env)
+void	here_doc(char *argv, t_token *token,
+		t_cmd_line *cmd_line, t_env_list **env)
 {
-	signal(SIGINT, SIG_DFL);
-	cmd_line->infile = open(".heredoc_tmp",
-			O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-	if (cmd_line->infile == -1)
+	int	fd;
+	int	status;
+
+	(void)cmd_line;
+	fd = open(token->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	g_global.pid = fork();
+	signal(SIGINT, heredoc_handler);
+	if (g_global.pid == 0)
+		loop(argv, fd, *env, token->flag_quotes);
+	else if (g_global.pid > 0)
 	{
-		perror("heredoc");
-		exec_exit_free_all(2, exec, cmd_line->begin, &env);
-	}
-	loop(argv, cmd_line, env, exec);
-	close(cmd_line->infile);
-	cmd_line->infile = open(".heredoc_tmp", O_RDONLY);
-	if (cmd_line->infile == -1)
-	{
-		unlink(".heredoc_tmp");
-		perror("heredoc");
-		exec_exit_free_all(2, exec, cmd_line->begin, &env);
+		waitpid(g_global.pid, &status, 0);
+		if (WIFEXITED(status) == 0)
+			g_global.ret = HEREDOC_ERROR;
+		else
+			g_global.ret = WEXITSTATUS(status);
 	}
 	signal(SIGINT, signal_handler);
+	close(fd);
+}
+
+int	exec_heredoc(t_cmd_line *cmd_line_origin, t_env_list **env)
+{
+	int			i;
+	int			j;
+	t_cmd_line	*cmd_line;
+
+	j = 0;
+	cmd_line = cmd_line_origin;
+	while (cmd_line)
+	{
+		i = -1;
+		while (++i < cmd_line->token_count)
+			exec_heredoc2(cmd_line, &i, env, &j);
+		cmd_line = cmd_line->next;
+		if (g_global.ret == HEREDOC_ERROR)
+		{
+			printf("%d", g_global.ret);
+			g_global.ret = 130;
+			return (HEREDOC_ERROR);
+		}
+	}
+	return (0);
 }

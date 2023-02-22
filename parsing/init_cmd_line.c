@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:19:38 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 15:40:02 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 04:42:00 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_cmd_line	*new_cmd_line(void)
 	new_cmds->infile = -1;
 	new_cmds->outfile = -1;
 	new_cmds->cmd_args = NULL;
+	new_cmds->fd = -1;
 	return (new_cmds);
 }
 

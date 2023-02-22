@@ -56,13 +56,15 @@
 # define ERR_SYNTAX_PIPE -201
 # define ERR_SYNTAX_NEWLINE -202
 # define ERR_AMBIGUOUS -203
+# define HEREDOC_ERROR 999
 
 typedef struct s_cmd_line	t_cmd_line;
 typedef struct s_token		t_token;
 typedef struct s_global
 {
-	int	ret;
-	int	child;
+	int		ret;
+	int		child;
+	pid_t	pid;
 }					t_global;
 
 struct s_token
@@ -93,6 +95,7 @@ struct s_cmd_line
 	int				infile;
 	int				outfile;
 	char			**cmd_args;
+	int				fd;
 };
 
 typedef struct s_exec
@@ -155,7 +158,8 @@ int				find_quote_return(int type);
 int				find_quote(char *cmd, int i, int type);
 int				handle_syntax_error(t_token *err, t_token *next,
 					t_token *prev, int status);
-void			con_error_status(t_token_list *token_list, int status);
+void			con_error_status(t_token_list *token_list, int status,
+					int status_heredoc);
 void			con_error_status2(int status);
 void			con_error_status3(t_token_list *tokens, int status);
 int				get_token_list(char *cmd_origin, t_env_list *env,
@@ -179,6 +183,7 @@ char			*ft_strjoin_word(char *word, char *value, char *head,
 int				find_tail_dollar(char *word, int i);
 int				check_token_have_env(char *word);
 int				syntax_check(t_token *head);
+void			syntax_error_heredoc(t_token_list *tokens);
 int				is_which_quote(char cmd);
 int				find_quote_return(int type);
 void			ft_free_token_list2(t_token_list *tokens);
@@ -210,8 +215,8 @@ void			close_pipes(t_exec *exec, t_cmd_line *cmd_line);
 void			child(t_exec exec, t_cmd_line *cmd_line, t_env_list **env);
 int				create_pipes(t_exec *exec, t_cmd_line *cmd_line);
 int				count_pipes(t_cmd_line *cmd_line);
-void			here_doc(char *argv, t_exec *exec, t_cmd_line *cmd_line,
-					t_env_list *env);
+void			here_doc(char *argv, t_token *token,
+					t_cmd_line *cmd_line, t_env_list **env);
 void			infile(char *word, t_cmd_line *cmd_line, t_exec *exec,
 					t_env_list *env);
 void			outfile(char *word, t_cmd_line *cmd_line, t_exec *exec,
@@ -240,6 +245,15 @@ void			isdir(t_exec *exec, t_cmd_line *line, t_env_list **env);
 char			*check_when_no_paths(t_exec *exec, t_cmd_line *line,
 					t_env_list **env);
 void			waiter(t_exec *exec, t_cmd_line *tmp);
+int				exec_heredoc(t_cmd_line *cmd_line_origin,
+					t_env_list **env_list);
+void			exec_heredoc2(t_cmd_line *cmd_line, int *i,
+					t_env_list **env, int *j);
+void			get_random_heredoc(t_token *token, int j);
+void			heredoc_handler(int signo);
+void			unlink_heredoc_file(t_cmd_line *cmd);
+void			heredoc_exit_free_all(int loop_exit, t_token *token,
+					t_cmd_line *cmd_line, t_env_list **env);
 
 /*****************Builtin********************/
 

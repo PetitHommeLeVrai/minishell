@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:34:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 18:57:50 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 05:56:02 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	handle_syntax_error(t_token *err, t_token *next, t_token *prev, int status)
 	return (ERR_SYNTAX);
 }
 
-void	con_error_status(t_token_list *token_list, int status)
+void	con_error_status(t_token_list *token_list, int status,
+		int heredoc)
 {
 	if (status == ERR_SYNTAX_PIPE)
 		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
@@ -36,6 +37,8 @@ void	con_error_status(t_token_list *token_list, int status)
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	else if (status == ERR_SYNTAX)
 		con_error_status3(token_list, status);
+	if (heredoc == 1)
+		syntax_error_heredoc(token_list);
 	ft_free_token_list2(token_list);
 }
 
@@ -59,7 +62,7 @@ void	con_error_status3(t_token_list *tokens, int status)
 	t_token	*tmp;
 
 	tmp = tokens->head;
-	while (tmp->type == status)
+	while (tmp->type != status)
 		tmp = tmp->next;
 	ft_putstr_fd("syntax error near unexpected token ", 2);
 	ft_putstr_fd(tmp->word, 2);

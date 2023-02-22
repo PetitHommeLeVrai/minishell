@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:11:32 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 14:06:42 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/22 03:21:08 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int	exec(t_cmd_line *cmd_line, t_env_list **env)
 	g_global.child = exec.id;
 	close_pipes(&exec, cmd_line);
 	waiter(&exec, tmp);
+	unlink_heredoc_file(cmd_line);
 	return (parent_free(&exec, cmd_line), ft_free_cmd_line(cmd_line), 1);
 }
