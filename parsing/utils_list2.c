@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:46:23 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 17:04:18 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 17:36:56 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,11 @@ int	ft_isnot_sep(t_token **curr)
 	return (0);
 }
 
-void	ft_merge_word_origin(t_token *curr)
+void	ft_merge_word_origin(t_token *curr, int status)
 {
 	char	*tmp1;
 	char	*tmp2;
-	int		status;
 
-	status = 0;
 	if (curr->origin && !curr->next->origin)
 	{
 		tmp1 = curr->origin;

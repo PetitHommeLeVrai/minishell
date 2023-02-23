@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:42:18 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 02:08:27 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 17:36:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ void	ft_token_merge(t_token **curr)
 {
 	char	*tmp1;
 	char	*tmp2;
+	int		status;
 
 	while (ft_isnot_sep(curr))
 	{
+		status = 0;
 		tmp1 = (*curr)->word;
 		tmp2 = (*curr)->next->word;
 		(*curr)->word = ft_strjoin(tmp1, tmp2);
 		if (!(*curr)->word)
 			ft_error("Allocation Error", STDERR_FILENO);
 		free(tmp1);
-		ft_merge_word_origin(*curr);
+		ft_merge_word_origin(*curr, status);
 		ft_token_remove_next(*curr);
 		(*curr)->type = T_WORD;
 		(*curr)->flag_quotes = 1;
