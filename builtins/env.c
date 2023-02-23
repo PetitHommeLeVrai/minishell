@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:44 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/16 23:49:05 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:17:31 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ int	env(char **cmd, t_env_list *env_list, int flag)
 	while (env_list)
 	{
 		if (flag == 1)
+		{
 			printf("declare -x ");
-		printf("%s=%s\n", tmp_env->key, tmp_env->value);
+			printf("%s=\"%s\"\n", tmp_env->key, tmp_env->value);
+		}
+		else
+			printf("%s=%s\n", tmp_env->key, tmp_env->value);
 		env_list = env_list->next;
 		if (env_list)
 			tmp_env = env_list->content;

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/23 04:03:06 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:16:34 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	export(char **cmd, t_env_list *env_list)
 	{
 		row_env = ft_split(cmd[i], '=');
 		if (!*row_env)
-		{	row_env = (char **)malloc(sizeof(char));
+		{
+			row_env = (char **)malloc(sizeof(char));
 			row_env[0] = ft_strdup("=");
 		}
 		if (check_env_argv(row_env[0]))
