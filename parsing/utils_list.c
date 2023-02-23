@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 05:42:00 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/18 13:00:04 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:33:50 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_token	*ft_new_token(void)
 	new_token->tail = -1;
 	new_token->flag_env = -1;
 	new_token->next = NULL;
+	new_token->flag_null = -1;
 	return (new_token);
 }
 

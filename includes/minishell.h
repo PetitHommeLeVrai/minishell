@@ -73,8 +73,9 @@ struct s_token
 	int		type;
 	char	*origin;
 	int		flag_quotes;
-	int		tail;
 	int		flag_env;
+	int		flag_null;
+	int		tail;
 	t_token	*next;
 };
 

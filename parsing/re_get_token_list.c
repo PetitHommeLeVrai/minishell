@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 17:25:42 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:34:54 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	get_new_dollar(t_token *token, int head_dollar,
 		token->origin = ft_strdup(token->word);
 	token->flag_env = 1;
 	free(token->word);
+	if (!ft_strcmp(new_word, ""))
+		token->flag_null = 1;
 	token->word = new_word;
 }
 

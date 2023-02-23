@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:55 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/23 03:13:23 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:28:28 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,7 @@ int	unset(char **cmd, t_env_list **env_list)
 		key = cmd[i];
 		env = find_env_by_key(*env_list, key);
 		if (!env)
-		{
-			ft_putstr_fd("unset: '", 2);
-			ft_putstr_fd(cmd[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (2);
-		}
+			return (0);
 		else
 			unset_env(env_list, key);
 	}
