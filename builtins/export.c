@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/23 15:43:11 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 16:07:49 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	ft_free_row_env(char **env)
 		free(env);
 }
 
-char	**ft_split_env(char *cmd)
+char	**ft_split_env(char *cmd, int *flag)
 {
 	int		i;
 	char	**rst;
@@ -113,6 +113,7 @@ char	**ft_split_env(char *cmd)
 	{
 		if (cmd[i] == '=')
 		{
+			*flag = 1;
 			rst[0] = ft_substr_env(cmd, 0, i);
 			if (!rst[0])
 				rst[0] = ft_strdup("=");
@@ -120,7 +121,13 @@ char	**ft_split_env(char *cmd)
 		}
 	}
 	i++;
-	rst[1] = ft_substr_env(cmd, i, ft_strlen(cmd) - i);
+	if (*flag == 0)
+	{
+		rst[0] = ft_substr_env(cmd, 0, ft_strlen(cmd));
+		rst[1] = NULL;
+	}
+	else
+		rst[1] = ft_substr_env(cmd, i, ft_strlen(cmd) - i);
 	rst[2] = NULL;
 	return (rst);
 }
@@ -129,18 +136,21 @@ int	export(char **cmd, t_env_list *env_list)
 {
 	int		i;
 	char	**row_env;
+	int		flag;
 
 	i = 0;
+	flag = 0;
 	if (cmd[1] == NULL)
 		return (env(cmd, env_list, 1));
 	while (cmd[++i])
 	{
-		row_env = ft_split_env(cmd[i]);
+		row_env = ft_split_env(cmd[i], &flag);
 		if (check_env_argv(row_env[0]))
 			return (ft_putstr_fd("export: ", 2), ft_putstr_fd(row_env[0], 2),
 				ft_putstr_fd(" : not a valid identifier\n", 2),
 				ft_free_row_env(row_env), 1);
-		set_new_env(env_list, row_env[0], row_env[1]);
+		if (flag == 1)
+			set_new_env(env_list, row_env[0], row_env[1]);
 		ft_free_row_env(row_env);
 	}
 	return (0);
