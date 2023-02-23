@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:10:42 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/23 01:36:35 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 17:26:51 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,15 @@ int	count_args(t_cmd_line *cmd_line)
 	{
 		if (cmd_line->token[i].type == ARG
 			|| cmd_line->token[i].type == T_WORD_NULL)
-			count++;
+		{
+			if (cmd_line->token[i].type == T_WORD_NULL)
+			{
+				if (cmd_line->token[i].flag_null == -1)
+					count++;
+			}
+			else if (cmd_line->token[i].type == ARG)
+				count++;
+		}
 		i++;
 	}
 	return (count);
@@ -43,8 +51,9 @@ char	**get_args_incmd(t_cmd_line *cmd_line)
 	cmd_args[count_args(cmd_line)] = NULL;
 	while (i < cmd_line->token_count)
 	{
-		if (cmd_line->token[i].type == ARG
-			|| cmd_line->token[i].type == T_WORD_NULL)
+		if ((cmd_line->token[i].type == ARG
+				|| (cmd_line->token[i].type == T_WORD_NULL
+					&& cmd_line->token[i].flag_null == -1)))
 		{
 			cmd_args[j] = cmd_line->token[i].word;
 			j++;
