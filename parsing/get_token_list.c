@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 02:39:30 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:09:21 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,28 @@ void	set_type_red_word(t_token *token)
 	}
 }
 
+int	change_token_type(t_token *token)
+{
+	int		i;
+	t_token	*tmp;
+
+	i = 0;
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->type == T_WORD_NULL && !tmp->next && i == 0)
+			return (-5);
+		if (tmp->type == T_SINGLE_QUOTES || tmp->type == T_DOUBLE_QUOTES)
+			tmp->type = T_WORD;
+		tmp = tmp->next;
+		i++;
+	}
+	return (0);
+}
+
 int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 {
 	int		syntax_error;
-	t_token	*tmp;
 	int		count_dollar;
 
 	token_list->head = NULL;
@@ -50,15 +68,8 @@ int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 	check_env_token(token_list, env, count_dollar);
 	remove_space_token(token_list->head);
 	set_type_red_word(token_list->head);
-	tmp = token_list->head;
-	while (tmp)
-	{
-		if (tmp->type == T_WORD_NULL && !tmp->next)
-			return (-5);
-		if (tmp->type == T_SINGLE_QUOTES || tmp->type == T_DOUBLE_QUOTES)
-			tmp->type = T_WORD;
-		tmp = tmp->next;
-	}
+	if (change_token_type(token_list->head) == -5)
+		return (-5);
 	syntax_error = syntax_check(token_list->head);
 	if (syntax_error < 0)
 		return (syntax_error);

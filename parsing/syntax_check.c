@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:34:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 02:40:15 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 13:59:25 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	con_error_status(t_token_list *token_list, int status,
 	else if (status == ERR_SYNTAX)
 		con_error_status3(token_list, status);
 	if (status == -5)
+	{
+		ft_free_token_list2(token_list);
 		return ;
+	}
 	if (heredoc == 1)
 		syntax_error_heredoc(token_list);
 	ft_free_token_list2(token_list);
