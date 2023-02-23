@@ -6,7 +6,7 @@
 /*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:46 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/22 15:41:26 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/23 16:31:52 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,14 @@ int	exit_cmd(char **cmd)
 		return (g_global.ret);
 	if (check_nb(cmd[1]) == 0)
 	{
-		printf("exit: %s: numeric argument required\n", cmd[1]);
+		ft_putstr_fd("exit: ", 2);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		return (2);
 	}
 	if (cmd[2])
 	{
-		printf("exit: too many arguments\n");
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (-2);
 	}
 	nb = ft_atoi_exit(cmd[1]);

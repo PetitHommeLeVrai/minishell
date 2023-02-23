@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:55 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/23 14:28:28 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 17:27:47 by aboyer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	unset(char **cmd, t_env_list **env_list)
 	i = 0;
 	if (!cmd[1])
 		return (0);
+	if (!(*env_list)->next)
+		return (ft_putstr_fd("OUTPLAYED BOZO GET RECKT\n", 2), 0);
 	while (cmd[++i])
 	{
 		key = cmd[i];
