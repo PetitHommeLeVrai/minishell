@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 03:45:25 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/20 16:20:59 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 02:39:30 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	get_token_list(char *cmd_origin, t_env_list *env, t_token_list *token_list)
 	tmp = token_list->head;
 	while (tmp)
 	{
+		if (tmp->type == T_WORD_NULL && !tmp->next)
+			return (-5);
 		if (tmp->type == T_SINGLE_QUOTES || tmp->type == T_DOUBLE_QUOTES)
 			tmp->type = T_WORD;
 		tmp = tmp->next;

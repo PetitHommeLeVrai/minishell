@@ -194,8 +194,8 @@ void			ft_token_remove_next(t_token *token);
 void			ft_token_add_middle(t_token *start_token);
 int				ft_is_space(char *cmd);
 void			ft_merge_word_origin(t_token *curr);
-int				ft_isnot_sep(t_token *curr);
-void			ft_token_merge(t_token *curr);
+int				ft_isnot_sep(t_token **curr);
+void			ft_token_merge(t_token **curr);
 void			remove_space_token(t_token *head);
 /*****************Cmd_line********************/
 t_cmd_line		*init_cmd_line(t_cmd_line *cmd_line_origin,

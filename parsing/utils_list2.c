@@ -6,19 +6,31 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:46:23 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/19 20:21:57 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 03:49:28 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_isnot_sep(t_token *curr)
+int	ft_isnot_sep(t_token **curr)
 {
-	if (!curr->next)
+	if (!(*curr)->next)
 		return (0);
-	if (curr->next->type == T_SINGLE_QUOTES
-		|| curr->next->type == T_DOUBLE_QUOTES
-		|| curr->next->type == T_WORD)
+	if ((*curr)->type == T_WORD || (*curr)->type == T_WORD_NULL)
+	{
+		if ((*curr)->flag_quotes == 1 && ((*curr)->next->type == T_WORD
+				|| (*curr)->next->type == T_WORD_NULL))
+			return (1);
+		if ((*curr)->next->type == T_WORD || (*curr)->next->type == T_WORD_NULL)
+		{
+			(*curr) = (*curr)->next;
+			return (0);
+		}
+	}
+	if ((*curr)->next->type == T_SINGLE_QUOTES
+		|| (*curr)->next->type == T_DOUBLE_QUOTES
+		|| (*curr)->next->type == T_WORD
+		|| (*curr)->next->type == T_WORD_NULL)
 		return (1);
 	return (0);
 }

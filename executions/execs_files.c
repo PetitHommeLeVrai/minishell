@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:43:38 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/22 17:51:52 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/23 02:27:57 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	get_files(t_exec *exec, t_cmd_line *cmd_line, t_env_list *env)
 	i = 0;
 	while (i < cmd_line->token_count)
 	{
-		if (i > 1 && (cmd_line->token[i - 1].type == 30
+		if (i >= 1 && (cmd_line->token[i - 1].type == 30
 				|| cmd_line->token[i - 1].type == 31
 				|| cmd_line->token[i - 1].type == 33)
 			&& cmd_line->token[i].type == T_WORD_NULL)

@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:34:30 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/22 05:56:02 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 02:40:15 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	con_error_status(t_token_list *token_list, int status,
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	else if (status == ERR_SYNTAX)
 		con_error_status3(token_list, status);
+	if (status == -5)
+		return ;
 	if (heredoc == 1)
 		syntax_error_heredoc(token_list);
 	ft_free_token_list2(token_list);
@@ -81,17 +83,16 @@ int	syntax_check(t_token *head)
 	{
 		if (curr->type == T_PIPE
 			&& (prev == NULL || curr->next == NULL
-				|| (prev->type != T_WORD && prev->type != 40 && prev->type != 41
+				|| ((prev->type != T_WORD && prev->type != T_WORD_NULL)
+					&& prev->type != 40 && prev->type != 41
 					&& prev->type != 42 && prev->type != 43)
 				|| curr->next->type == T_PIPE))
 			return (handle_syntax_error(curr, curr->next, prev, 0));
 		if (curr->type >= 30 && curr->type <= 33
 			&& (curr->next == NULL
-				|| !(curr->next->type >= 40 && curr->next->type <= 43)))
+				|| (curr->next->type >= 30 && curr->next->type <= 33)
+				|| curr->next->type == T_PIPE))
 			return (handle_syntax_error(curr, curr->next, prev, 0));
-		if (curr->type >= 30 && curr->type <= 33
-			&& (curr->next != NULL && curr->next->type == T_WORD_NULL))
-			return (handle_syntax_error(curr, curr->next, prev, 1));
 		prev = curr;
 		curr = curr->next;
 	}

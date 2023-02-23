@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:57:50 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/20 19:06:53 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 04:03:06 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,20 @@ int	check_have_equal(char *cmd)
 	return (0);
 }
 
+void	ft_free_row_env(char **env)
+{
+	int	j;
+
+	j = -1;
+	while (env && env[++j])
+		free(env[j]);
+	if (env)
+		free(env);
+}
+
 int	export(char **cmd, t_env_list *env_list)
 {
 	int		i;
-	int		j;
 	char	**row_env;
 
 	i = 0;
@@ -70,17 +80,17 @@ int	export(char **cmd, t_env_list *env_list)
 		return (env(cmd, env_list, 1));
 	while (cmd[++i])
 	{
-		j = -1;
-		if (!check_have_equal(cmd[i]))
-			return (0);
 		row_env = ft_split(cmd[i], '=');
+		if (!*row_env)
+		{	row_env = (char **)malloc(sizeof(char));
+			row_env[0] = ft_strdup("=");
+		}
 		if (check_env_argv(row_env[0]))
 			return (ft_putstr_fd("export: ", 2), ft_putstr_fd(row_env[0], 2),
-				ft_putstr_fd(" : not a valid indentifier\n", 2), 1);
+				ft_putstr_fd(" : not a valid identifier\n", 2),
+				ft_free_row_env(row_env), 1);
 		set_new_env(env_list, row_env[0], row_env[1]);
-		while (row_env[++j])
-			free(row_env[j]);
-		free(row_env);
+		ft_free_row_env(row_env);
 	}
 	return (0);
 }
