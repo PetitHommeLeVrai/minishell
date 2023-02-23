@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 13:37:01 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 14:34:54 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:40:08 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	check_count_dollar(char *word)
 		if (word[i] == '$')
 		{
 			i++;
+			if (word[i] == '\0')
+				return (count);
 			if (word[i] == '$' || ft_isalpha(word[i])
 				|| word[i] == '_' || word[i] == '?')
 				count++;
