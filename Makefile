@@ -6,7 +6,7 @@
 #    By: ychun <ychun@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 12:33:27 by aboyer            #+#    #+#              #
-#    Updated: 2023/02/22 05:51:36 by ychun            ###   ########.fr        #
+#    Updated: 2023/02/23 16:52:55 by ychun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRC =	main.c \
 		builtins/env.c \
 		builtins/exit.c \
 		builtins/export.c \
+		builtins/export2.c \
 		builtins/pwd.c \
 		builtins/unset.c
 		
