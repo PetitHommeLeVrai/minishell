@@ -6,7 +6,7 @@
 /*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:46:23 by ychun             #+#    #+#             */
-/*   Updated: 2023/02/23 16:15:54 by ychun            ###   ########.fr       */
+/*   Updated: 2023/02/23 17:04:18 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	copy_cmd_line(t_cmd_line *t_cmd, t_token **head)
 		t_cmd->token[i].flag_quotes = (*head)->flag_quotes;
 		t_cmd->token[i].tail = (*head)->tail;
 		t_cmd->token[i].flag_env = (*head)->flag_env;
+		t_cmd->token[i].flag_null = (*head)->flag_null;
 		i++;
 		*head = (*head)->next;
 		if (!(*head))
