@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execs_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboyer <aboyer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ychun <ychun@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:14:06 by aboyer            #+#    #+#             */
-/*   Updated: 2023/02/22 18:10:08 by aboyer           ###   ########.fr       */
+/*   Updated: 2023/02/24 02:28:19 by ychun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	write_in_heredoc(int file, char *buf, t_env_list *env, int flag_quotes)
 	char	*new_buf;
 
 	count_dollar = check_count_dollar(buf);
-	new_buf = buf;
+	new_buf = ft_strdup(buf);
 	while (count_dollar-- > 0 && flag_quotes != 1)
 	{
 		head_dollar = check_token_have_env(new_buf);
@@ -54,6 +54,7 @@ void	write_in_heredoc(int file, char *buf, t_env_list *env, int flag_quotes)
 	}
 	write(file, new_buf, ft_strlen(new_buf));
 	write(file, "\n", 1);
+	free(new_buf);
 }
 
 void	loop(char *argv, t_env_list *env, int flag_quotes, t_cmd_line *line)
